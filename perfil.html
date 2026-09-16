@@ -81,7 +81,7 @@
       const usuario = clienteSupabase.auth.obtenerUsuario();
 
       if (!usuario) {
-        window.location.href = '/inicio-sesion.html';
+        window.location.href = 'inicio-sesion.html';
       } else {
         const esAdmin = esAdministrador();
         const nombre = usuario.nombre_completo || usuario.email.split('@')[0];

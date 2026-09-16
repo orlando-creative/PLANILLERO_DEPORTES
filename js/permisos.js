@@ -20,7 +20,7 @@ export function protegerPaginaAdmin() {
   const usuario = clienteSupabase.auth.obtenerUsuario();
   if (!usuario || usuario.rol !== 'administrador') {
     const destino = encodeURIComponent(window.location.pathname + window.location.search);
-    window.location.href = `/inicio-sesion.html?redirigir=${destino}`;
+    window.location.href = `inicio-sesion.html?redirigir=${destino}`;
     return false;
   }
   return true;
