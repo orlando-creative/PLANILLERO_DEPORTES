@@ -142,12 +142,12 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerPartidos, guardarPartido, eliminarPartido } from 'js/partidos.js';
-      import { obtenerCompeticiones } from 'js/competiciones.js';
-      import { obtenerEquipos } from 'js/equipos.js';
-      import { esAdministrador } from 'js/permisos.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
-      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerPartidos, guardarPartido, eliminarPartido } from './js/partidos.js';
+      import { obtenerCompeticiones } from './js/competiciones.js';
+      import { obtenerEquipos } from './js/equipos.js';
+      import { esAdministrador } from './js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from './js/interfaz.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from './js/utilidades.js';
 
       let listaPartidos = [];
       let listaCompeticiones = [];
@@ -247,9 +247,9 @@
               </div>
 
               <div class="tarjeta-partido-acciones">
-                <a href="/partido.html?id=${p.id}" class="boton boton-contorno boton-sm">Ficha Completa</a>
+                <a href="partido.html?id=${p.id}" class="boton boton-contorno boton-sm">Ficha Completa</a>
                 ${esAdmin ? `
-                  <a href="/planilla.html?partido_id=${p.id}" class="boton boton-secundario boton-sm">Abrir Planilla</a>
+                  <a href="planilla.html?partido_id=${p.id}" class="boton boton-secundario boton-sm">Abrir Planilla</a>
                   <button type="button" class="boton boton-contorno boton-sm btn-editar-part" data-id="${p.id}">Modificar</button>
                   <button type="button" class="boton boton-peligro boton-sm btn-eliminar-part" data-id="${p.id}">Eliminar</button>
                 ` : ''}

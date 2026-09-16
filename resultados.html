@@ -58,11 +58,11 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerPartidos } from 'js/partidos.js';
-      import { obtenerCompeticiones } from 'js/competiciones.js';
-      import { obtenerEquipos } from 'js/equipos.js';
-      import { obtenerEventosPartido } from 'js/eventos-partido.js';
-      import { formatearFechaHora, sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerPartidos } from './js/partidos.js';
+      import { obtenerCompeticiones } from './js/competiciones.js';
+      import { obtenerEquipos } from './js/equipos.js';
+      import { obtenerEventosPartido } from './js/eventos-partido.js';
+      import { formatearFechaHora, sanitizarHTML } from './js/utilidades.js';
 
       let mapaEquipos = {};
 
@@ -151,7 +151,7 @@
               </div>
 
               <div class="tarjeta-partido-acciones">
-                <a href="/partido.html?id=${p.id}" class="boton boton-primario boton-sm">Ver Acta Oficial Completa</a>
+                <a href="partido.html?id=${p.id}" class="boton boton-primario boton-sm">Ver Acta Oficial Completa</a>
               </div>
             </div>
           `;

@@ -87,15 +87,15 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { protegerPaginaAdmin } from 'js/permisos.js';
-      import { obtenerPartidos, obtenerPartidoPorId, cambiarEstadoPartido } from 'js/partidos.js';
-      import { obtenerEquipoPorId } from 'js/equipos.js';
-      import { obtenerJugadores } from 'js/jugadores.js';
-      import { obtenerReglamentoPorId } from 'js/reglamentos.js';
-      import { obtenerCompeticionPorId } from 'js/competiciones.js';
-      import { obtenerEventosPartido, registrarEvento, revertirEvento, restaurarEvento, eliminarEvento } from 'js/eventos-partido.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
-      import { formatearTiempoReloj, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from 'js/utilidades.js';
+      import { protegerPaginaAdmin } from './js/permisos.js';
+      import { obtenerPartidos, obtenerPartidoPorId, cambiarEstadoPartido } from './js/partidos.js';
+      import { obtenerEquipoPorId } from './js/equipos.js';
+      import { obtenerJugadores } from './js/jugadores.js';
+      import { obtenerReglamentoPorId } from './js/reglamentos.js';
+      import { obtenerCompeticionPorId } from './js/competiciones.js';
+      import { obtenerEventosPartido, registrarEvento, revertirEvento, restaurarEvento, eliminarEvento } from './js/eventos-partido.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from './js/interfaz.js';
+      import { formatearTiempoReloj, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from './js/utilidades.js';
 
       // Verificar protección RBAC
       if (!protegerPaginaAdmin()) {
@@ -128,7 +128,7 @@
             <div class="estado-vacio">
               <h3>No hay partidos en el fixture</h3>
               <p>Primero debe programar un partido en el calendario para habilitar la planilla.</p>
-              <a href="/calendario.html" class="boton boton-primario boton-md" style="margin-top: 10px;">Ir al Calendario</a>
+              <a href="calendario.html" class="boton boton-primario boton-md" style="margin-top: 10px;">Ir al Calendario</a>
             </div>
           `;
           return;

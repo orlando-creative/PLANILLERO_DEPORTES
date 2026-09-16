@@ -141,12 +141,12 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerPartidos } from 'js/partidos.js';
-      import { obtenerCompeticiones } from 'js/competiciones.js';
-      import { calcularTablaPosiciones } from 'js/posiciones.js';
-      import { obtenerGoleadores } from 'js/estadisticas.js';
-      import { clienteSupabase } from 'js/supabase.js';
-      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerPartidos } from './js/partidos.js';
+      import { obtenerCompeticiones } from './js/competiciones.js';
+      import { calcularTablaPosiciones } from './js/posiciones.js';
+      import { obtenerGoleadores } from './js/estadisticas.js';
+      import { clienteSupabase } from './js/supabase.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from './js/utilidades.js';
 
       async function cargarInicio() {
         // Cargar equipos para nombres
@@ -201,8 +201,8 @@
                   </div>
                 </div>
                 <div class="tarjeta-partido-acciones">
-                  <a href="/partido.html?id=${p.id}" class="boton boton-contorno boton-sm">Ficha del Partido</a>
-                  ${enVivo ? `<a href="/planilla.html?partido_id=${p.id}" class="boton boton-secundario boton-sm">Planilla en Vivo</a>` : ''}
+                  <a href="partido.html?id=${p.id}" class="boton boton-contorno boton-sm">Ficha del Partido</a>
+                  ${enVivo ? `<a href="planilla.html?partido_id=${p.id}" class="boton boton-secundario boton-sm">Planilla en Vivo</a>` : ''}
                 </div>
               </div>
             `;
@@ -223,7 +223,7 @@
                   ${sanitizarHTML(c.deporte)} &bull; ${c.tipo_competicion === 'liga' ? 'Liga' : 'Torneo Relámpago'}
                 </span>
               </div>
-              <a href="/posiciones.html?competicion_id=${c.id}" class="boton boton-sm boton-contorno">Posiciones</a>
+              <a href="posiciones.html?competicion_id=${c.id}" class="boton boton-sm boton-contorno">Posiciones</a>
             </div>
           `).join('');
         }

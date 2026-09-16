@@ -126,11 +126,11 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerJugadores, guardarJugador, eliminarJugador } from 'js/jugadores.js';
-      import { obtenerEquipos } from 'js/equipos.js';
-      import { esAdministrador } from 'js/permisos.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
-      import { sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerJugadores, guardarJugador, eliminarJugador } from './js/jugadores.js';
+      import { obtenerEquipos } from './js/equipos.js';
+      import { esAdministrador } from './js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from './js/interfaz.js';
+      import { sanitizarHTML } from './js/utilidades.js';
 
       let todosJugadores = [];
       let mapaEquipos = {};

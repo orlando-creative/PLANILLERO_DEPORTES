@@ -128,10 +128,10 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerReglamentos, guardarReglamento } from 'js/reglamentos.js';
-      import { esAdministrador } from 'js/permisos.js';
-      import { mostrarNotificacion, abrirModal, cerrarModal } from 'js/interfaz.js';
-      import { sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerReglamentos, guardarReglamento } from './js/reglamentos.js';
+      import { esAdministrador } from './js/permisos.js';
+      import { mostrarNotificacion, abrirModal, cerrarModal } from './js/interfaz.js';
+      import { sanitizarHTML } from './js/utilidades.js';
 
       let todosReglamentos = [];
       let reglamentoActivo = null;

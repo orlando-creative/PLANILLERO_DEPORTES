@@ -164,11 +164,11 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerCompeticiones, guardarCompeticion, eliminarCompeticion, obtenerEquiposDeCompeticion } from 'js/competiciones.js';
-      import { obtenerReglamentos } from 'js/reglamentos.js';
-      import { esAdministrador } from 'js/permisos.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
-      import { formatearFecha, sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerCompeticiones, guardarCompeticion, eliminarCompeticion, obtenerEquiposDeCompeticion } from './js/competiciones.js';
+      import { obtenerReglamentos } from './js/reglamentos.js';
+      import { esAdministrador } from './js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from './js/interfaz.js';
+      import { formatearFecha, sanitizarHTML } from './js/utilidades.js';
 
       let listaCompeticiones = [];
       let reglamentosDisponibles = [];
@@ -277,8 +277,8 @@
               </div>
 
               <div class="tarjeta-competicion-acciones">
-                <a href="/posiciones.html?competicion_id=${c.id}" class="boton boton-primario boton-sm">${esRelampago ? 'Ver Cuadro / Llaves' : 'Posiciones'}</a>
-                <a href="/calendario.html?competicion_id=${c.id}" class="boton boton-secundario boton-sm">Fixture</a>
+                <a href="posiciones.html?competicion_id=${c.id}" class="boton boton-primario boton-sm">${esRelampago ? 'Ver Cuadro / Llaves' : 'Posiciones'}</a>
+                <a href="calendario.html?competicion_id=${c.id}" class="boton boton-secundario boton-sm">Fixture</a>
                 ${esAdmin ? `
                   <button type="button" class="boton boton-contorno boton-sm btn-editar-comp" data-id="${c.id}">Editar</button>
                   <button type="button" class="boton boton-peligro boton-sm btn-eliminar-comp" data-id="${c.id}" data-nombre="${sanitizarHTML(c.nombre)}">Eliminar</button>

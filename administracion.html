@@ -24,7 +24,7 @@
           <p class="subtitulo-seccion">Configuración general del sistema, auditoría de operaciones y gestión de credenciales.</p>
         </div>
         <div>
-          <a href="/planilla.html" class="boton boton-secundario boton-md">Ir a la Planilla en Vivo</a>
+          <a href="planilla.html" class="boton boton-secundario boton-md">Ir a la Planilla en Vivo</a>
         </div>
       </div>
 
@@ -165,15 +165,15 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { protegerPaginaAdmin } from 'js/permisos.js';
-      import { clienteSupabase, estaConectadoASupabase, obtenerConfiguracionSupabase } from 'js/supabase.js';
-      import { obtenerAuditoria } from 'js/auditoria.js';
-      import { obtenerCompeticiones } from 'js/competiciones.js';
-      import { obtenerEquipos } from 'js/equipos.js';
-      import { obtenerJugadores } from 'js/jugadores.js';
-      import { obtenerPartidos } from 'js/partidos.js';
-      import { mostrarNotificacion } from 'js/interfaz.js';
-      import { formatearFechaHora, sanitizarHTML } from 'js/utilidades.js';
+      import { protegerPaginaAdmin } from './js/permisos.js';
+      import { clienteSupabase, estaConectadoASupabase, obtenerConfiguracionSupabase } from './js/supabase.js';
+      import { obtenerAuditoria } from './js/auditoria.js';
+      import { obtenerCompeticiones } from './js/competiciones.js';
+      import { obtenerEquipos } from './js/equipos.js';
+      import { obtenerJugadores } from './js/jugadores.js';
+      import { obtenerPartidos } from './js/partidos.js';
+      import { mostrarNotificacion } from './js/interfaz.js';
+      import { formatearFechaHora, sanitizarHTML } from './js/utilidades.js';
 
       if (!protegerPaginaAdmin()) {
         // Redirigido si no es administrador

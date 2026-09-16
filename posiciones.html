@@ -173,9 +173,9 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerCompeticiones } from 'js/competiciones.js';
-      import { obtenerClasificacionCompeticion } from 'js/posiciones.js';
-      import { sanitizarHTML, formatearFechaHora } from 'js/utilidades.js';
+      import { obtenerCompeticiones } from './js/competiciones.js';
+      import { obtenerClasificacionCompeticion } from './js/posiciones.js';
+      import { sanitizarHTML, formatearFechaHora } from './js/utilidades.js';
 
       const params = new URLSearchParams(window.location.search);
       const compUrlId = params.get('competicion_id');

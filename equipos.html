@@ -119,11 +119,11 @@
     <!-- Scripts de Módulos ES -->
     <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerEquipos, guardarEquipo, eliminarEquipo } from 'js/equipos.js';
-      import { obtenerJugadores } from 'js/jugadores.js';
-      import { esAdministrador } from 'js/permisos.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
-      import { sanitizarHTML } from 'js/utilidades.js';
+      import { obtenerEquipos, guardarEquipo, eliminarEquipo } from './js/equipos.js';
+      import { obtenerJugadores } from './js/jugadores.js';
+      import { esAdministrador } from './js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from './js/interfaz.js';
+      import { sanitizarHTML } from './js/utilidades.js';
 
       let todosEquipos = [];
 
@@ -218,7 +218,7 @@
                 </div>
               </div>
               <div style="display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--borde-suave); padding-top: 12px;">
-                <a href="/jugadores.html?equipo_id=${eq.id}" class="boton boton-contorno boton-sm">Ver Plantilla</a>
+                <a href="jugadores.html?equipo_id=${eq.id}" class="boton boton-contorno boton-sm">Ver Plantilla</a>
                 ${esAdmin ? `
                   <button type="button" class="boton boton-secundario boton-sm btn-editar-eq" data-id="${eq.id}">Editar</button>
                   <button type="button" class="boton boton-peligro boton-sm btn-eliminar-eq" data-id="${eq.id}" data-nombre="${sanitizarHTML(eq.nombre_personalizado)}">Eliminar</button>
