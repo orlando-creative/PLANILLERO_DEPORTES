@@ -7,12 +7,12 @@
     <meta name="description" content="Centro de control administrativo, configuración de Supabase, auditoría de eventos y gestión de usuarios." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/administracion.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/administracion.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -163,17 +163,17 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { protegerPaginaAdmin } from '/js/permisos.js';
-      import { clienteSupabase, estaConectadoASupabase, obtenerConfiguracionSupabase } from '/js/supabase.js';
-      import { obtenerAuditoria } from '/js/auditoria.js';
-      import { obtenerCompeticiones } from '/js/competiciones.js';
-      import { obtenerEquipos } from '/js/equipos.js';
-      import { obtenerJugadores } from '/js/jugadores.js';
-      import { obtenerPartidos } from '/js/partidos.js';
-      import { mostrarNotificacion } from '/js/interfaz.js';
-      import { formatearFechaHora, sanitizarHTML } from '/js/utilidades.js';
+      import { protegerPaginaAdmin } from 'js/permisos.js';
+      import { clienteSupabase, estaConectadoASupabase, obtenerConfiguracionSupabase } from 'js/supabase.js';
+      import { obtenerAuditoria } from 'js/auditoria.js';
+      import { obtenerCompeticiones } from 'js/competiciones.js';
+      import { obtenerEquipos } from 'js/equipos.js';
+      import { obtenerJugadores } from 'js/jugadores.js';
+      import { obtenerPartidos } from 'js/partidos.js';
+      import { mostrarNotificacion } from 'js/interfaz.js';
+      import { formatearFechaHora, sanitizarHTML } from 'js/utilidades.js';
 
       if (!protegerPaginaAdmin()) {
         // Redirigido si no es administrador

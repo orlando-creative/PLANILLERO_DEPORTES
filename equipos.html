@@ -7,11 +7,11 @@
     <meta name="description" content="Listado de equipos y representativos de cursos de la U.E. Luz del Mundo A para fútbol y futsal." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -117,13 +117,13 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerEquipos, guardarEquipo, eliminarEquipo } from '/js/equipos.js';
-      import { obtenerJugadores } from '/js/jugadores.js';
-      import { esAdministrador } from '/js/permisos.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
-      import { sanitizarHTML } from '/js/utilidades.js';
+      import { obtenerEquipos, guardarEquipo, eliminarEquipo } from 'js/equipos.js';
+      import { obtenerJugadores } from 'js/jugadores.js';
+      import { esAdministrador } from 'js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
+      import { sanitizarHTML } from 'js/utilidades.js';
 
       let todosEquipos = [];
 
@@ -203,7 +203,7 @@
             <div class="tarjeta" style="display: flex; flex-direction: column; justify-content: space-between;">
               <div>
                 <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                  <img src="${eq.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="Escudo" style="width: 52px; height: 52px; object-fit: contain;" />
+                  <img src="${eq.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="Escudo" style="width: 52px; height: 52px; object-fit: contain;" />
                   <div>
                     <h3 style="font-size: 1.1rem; color: var(--azul-oscuro); margin-bottom: 2px;">${sanitizarHTML(eq.nombre_personalizado)}</h3>
                     <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">

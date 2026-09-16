@@ -7,10 +7,10 @@
     <meta name="description" content="Gestión del perfil del usuario, rol institucional y opciones de cuenta en el Planillero Deportivo." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -71,12 +71,12 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { clienteSupabase } from '/js/supabase.js';
-      import { cerrarSesion } from '/js/autenticacion.js';
-      import { esAdministrador } from '/js/permisos.js';
-      import { mostrarNotificacion } from '/js/interfaz.js';
+      import { clienteSupabase } from 'js/supabase.js';
+      import { cerrarSesion } from 'js/autenticacion.js';
+      import { esAdministrador } from 'js/permisos.js';
+      import { mostrarNotificacion } from 'js/interfaz.js';
 
       const usuario = clienteSupabase.auth.obtenerUsuario();
 

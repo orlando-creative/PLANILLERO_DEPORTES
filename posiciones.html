@@ -7,11 +7,11 @@
     <meta name="description" content="Tabla oficial de posiciones, clasificación de liga y llaves eliminatorias de torneos relámpago de la U.E. Luz del Mundo A." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -171,11 +171,11 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerCompeticiones } from '/js/competiciones.js';
-      import { obtenerClasificacionCompeticion } from '/js/posiciones.js';
-      import { sanitizarHTML, formatearFechaHora } from '/js/utilidades.js';
+      import { obtenerCompeticiones } from 'js/competiciones.js';
+      import { obtenerClasificacionCompeticion } from 'js/posiciones.js';
+      import { sanitizarHTML, formatearFechaHora } from 'js/utilidades.js';
 
       const params = new URLSearchParams(window.location.search);
       const compUrlId = params.get('competicion_id');
@@ -307,7 +307,7 @@
                     <!-- Fila Equipo Local -->
                     <div class="llave-equipo-fila ${localGano ? 'ganador' : (localPerdio ? 'perdedor' : '')}">
                       <div class="llave-equipo-info">
-                        <img src="${p.equipo_local?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" />
+                        <img src="${p.equipo_local?.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" />
                         <span class="llave-equipo-nombre" title="${sanitizarHTML(p.equipo_local?.nombre_personalizado || 'Local')}">
                           ${sanitizarHTML(p.equipo_local?.nombre_personalizado || 'Local')}
                         </span>
@@ -325,7 +325,7 @@
                     <!-- Fila Equipo Visitante -->
                     <div class="llave-equipo-fila ${visitanteGano ? 'ganador' : (visitantePerdio ? 'perdedor' : '')}">
                       <div class="llave-equipo-info">
-                        <img src="${p.equipo_visitante?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" />
+                        <img src="${p.equipo_visitante?.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" />
                         <span class="llave-equipo-nombre" title="${sanitizarHTML(p.equipo_visitante?.nombre_personalizado || 'Visitante')}">
                           ${sanitizarHTML(p.equipo_visitante?.nombre_personalizado || 'Visitante')}
                         </span>
@@ -372,7 +372,7 @@
               </td>
               <td>
                 <div class="equipo-celda">
-                  <img src="${fila.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-mini" />
+                  <img src="${fila.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-mini" />
                   <div>
                     <span class="equipo-nombre-texto">${sanitizarHTML(fila.nombre_personalizado)}</span>
                     <span class="equipo-curso-etiqueta">${sanitizarHTML(fila.curso)}</span>
@@ -408,7 +408,7 @@
             </td>
             <td>
               <div class="equipo-celda">
-                <img src="${fila.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-mini" />
+                <img src="${fila.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-mini" />
                 <div>
                   <span class="equipo-nombre-texto">${sanitizarHTML(fila.nombre_personalizado)}</span>
                   <span class="equipo-curso-etiqueta">${sanitizarHTML(fila.curso)}</span>

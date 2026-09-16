@@ -7,13 +7,13 @@
     <meta name="description" content="Mesa de control arbitral, cronómetro deportivo, registro de eventos minuto a minuto y actas de partido." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/partidos.css" />
-    <link rel="stylesheet" href="/css/planilla.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/partidos.css" />
+    <link rel="stylesheet" href="css/planilla.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -85,17 +85,17 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { protegerPaginaAdmin } from '/js/permisos.js';
-      import { obtenerPartidos, obtenerPartidoPorId, cambiarEstadoPartido } from '/js/partidos.js';
-      import { obtenerEquipoPorId } from '/js/equipos.js';
-      import { obtenerJugadores } from '/js/jugadores.js';
-      import { obtenerReglamentoPorId } from '/js/reglamentos.js';
-      import { obtenerCompeticionPorId } from '/js/competiciones.js';
-      import { obtenerEventosPartido, registrarEvento, revertirEvento, restaurarEvento, eliminarEvento } from '/js/eventos-partido.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
-      import { formatearTiempoReloj, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from '/js/utilidades.js';
+      import { protegerPaginaAdmin } from 'js/permisos.js';
+      import { obtenerPartidos, obtenerPartidoPorId, cambiarEstadoPartido } from 'js/partidos.js';
+      import { obtenerEquipoPorId } from 'js/equipos.js';
+      import { obtenerJugadores } from 'js/jugadores.js';
+      import { obtenerReglamentoPorId } from 'js/reglamentos.js';
+      import { obtenerCompeticionPorId } from 'js/competiciones.js';
+      import { obtenerEventosPartido, registrarEvento, revertirEvento, restaurarEvento, eliminarEvento } from 'js/eventos-partido.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
+      import { formatearTiempoReloj, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from 'js/utilidades.js';
 
       // Verificar protección RBAC
       if (!protegerPaginaAdmin()) {
@@ -213,7 +213,7 @@
             <div class="marcador-vivo-equipos">
               <!-- Equipo Local -->
               <div class="marcador-equipo-lado">
-                <img src="${equipoLocal?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="marcador-escudo-lado" />
+                <img src="${equipoLocal?.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="marcador-escudo-lado" />
                 <div class="marcador-nombre-lado">${sanitizarHTML(equipoLocal?.nombre_personalizado || 'Local')}</div>
                 <div class="marcador-curso-lado">${sanitizarHTML(equipoLocal?.curso || '')}</div>
                 <div class="marcador-goles-lado" id="marcador-goles-local">${partidoActual.goles_local}</div>
@@ -250,7 +250,7 @@
 
               <!-- Equipo Visitante -->
               <div class="marcador-equipo-lado">
-                <img src="${equipoVisitante?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="marcador-escudo-lado" />
+                <img src="${equipoVisitante?.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="marcador-escudo-lado" />
                 <div class="marcador-nombre-lado">${sanitizarHTML(equipoVisitante?.nombre_personalizado || 'Visitante')}</div>
                 <div class="marcador-curso-lado">${sanitizarHTML(equipoVisitante?.curso || '')}</div>
                 <div class="marcador-goles-lado" id="marcador-goles-visitante">${partidoActual.goles_visitante}</div>

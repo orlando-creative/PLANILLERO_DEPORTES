@@ -36,7 +36,7 @@ export async function cerrarSesion() {
     });
   }
   await clienteSupabase.auth.cerrarSesion();
-  window.location.href = '/index.html';
+  window.location.href = 'index.html';
 }
 
 /**

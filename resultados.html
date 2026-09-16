@@ -7,11 +7,11 @@
     <meta name="description" content="Historial de marcadores y resultados definitivos de los encuentros deportivos de la U.E. Luz del Mundo A." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/partidos.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/partidos.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -56,13 +56,13 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerPartidos } from '/js/partidos.js';
-      import { obtenerCompeticiones } from '/js/competiciones.js';
-      import { obtenerEquipos } from '/js/equipos.js';
-      import { obtenerEventosPartido } from '/js/eventos-partido.js';
-      import { formatearFechaHora, sanitizarHTML } from '/js/utilidades.js';
+      import { obtenerPartidos } from 'js/partidos.js';
+      import { obtenerCompeticiones } from 'js/competiciones.js';
+      import { obtenerEquipos } from 'js/equipos.js';
+      import { obtenerEventosPartido } from 'js/eventos-partido.js';
+      import { formatearFechaHora, sanitizarHTML } from 'js/utilidades.js';
 
       let mapaEquipos = {};
 
@@ -120,7 +120,7 @@
                     <span class="equipo-nombre-partido">${sanitizarHTML(local.nombre_personalizado)}</span>
                     <span class="equipo-curso-partido">${sanitizarHTML(local.curso)}</span>
                   </div>
-                  <img src="${local.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
+                  <img src="${local.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
                 </div>
 
                 <div class="marcador-central-bloque">
@@ -137,7 +137,7 @@
                 </div>
 
                 <div class="equipo-bloque visitante">
-                  <img src="${visitante.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
+                  <img src="${visitante.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
                   <div class="equipo-info-partido">
                     <span class="equipo-nombre-partido">${sanitizarHTML(visitante.nombre_personalizado)}</span>
                     <span class="equipo-curso-partido">${sanitizarHTML(visitante.curso)}</span>

@@ -67,7 +67,7 @@ export async function guardarEquipo(datos) {
     resultado = await clienteSupabase
       .from('equipos')
       .insert({
-        escudo_url: '/assets/escudo-luz-del-mundo.svg',
+        escudo_url: 'assets/escudo-luz-del-mundo.svg',
         activo: true,
         ...datos
       });

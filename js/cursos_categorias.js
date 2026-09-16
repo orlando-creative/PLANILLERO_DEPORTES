@@ -108,7 +108,7 @@ export function generarLista48Equipos() {
           grado,
           paralelo,
           categoria,
-          escudo_url: '/assets/escudo-luz-del-mundo.svg',
+          escudo_url: 'assets/escudo-luz-del-mundo.svg',
           activo: true,
           creado_en: new Date('2026-09-01T08:00:00.000Z').toISOString()
         });

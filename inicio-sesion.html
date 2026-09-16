@@ -7,10 +7,10 @@
     <meta name="description" content="Portal de acceso y autenticación para jueces de mesa, árbitros, directores técnicos y comunidad educativa de la U.E. Luz del Mundo A." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -18,7 +18,7 @@
     <main class="contenedor-principal" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
       <div class="tarjeta" style="max-width: 460px; width: 100%; padding: var(--espacio-xl);">
         <div style="text-align: center; margin-bottom: var(--espacio-md);">
-          <img src="/assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional" style="width: 80px; height: 95px; margin: 0 auto 12px; display: block;" />
+          <img src="assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional" style="width: 80px; height: 95px; margin: 0 auto 12px; display: block;" />
           <h1 style="font-size: 1.45rem; color: var(--azul-oscuro); margin-bottom: 4px;">Acceso para Administradores y Árbitros</h1>
           <p style="font-size: 0.88rem; color: var(--texto-secundario); margin: 0;">
             Control de Planilla Oficial &bull; U.E. Luz del Mundo A
@@ -31,7 +31,7 @@
           <p style="margin: 4px 0 8px 0; color: var(--texto-secundario);">
             No necesitas registrarte ni iniciar sesión. Toda la información de competiciones, posiciones, fixture y resultados en vivo es de acceso público y abierto.
           </p>
-          <a href="/index.html" class="boton boton-secundario boton-sm" style="display: inline-block;">
+          <a href="index.html" class="boton boton-secundario boton-sm" style="display: inline-block;">
             Ver Partidos y Posiciones (Sin Iniciar Sesión)
           </a>
         </div>
@@ -69,10 +69,10 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { iniciarSesion, solicitarRestablecerContrasena } from '/js/autenticacion.js';
-      import { mostrarNotificacion } from '/js/interfaz.js';
+      import { iniciarSesion, solicitarRestablecerContrasena } from 'js/autenticacion.js';
+      import { mostrarNotificacion } from 'js/interfaz.js';
 
       const form = document.getElementById('formulario-login');
       const alerta = document.getElementById('mensaje-alerta-login');

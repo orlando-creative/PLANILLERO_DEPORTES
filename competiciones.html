@@ -7,12 +7,12 @@
     <meta name="description" content="Listado oficial de torneos, campeonatos de fútbol campo y fútbol sala de la U.E. Luz del Mundo A." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/competiciones.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/competiciones.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -162,13 +162,13 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerCompeticiones, guardarCompeticion, eliminarCompeticion, obtenerEquiposDeCompeticion } from '/js/competiciones.js';
-      import { obtenerReglamentos } from '/js/reglamentos.js';
-      import { esAdministrador } from '/js/permisos.js';
-      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
-      import { formatearFecha, sanitizarHTML } from '/js/utilidades.js';
+      import { obtenerCompeticiones, guardarCompeticion, eliminarCompeticion, obtenerEquiposDeCompeticion } from 'js/competiciones.js';
+      import { obtenerReglamentos } from 'js/reglamentos.js';
+      import { esAdministrador } from 'js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from 'js/interfaz.js';
+      import { formatearFecha, sanitizarHTML } from 'js/utilidades.js';
 
       let listaCompeticiones = [];
       let reglamentosDisponibles = [];

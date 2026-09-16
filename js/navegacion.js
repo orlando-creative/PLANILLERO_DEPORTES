@@ -26,8 +26,8 @@ export function inicializarNavegacion() {
         </div>
       </div>
       <div class="encabezado-contenedor">
-        <a href="/index.html" class="marca-institucional" aria-label="Ir a página de inicio">
-          <img src="/assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional" class="escudo-header" />
+        <a href="index.html" class="marca-institucional" aria-label="Ir a página de inicio">
+          <img src="assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional" class="escudo-header" />
           <div class="marca-textos">
             <span class="marca-titulo">PLANILLERO <span>DEPORTIVO</span></span>
             <span class="marca-subtitulo">U.E. LUZ DEL MUNDO A</span>
@@ -40,14 +40,14 @@ export function inicializarNavegacion() {
             <span class="badge-rol ${admin ? 'admin' : 'espectador'}">
               ${admin ? 'ADMINISTRADOR' : 'ESPECTADOR'}
             </span>
-            <a href="/perfil.html" class="boton-usuario" title="Perfil de usuario">
+            <a href="perfil.html" class="boton-usuario" title="Perfil de usuario">
               ${nombreUsuarioSanitizado}
             </a>
             <button type="button" class="boton boton-contorno boton-sm btn-logout-action">
               Salir
             </button>
           ` : `
-            <a href="/inicio-sesion.html" class="boton boton-secundario boton-sm" title="Acceso exclusivo para árbitros y administradores">
+            <a href="inicio-sesion.html" class="boton boton-secundario boton-sm" title="Acceso exclusivo para árbitros y administradores">
               Acceso Admin
             </a>
           `}

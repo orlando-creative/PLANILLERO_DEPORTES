@@ -10,13 +10,13 @@
     <meta property="og:type" content="website" />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/competiciones.css" />
-    <link rel="stylesheet" href="/css/partidos.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/competiciones.css" />
+    <link rel="stylesheet" href="css/partidos.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -33,13 +33,13 @@
               Consulte marcadores en tiempo real, tablas de posiciones, calendario de jornadas y reglamentos de Fútbol y Fútbol Sala.
             </p>
             <div style="display: flex; gap: var(--espacio-sm); flex-wrap: wrap;">
-              <a href="/calendario.html" class="boton boton-primario boton-md">Ver Calendario</a>
-              <a href="/posiciones.html" class="boton boton-secundario boton-md">Tabla de Posiciones</a>
-              <a href="/reglamento.html" class="boton boton-contorno boton-md">Reglamentos</a>
+              <a href="calendario.html" class="boton boton-primario boton-md">Ver Calendario</a>
+              <a href="posiciones.html" class="boton boton-secundario boton-md">Tabla de Posiciones</a>
+              <a href="reglamento.html" class="boton boton-contorno boton-md">Reglamentos</a>
             </div>
           </div>
           <div style="display: flex; align-items: center; justify-content: center; padding: 10px;">
-            <img src="/assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional U.E. Luz del Mundo A" style="width: 120px; height: 140px;" />
+            <img src="assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional U.E. Luz del Mundo A" style="width: 120px; height: 140px;" />
           </div>
         </div>
       </section>
@@ -52,7 +52,7 @@
             <p class="subtitulo-seccion">Marcadores actualizados minuto a minuto y partidos programados.</p>
           </div>
           <div>
-            <a href="/resultados.html" class="boton boton-contorno boton-sm">Historial de Resultados</a>
+              <a href="resultados.html" class="boton boton-contorno boton-sm">Historial de Resultados</a>
           </div>
         </div>
 
@@ -70,7 +70,7 @@
         <section class="tarjeta">
           <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
             <h3>Competiciones en Curso</h3>
-            <a href="/competiciones.html" class="boton boton-contorno boton-sm">Ver Todas</a>
+              <a href="competiciones.html" class="boton boton-contorno boton-sm">Ver Todas</a>
           </div>
           <div id="contenedor-competiciones-inicio" style="display: flex; flex-direction: column; gap: var(--espacio-sm);">
             <div class="estado-carga">
@@ -83,7 +83,7 @@
         <section class="tarjeta">
           <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
             <h3>Líderes de la Copa</h3>
-            <a href="/posiciones.html" class="boton boton-contorno boton-sm">Tabla Completa</a>
+              <a href="posiciones.html" class="boton boton-contorno boton-sm">Tabla Completa</a>
           </div>
           <div class="contenedor-tabla" style="margin-bottom: 0;">
             <table class="tabla-deportiva tabla-compacta">
@@ -113,7 +113,7 @@
             <h3>Tabla de Goleadores Institucional</h3>
             <p class="subtitulo-seccion">Estudiantes destacados con mayor cantidad de goles convertidos.</p>
           </div>
-          <a href="/jugadores.html" class="boton boton-contorno boton-sm">Ver Plantillas</a>
+          <a href="jugadores.html" class="boton boton-contorno boton-sm">Ver Plantillas</a>
         </div>
         <div class="contenedor-tabla" style="margin-bottom: 0;">
           <table class="tabla-deportiva tabla-compacta">
@@ -139,14 +139,14 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerPartidos } from '/js/partidos.js';
-      import { obtenerCompeticiones } from '/js/competiciones.js';
-      import { calcularTablaPosiciones } from '/js/posiciones.js';
-      import { obtenerGoleadores } from '/js/estadisticas.js';
-      import { clienteSupabase } from '/js/supabase.js';
-      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from '/js/utilidades.js';
+      import { obtenerPartidos } from 'js/partidos.js';
+      import { obtenerCompeticiones } from 'js/competiciones.js';
+      import { calcularTablaPosiciones } from 'js/posiciones.js';
+      import { obtenerGoleadores } from 'js/estadisticas.js';
+      import { clienteSupabase } from 'js/supabase.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from 'js/utilidades.js';
 
       async function cargarInicio() {
         // Cargar equipos para nombres
@@ -182,7 +182,7 @@
                       <span class="equipo-nombre-partido">${sanitizarHTML(local.nombre_personalizado)}</span>
                       <span class="equipo-curso-partido">${sanitizarHTML(local.curso)}</span>
                     </div>
-                    <img src="${local.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="Escudo" class="equipo-escudo-partido" />
+                    <img src="${local.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="Escudo" class="equipo-escudo-partido" />
                   </div>
                   <div class="marcador-central-bloque">
                     <div class="marcador-numerico">
@@ -193,7 +193,7 @@
                     ${enVivo ? `<span class="partido-tiempo-reloj">Período ${p.periodo_actual} &bull; ${p.minuto_actual}'</span>` : ''}
                   </div>
                   <div class="equipo-bloque visitante">
-                    <img src="${visitante.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="Escudo" class="equipo-escudo-partido" />
+                    <img src="${visitante.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="Escudo" class="equipo-escudo-partido" />
                     <div class="equipo-info-partido">
                       <span class="equipo-nombre-partido">${sanitizarHTML(visitante.nombre_personalizado)}</span>
                       <span class="equipo-curso-partido">${sanitizarHTML(visitante.curso)}</span>

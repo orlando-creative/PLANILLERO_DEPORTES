@@ -7,13 +7,13 @@
     <meta name="description" content="Ficha técnica detallada, acta arbitral y cronología de eventos del partido deportivo." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/partidos.css" />
-    <link rel="stylesheet" href="/css/planilla.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/partidos.css" />
+    <link rel="stylesheet" href="css/planilla.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -41,15 +41,15 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerPartidoPorId } from '/js/partidos.js';
-      import { obtenerCompeticionPorId } from '/js/competiciones.js';
-      import { obtenerEquipoPorId } from '/js/equipos.js';
-      import { obtenerJugadores } from '/js/jugadores.js';
-      import { obtenerEventosPartido } from '/js/eventos-partido.js';
-      import { esAdministrador } from '/js/permisos.js';
-      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from '/js/utilidades.js';
+      import { obtenerPartidoPorId } from 'js/partidos.js';
+      import { obtenerCompeticionPorId } from 'js/competiciones.js';
+      import { obtenerEquipoPorId } from 'js/equipos.js';
+      import { obtenerJugadores } from 'js/jugadores.js';
+      import { obtenerEventosPartido } from 'js/eventos-partido.js';
+      import { esAdministrador } from 'js/permisos.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from 'js/utilidades.js';
 
       const params = new URLSearchParams(window.location.search);
       const partidoId = params.get('id');
@@ -106,7 +106,7 @@
                   <h2 style="margin: 0; font-size: 1.4rem; color: var(--azul-oscuro);">${sanitizarHTML(local?.nombre_personalizado || 'Local')}</h2>
                   <span class="equipo-curso-partido">${sanitizarHTML(local?.curso || '')}</span>
                 </div>
-                <img src="${local?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" style="width: 70px; height: 70px;" />
+                <img src="${local?.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" style="width: 70px; height: 70px;" />
               </div>
 
               <div class="marcador-central-bloque">
@@ -128,7 +128,7 @@
               </div>
 
               <div class="equipo-bloque visitante">
-                <img src="${visitante?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" style="width: 70px; height: 70px;" />
+                <img src="${visitante?.escudo_url || 'assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" style="width: 70px; height: 70px;" />
                 <div class="equipo-info-partido">
                   <h2 style="margin: 0; font-size: 1.4rem; color: var(--azul-oscuro);">${sanitizarHTML(visitante?.nombre_personalizado || 'Visitante')}</h2>
                   <span class="equipo-curso-partido">${sanitizarHTML(visitante?.curso || '')}</span>

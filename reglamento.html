@@ -7,11 +7,11 @@
     <meta name="description" content="Normativa oficial, bases técnicas y disciplinarias de Fútbol y Fútbol Sala de la U.E. Luz del Mundo A." />
 
     <!-- Estilos Modulares -->
-    <link rel="stylesheet" href="/css/principal.css" />
-    <link rel="stylesheet" href="/css/encabezado.css" />
-    <link rel="stylesheet" href="/css/formularios.css" />
-    <link rel="stylesheet" href="/css/tablas.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="css/principal.css" />
+    <link rel="stylesheet" href="css/encabezado.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <header class="encabezado-institucional"></header>
@@ -126,12 +126,12 @@
     <footer class="pie-institucional"></footer>
 
     <!-- Scripts de Módulos ES -->
-    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module" src="js/navegacion.js"></script>
     <script type="module">
-      import { obtenerReglamentos, guardarReglamento } from '/js/reglamentos.js';
-      import { esAdministrador } from '/js/permisos.js';
-      import { mostrarNotificacion, abrirModal, cerrarModal } from '/js/interfaz.js';
-      import { sanitizarHTML } from '/js/utilidades.js';
+      import { obtenerReglamentos, guardarReglamento } from 'js/reglamentos.js';
+      import { esAdministrador } from 'js/permisos.js';
+      import { mostrarNotificacion, abrirModal, cerrarModal } from 'js/interfaz.js';
+      import { sanitizarHTML } from 'js/utilidades.js';
 
       let todosReglamentos = [];
       let reglamentoActivo = null;
