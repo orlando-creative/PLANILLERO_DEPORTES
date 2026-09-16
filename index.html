@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planillero Deportivo | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Sistema oficial de gestión de competiciones, planillero digital en vivo y estadísticas deportivas para fútbol y fútbol sala de la U.E. Luz del Mundo A." />
+    <meta property="og:title" content="Planillero Deportivo | U.E. Luz del Mundo A" />
+    <meta property="og:description" content="Sistema oficial de gestión de competiciones, planillero digital en vivo y estadísticas deportivas para fútbol y fútbol sala de la U.E. Luz del Mundo A." />
+    <meta property="og:type" content="website" />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/competiciones.css" />
+    <link rel="stylesheet" href="/css/partidos.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <!-- Presentación Institucional -->
+      <section class="tarjeta tarjeta-destacada" style="margin-bottom: var(--espacio-lg);">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--espacio-md);">
+          <div style="flex: 1; min-width: 280px;">
+            <span class="insignia insignia-institucional" style="margin-bottom: 8px;">Temporada Escolar 2026</span>
+            <h1 style="color: var(--azul-oscuro); margin-bottom: 6px;">Planillero Deportivo Institucional</h1>
+            <p style="color: var(--texto-secundario); margin-bottom: 12px;">
+              Bienvenido al portal oficial de seguimiento deportivo de la Unidad Educativa "Luz del Mundo A". 
+              Consulte marcadores en tiempo real, tablas de posiciones, calendario de jornadas y reglamentos de Fútbol y Fútbol Sala.
+            </p>
+            <div style="display: flex; gap: var(--espacio-sm); flex-wrap: wrap;">
+              <a href="/calendario.html" class="boton boton-primario boton-md">Ver Calendario</a>
+              <a href="/posiciones.html" class="boton boton-secundario boton-md">Tabla de Posiciones</a>
+              <a href="/reglamento.html" class="boton boton-contorno boton-md">Reglamentos</a>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: center; padding: 10px;">
+            <img src="/assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional U.E. Luz del Mundo A" style="width: 120px; height: 140px;" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Partidos en Vivo / Destacados -->
+      <section style="margin-bottom: var(--espacio-xl);">
+        <div class="seccion-encabezado">
+          <div class="seccion-titulos">
+            <h2>Encuentros en Vivo y Próximas Jornadas</h2>
+            <p class="subtitulo-seccion">Marcadores actualizados minuto a minuto y partidos programados.</p>
+          </div>
+          <div>
+            <a href="/resultados.html" class="boton boton-contorno boton-sm">Historial de Resultados</a>
+          </div>
+        </div>
+
+        <div id="contenedor-partidos-inicio" class="lista-partidos">
+          <div class="estado-carga">
+            <div class="spinner"></div>
+            <p>Cargando partidos...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cuadrícula: Competiciones Activas y Posiciones Rápidas -->
+      <div class="grid-2" style="margin-bottom: var(--espacio-xl);">
+        <!-- Competiciones -->
+        <section class="tarjeta">
+          <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
+            <h3>Competiciones en Curso</h3>
+            <a href="/competiciones.html" class="boton boton-contorno boton-sm">Ver Todas</a>
+          </div>
+          <div id="contenedor-competiciones-inicio" style="display: flex; flex-direction: column; gap: var(--espacio-sm);">
+            <div class="estado-carga">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tabla de Posiciones Rápida -->
+        <section class="tarjeta">
+          <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
+            <h3>Líderes de la Copa</h3>
+            <a href="/posiciones.html" class="boton boton-contorno boton-sm">Tabla Completa</a>
+          </div>
+          <div class="contenedor-tabla" style="margin-bottom: 0;">
+            <table class="tabla-deportiva tabla-compacta">
+              <thead>
+                <tr>
+                  <th class="col-centro">POS</th>
+                  <th>Equipo</th>
+                  <th class="col-numero">PJ</th>
+                  <th class="col-numero">DG</th>
+                  <th class="col-numero th-amarillo">PTS</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-lideres-cuerpo">
+                <tr>
+                  <td colspan="5" class="texto-centro" style="padding: 20px;">Cargando tabla de posiciones...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Goleadores Destacados -->
+      <section class="tarjeta">
+        <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
+          <div>
+            <h3>Tabla de Goleadores Institucional</h3>
+            <p class="subtitulo-seccion">Estudiantes destacados con mayor cantidad de goles convertidos.</p>
+          </div>
+          <a href="/jugadores.html" class="boton boton-contorno boton-sm">Ver Plantillas</a>
+        </div>
+        <div class="contenedor-tabla" style="margin-bottom: 0;">
+          <table class="tabla-deportiva tabla-compacta">
+            <thead>
+              <tr>
+                <th class="col-centro">POS</th>
+                <th>Estudiante</th>
+                <th>Equipo</th>
+                <th>Curso</th>
+                <th class="col-numero th-amarillo">Goles</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-goleadores-cuerpo">
+              <tr>
+                <td colspan="5" class="texto-centro" style="padding: 20px;">Cargando goleadores...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerPartidos } from '/js/partidos.js';
+      import { obtenerCompeticiones } from '/js/competiciones.js';
+      import { calcularTablaPosiciones } from '/js/posiciones.js';
+      import { obtenerGoleadores } from '/js/estadisticas.js';
+      import { clienteSupabase } from '/js/supabase.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from '/js/utilidades.js';
+
+      async function cargarInicio() {
+        // Cargar equipos para nombres
+        const { data: equipos } = await clienteSupabase.from('equipos').select('*').ejecutar();
+        const mapaEquipos = {};
+        (equipos || []).forEach(eq => { mapaEquipos[eq.id] = eq; });
+
+        // Cargar partidos
+        const partidos = await obtenerPartidos();
+        const contenedorPartidos = document.getElementById('contenedor-partidos-inicio');
+
+        if (!partidos.length) {
+          contenedorPartidos.innerHTML = '<div class="estado-vacio"><p>No hay partidos registrados en este momento.</p></div>';
+        } else {
+          contenedorPartidos.innerHTML = partidos.slice(0, 4).map(p => {
+            const local = mapaEquipos[p.equipo_local_id] || { nombre_personalizado: 'Local', curso: '' };
+            const visitante = mapaEquipos[p.equipo_visitante_id] || { nombre_personalizado: 'Visitante', curso: '' };
+            const enVivo = p.estado === 'en_juego';
+
+            return `
+              <div class="tarjeta-partido ${enVivo ? 'en-vivo' : ''}">
+                <div class="tarjeta-partido-cabecera">
+                  <span class="partido-competicion-texto">${sanitizarHTML(p.deporte.toUpperCase())} &bull; ${sanitizarHTML(p.jornada)}</span>
+                  <div class="partido-detalles-meta">
+                    <span>${sanitizarHTML(p.cancha)}</span>
+                    <span>${formatearFechaHora(p.fecha_hora)}</span>
+                    <span class="insignia ${obtenerClaseEstado(p.estado)}">${obtenerTextoEstado(p.estado)}</span>
+                  </div>
+                </div>
+                <div class="partido-enfrentamiento">
+                  <div class="equipo-bloque local">
+                    <div class="equipo-info-partido">
+                      <span class="equipo-nombre-partido">${sanitizarHTML(local.nombre_personalizado)}</span>
+                      <span class="equipo-curso-partido">${sanitizarHTML(local.curso)}</span>
+                    </div>
+                    <img src="${local.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="Escudo" class="equipo-escudo-partido" />
+                  </div>
+                  <div class="marcador-central-bloque">
+                    <div class="marcador-numerico">
+                      <span class="marcador-cifra">${p.goles_local}</span>
+                      <span class="marcador-separador">:</span>
+                      <span class="marcador-cifra">${p.goles_visitante}</span>
+                    </div>
+                    ${enVivo ? `<span class="partido-tiempo-reloj">Período ${p.periodo_actual} &bull; ${p.minuto_actual}'</span>` : ''}
+                  </div>
+                  <div class="equipo-bloque visitante">
+                    <img src="${visitante.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="Escudo" class="equipo-escudo-partido" />
+                    <div class="equipo-info-partido">
+                      <span class="equipo-nombre-partido">${sanitizarHTML(visitante.nombre_personalizado)}</span>
+                      <span class="equipo-curso-partido">${sanitizarHTML(visitante.curso)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="tarjeta-partido-acciones">
+                  <a href="/partido.html?id=${p.id}" class="boton boton-contorno boton-sm">Ficha del Partido</a>
+                  ${enVivo ? `<a href="/planilla.html?partido_id=${p.id}" class="boton boton-secundario boton-sm">Planilla en Vivo</a>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Cargar Competiciones
+        const competiciones = await obtenerCompeticiones();
+        const contenedorComp = document.getElementById('contenedor-competiciones-inicio');
+        if (!competiciones.length) {
+          contenedorComp.innerHTML = '<p class="texto-centro">No hay competiciones activas.</p>';
+        } else {
+          contenedorComp.innerHTML = competiciones.map(c => `
+            <div style="padding: 10px; border: 1px solid var(--borde-suave); border-radius: var(--radio-sm); display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: var(--azul-oscuro); display: block;">${sanitizarHTML(c.nombre)}</strong>
+                <span style="font-size: 0.78rem; color: var(--texto-secundario); text-transform: uppercase;">
+                  ${sanitizarHTML(c.deporte)} &bull; ${c.tipo_competicion === 'liga' ? 'Liga' : 'Torneo Relámpago'}
+                </span>
+              </div>
+              <a href="/posiciones.html?competicion_id=${c.id}" class="boton boton-sm boton-contorno">Posiciones</a>
+            </div>
+          `).join('');
+        }
+
+        // Cargar tabla de líderes de la primera competición
+        if (competiciones.length > 0) {
+          const tablaPos = await calcularTablaPosiciones(competiciones[0].id);
+          const tbodyLideres = document.getElementById('tabla-lideres-cuerpo');
+          if (!tablaPos.length) {
+            tbodyLideres.innerHTML = '<tr><td colspan="5" class="texto-centro">Sin partidos jugados aún.</td></tr>';
+          } else {
+            tbodyLideres.innerHTML = tablaPos.slice(0, 4).map(f => `
+              <tr class="${f.posicion === 1 ? 'zona-clasificacion' : ''}">
+                <td class="col-centro"><span class="posicion-numero posicion-${f.posicion}">${f.posicion}</span></td>
+                <td>
+                  <div class="equipo-celda">
+                    <img src="${f.escudo_url}" alt="" class="equipo-escudo-mini" />
+                    <div>
+                      <span class="equipo-nombre-texto">${sanitizarHTML(f.nombre_personalizado)}</span>
+                      <span class="equipo-curso-etiqueta">${sanitizarHTML(f.curso)}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-numero">${f.pj}</td>
+                <td class="col-numero">${f.dg > 0 ? '+' + f.dg : f.dg}</td>
+                <td class="col-numero col-pts">${f.pts}</td>
+              </tr>
+            `).join('');
+          }
+        }
+
+        // Cargar Goleadores
+        const goleadores = await obtenerGoleadores();
+        const tbodyGoles = document.getElementById('tabla-goleadores-cuerpo');
+        if (!goleadores.length) {
+          tbodyGoles.innerHTML = '<tr><td colspan="5" class="texto-centro">No hay goles registrados todavía.</td></tr>';
+        } else {
+          tbodyGoles.innerHTML = goleadores.slice(0, 5).map(g => `
+            <tr>
+              <td class="col-centro"><span class="posicion-numero posicion-${g.posicion}">${g.posicion}</span></td>
+              <td><strong>${sanitizarHTML(g.nombre_completo)}</strong> <span style="font-size: 0.78rem; color: var(--texto-secundario);">#${g.numero_camiseta}</span></td>
+              <td>${sanitizarHTML(g.equipo_nombre)}</td>
+              <td>${sanitizarHTML(g.curso)}</td>
+              <td class="col-numero col-pts">${g.goles}</td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', cargarInicio);
+    </script>
+  </body>
+</html>

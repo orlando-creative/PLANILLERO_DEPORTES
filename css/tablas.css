@@ -1,0 +1,405 @@
+/**
+ * Estilos de Tablas Deportivas e Institucionales
+ * U.E. Luz del Mundo A - Planillero Deportivo
+ */
+
+.contenedor-tabla {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-sm);
+  margin-bottom: var(--espacio-lg);
+}
+
+table.tabla-deportiva {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+table.tabla-deportiva th,
+table.tabla-deportiva td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--borde-suave);
+  white-space: nowrap;
+}
+
+table.tabla-deportiva th {
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+table.tabla-deportiva th.th-amarillo {
+  background-color: var(--amarillo-principal);
+  color: var(--amarillo-texto);
+}
+
+table.tabla-deportiva tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+table.tabla-deportiva tbody tr:hover {
+  background-color: var(--azul-superficie);
+}
+
+table.tabla-deportiva tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Alineaciones Numéricas */
+table.tabla-deportiva .col-centro { text-align: center; }
+table.tabla-deportiva .col-numero { text-align: center; font-variant-numeric: tabular-nums; }
+table.tabla-deportiva .col-derecha { text-align: right; }
+
+/* Tabla de Posiciones Específica */
+.tabla-posiciones tr.zona-clasificacion td:first-child {
+  border-left: 4px solid var(--amarillo-principal);
+}
+
+.posicion-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.82rem;
+  background-color: var(--fondo-general);
+  color: var(--texto-principal);
+}
+
+.posicion-1 {
+  background-color: var(--amarillo-principal);
+  color: var(--amarillo-texto);
+  font-weight: 800;
+}
+
+.posicion-2 {
+  background-color: #cbd5e1;
+  color: var(--azul-oscuro);
+}
+
+.posicion-3 {
+  background-color: #e2e8f0;
+  color: var(--texto-secundario);
+}
+
+.equipo-celda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.equipo-escudo-mini {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: contain;
+  background-color: var(--azul-superficie);
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.equipo-nombre-texto {
+  font-weight: 600;
+  color: var(--azul-oscuro);
+}
+
+.equipo-curso-etiqueta {
+  font-size: 0.74rem;
+  color: var(--texto-secundario);
+  margin-left: 6px;
+}
+
+.col-pts {
+  font-weight: 800;
+  color: var(--azul-oscuro);
+  background-color: rgba(244, 180, 26, 0.12);
+  font-size: 0.95rem;
+}
+
+/* Tablas Compactas */
+table.tabla-compacta th,
+table.tabla-compacta td {
+  padding: 6px 10px;
+  font-size: 0.82rem;
+}
+
+/* Colores de Tarjetas / Sanciones en Tablas */
+.indicador-tarjeta-amarilla {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  background-color: #facc15;
+  border: 1px solid #ca8a04;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.indicador-tarjeta-roja {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  background-color: #ef4444;
+  border: 1px solid #b91c1c;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.indicador-tarjeta-azul {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  background-color: #2563eb;
+  border: 1px solid #1d4ed8;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+/* Adaptabilidad Móvil para Tablas Deportivas */
+@media (max-width: 768px) {
+  .contenedor-tabla {
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radio-sm);
+  }
+
+  table.tabla-deportiva th,
+  table.tabla-deportiva td {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Columna fijada de posición y nombre de equipo para que no se pierdan al deslizar estadísticas */
+  table.tabla-deportiva th:first-child,
+  table.tabla-deportiva td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: var(--blanco);
+  }
+
+  table.tabla-deportiva th:first-child {
+    background-color: var(--azul-oscuro);
+    z-index: 3;
+  }
+
+  table.tabla-deportiva th:nth-child(2),
+  table.tabla-deportiva td:nth-child(2) {
+    position: sticky;
+    left: 54px;
+    z-index: 2;
+    background-color: var(--blanco);
+    box-shadow: 3px 0 5px -2px rgba(0, 0, 0, 0.12);
+  }
+
+  table.tabla-deportiva th:nth-child(2) {
+    background-color: var(--azul-oscuro);
+    z-index: 3;
+  }
+
+  table.tabla-deportiva tbody tr:hover td:first-child,
+  table.tabla-deportiva tbody tr:hover td:nth-child(2) {
+    background-color: var(--azul-superficie);
+  }
+
+  .equipo-escudo-mini {
+    width: 20px;
+    height: 20px;
+  }
+
+  .equipo-nombre-texto {
+    font-size: 0.82rem;
+  }
+
+  .equipo-curso-etiqueta {
+    display: none; /* En vista de tabla móvil compacta se oculta el curso para no saturar */
+  }
+}
+
+/* ========================================================================
+   ESTILOS DE MODALIDAD RELÁMPAGO (ELIMINACIÓN DIRECTA / BRACKET)
+   ======================================================================== */
+.alerta-relampago {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(244, 180, 26, 0.12) 100%);
+  border: 2px solid var(--amarillo-institucional);
+  border-left: 6px solid #ef4444;
+  border-radius: var(--radio-md);
+  padding: var(--espacio-md);
+  margin-bottom: var(--espacio-lg);
+}
+
+.alerta-relampago-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #991b1b;
+  margin-bottom: 6px;
+}
+
+.alerta-relampago-texto {
+  font-size: 0.88rem;
+  color: var(--texto-secundario);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Cuadro de Fases y Llaves del Relámpago */
+.contenedor-llaves-relampago {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+  margin-bottom: var(--espacio-lg);
+  -webkit-overflow-scrolling: touch;
+}
+
+.columna-fase-llave {
+  flex: 0 0 290px;
+  background-color: var(--azul-superficie);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.columna-fase-titulo {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--azul-oscuro);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--borde-suave);
+  text-align: center;
+}
+
+.tarjeta-partido-llave {
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-sm);
+  padding: 10px 12px;
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarjeta-partido-llave.en-vivo {
+  border-color: var(--amarillo-institucional);
+  box-shadow: 0 0 0 1px var(--amarillo-institucional);
+}
+
+.llave-meta-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--texto-secundario);
+  border-bottom: 1px dashed var(--borde-suave);
+  padding-bottom: 4px;
+}
+
+.llave-equipo-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 0.86rem;
+}
+
+.llave-equipo-fila.ganador {
+  background-color: rgba(34, 197, 94, 0.12);
+  font-weight: 700;
+  color: #166534;
+}
+
+.llave-equipo-fila.perdedor {
+  opacity: 0.65;
+  color: #991b1b;
+}
+
+.llave-equipo-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.llave-equipo-info img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.llave-equipo-nombre {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.llave-goles-cifra {
+  font-weight: 800;
+  font-size: 0.95rem;
+  min-width: 20px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.llave-penales-etiqueta {
+  font-size: 0.72rem;
+  color: var(--texto-secundario);
+  margin-left: 4px;
+  font-weight: normal;
+}
+
+/* Badges de Estado en Eliminatoria */
+.badge-estado-relampago {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-estado-relampago.campeon {
+  background-color: #fef08a;
+  color: #854d0e;
+  border: 1px solid #facc15;
+}
+
+.badge-estado-relampago.subcampeon {
+  background-color: #e2e8f0;
+  color: #334155;
+  border: 1px solid #94a3b8;
+}
+
+.badge-estado-relampago.clasificado {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.badge-estado-relampago.eliminado {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+

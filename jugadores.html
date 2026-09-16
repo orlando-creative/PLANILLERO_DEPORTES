@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nómina de Jugadores | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Plantillas deportivas oficiales y nómina de estudiantes participantes en los torneos de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Nómina de Jugadores</h1>
+          <p class="subtitulo-seccion">Plantillas estudiantiles registradas para las competiciones deportivas institucionales.</p>
+        </div>
+        <div data-requiere-admin style="display: none;">
+          <button type="button" class="boton boton-primario boton-md" id="btn-nuevo-jugador">
+            Inscribir Jugador
+          </button>
+        </div>
+      </div>
+
+      <!-- Aviso de Privacidad Estudiantil -->
+      <div class="alerta-info" style="margin-bottom: var(--espacio-lg);">
+        <strong>Aviso Institucional de Privacidad:</strong> Conforme al protocolo de protección de datos de menores de edad de la U.E. Luz del Mundo A, la visualización pública para espectadores presenta los apellidos de los estudiantes parcialmente protegidos. Los coordinadores acreditados visualizan la nómina completa tras iniciar sesión.
+      </div>
+
+      <!-- Filtros -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="fila-formulario" style="margin-bottom: 0;">
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-equipo">Filtrar por Equipo</label>
+            <select id="filtro-equipo" class="select-formulario">
+              <option value="">Todos los equipos</option>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="buscar-jugador">Buscar Estudiante</label>
+            <input type="text" id="buscar-jugador" class="input-formulario" placeholder="Nombre o curso..." />
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabla de Jugadores -->
+      <section class="tarjeta">
+        <div class="contenedor-tabla" style="margin-bottom: 0;">
+          <table class="tabla-deportiva">
+            <thead>
+              <tr>
+                <th class="col-centro" style="width: 70px;">Dorsal</th>
+                <th>Estudiante</th>
+                <th>Equipo Representado</th>
+                <th>Curso</th>
+                <th class="col-centro">Estado</th>
+                <th class="col-centro th-admin" data-requiere-admin style="display: none; width: 140px;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-jugadores-cuerpo">
+              <tr>
+                <td colspan="6" class="texto-centro" style="padding: 24px;">Cargando nómina de jugadores...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Modal Inscribir / Editar Jugador -->
+      <div id="modal-jugador" class="modal-fondo" style="display: none;">
+        <div class="modal-dialogo">
+          <div class="modal-encabezado">
+            <h3 id="modal-jugador-titulo">Inscribir Jugador</h3>
+            <button type="button" class="modal-cerrar" id="btn-cerrar-modal-jug">×</button>
+          </div>
+          <form id="form-jugador">
+            <input type="hidden" id="jug-id" />
+            <div class="modal-cuerpo">
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="jug-equipo">Equipo de Destino</label>
+                <select id="jug-equipo" class="select-formulario" required>
+                  <!-- Dinámico -->
+                </select>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="jug-nombre">Nombres</label>
+                  <input type="text" id="jug-nombre" class="input-formulario" placeholder="Ej. Mateo" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="jug-apellido">Apellidos</label>
+                  <input type="text" id="jug-apellido" class="input-formulario" placeholder="Ej. Fernández" required />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="jug-curso">Curso del Estudiante</label>
+                  <input type="text" id="jug-curso" class="input-formulario" placeholder="Ej. 6to Secundaria A" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="jug-dorsal">Número de Camiseta (Dorsal)</label>
+                  <input type="number" id="jug-dorsal" class="input-formulario" min="1" max="99" placeholder="10" required />
+                </div>
+              </div>
+            </div>
+            <div class="modal-pie">
+              <button type="button" class="boton boton-contorno boton-md" id="btn-cancelar-jug">Cancelar</button>
+              <button type="submit" class="boton boton-primario boton-md">Guardar Estudiante</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerJugadores, guardarJugador, eliminarJugador } from '/js/jugadores.js';
+      import { obtenerEquipos } from '/js/equipos.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
+      import { sanitizarHTML } from '/js/utilidades.js';
+
+      let todosJugadores = [];
+      let mapaEquipos = {};
+
+      const params = new URLSearchParams(window.location.search);
+      const equipoUrl = params.get('equipo_id');
+
+      async function inicializar() {
+        const equipos = await obtenerEquipos();
+        const selectFiltro = document.getElementById('filtro-equipo');
+        const selectModal = document.getElementById('jug-equipo');
+
+        selectFiltro.innerHTML = '<option value="">Todos los equipos</option>';
+        selectModal.innerHTML = '';
+
+        equipos.forEach(eq => {
+          mapaEquipos[eq.id] = eq;
+          selectFiltro.innerHTML += `<option value="${eq.id}" ${equipoUrl === eq.id ? 'selected' : ''}>${sanitizarHTML(eq.nombre_personalizado)} (${sanitizarHTML(eq.curso)})</option>`;
+          selectModal.innerHTML += `<option value="${eq.id}">${sanitizarHTML(eq.nombre_personalizado)} (${sanitizarHTML(eq.curso)})</option>`;
+        });
+
+        await cargarJugadores();
+      }
+
+      async function cargarJugadores() {
+        todosJugadores = await obtenerJugadores();
+        filtrarYRenderizar();
+      }
+
+      function filtrarYRenderizar() {
+        const equipoId = document.getElementById('filtro-equipo').value;
+        const busqueda = document.getElementById('buscar-jugador').value.toLowerCase().trim();
+        const tbody = document.getElementById('tabla-jugadores-cuerpo');
+        const esAdmin = esAdministrador();
+
+        const filtrados = todosJugadores.filter(j => {
+          if (equipoId && j.equipo_id !== equipoId) return false;
+          const texto = `${j.nombre} ${j.apellido} ${j.curso}`.toLowerCase();
+          return texto.includes(busqueda);
+        });
+
+        if (!filtrados.length) {
+          tbody.innerHTML = `<tr><td colspan="${esAdmin ? 6 : 5}" class="texto-centro" style="padding: 24px;">No se encontraron estudiantes con los filtros aplicados.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = filtrados.map(j => {
+          const eq = mapaEquipos[j.equipo_id];
+          return `
+            <tr>
+              <td class="col-centro"><span class="dorsal-badge">#${j.numero_camiseta}</span></td>
+              <td><strong>${sanitizarHTML(j.nombre)} ${sanitizarHTML(j.apellido)}</strong></td>
+              <td>${sanitizarHTML(eq ? eq.nombre_personalizado : 'Sin equipo')}</td>
+              <td>${sanitizarHTML(j.curso)}</td>
+              <td class="col-centro"><span class="insignia insignia-programado">Habilitado</span></td>
+              ${esAdmin ? `
+                <td class="col-centro">
+                  <div style="display: flex; gap: 4px; justify-content: center;">
+                    <button type="button" class="boton boton-contorno boton-sm btn-editar-jug" data-id="${j.id}">Editar</button>
+                    <button type="button" class="boton boton-peligro boton-sm btn-eliminar-jug" data-id="${j.id}" data-nombre="${sanitizarHTML(j.nombre)}">Baja</button>
+                  </div>
+                </td>
+              ` : ''}
+            </tr>
+          `;
+        }).join('');
+
+        if (esAdmin) {
+          document.querySelectorAll('.btn-editar-jug').forEach(btn => {
+            btn.addEventListener('click', () => abrirEditarJugador(btn.dataset.id));
+          });
+          document.querySelectorAll('.btn-eliminar-jug').forEach(btn => {
+            btn.addEventListener('click', () => confirmarEliminarJugador(btn.dataset.id, btn.dataset.nombre));
+          });
+        }
+      }
+
+      function abrirNuevoJugador() {
+        document.getElementById('form-jugador').reset();
+        document.getElementById('jug-id').value = '';
+        const eqFiltro = document.getElementById('filtro-equipo').value;
+        if (eqFiltro) document.getElementById('jug-equipo').value = eqFiltro;
+        document.getElementById('modal-jugador-titulo').textContent = 'Inscribir Nuevo Estudiante';
+        abrirModal('modal-jugador');
+      }
+
+      function abrirEditarJugador(id) {
+        const j = todosJugadores.find(item => item.id === id);
+        if (!j) return;
+        document.getElementById('jug-id').value = j.id;
+        document.getElementById('jug-equipo').value = j.equipo_id;
+        document.getElementById('jug-nombre').value = j.nombre;
+        document.getElementById('jug-apellido').value = j.apellido;
+        document.getElementById('jug-curso').value = j.curso;
+        document.getElementById('jug-dorsal').value = j.numero_camiseta;
+        document.getElementById('modal-jugador-titulo').textContent = 'Editar Datos de Estudiante';
+        abrirModal('modal-jugador');
+      }
+
+      function confirmarEliminarJugador(id, nombre) {
+        mostrarConfirmacion({
+          titulo: 'Dar de Baja a Estudiante',
+          mensaje: `¿Está seguro de que desea eliminar la ficha deportiva del estudiante "${nombre}"?`,
+          esPeligroso: true,
+          textoConfirmar: 'Eliminar Ficha',
+          alConfirmar: async () => {
+            try {
+              await eliminarJugador(id);
+              mostrarNotificacion('Ficha de estudiante eliminada.', 'exito');
+              cargarJugadores();
+            } catch (err) {
+              mostrarNotificacion(err.message || 'Error al eliminar jugador.', 'error');
+            }
+          }
+        });
+      }
+
+      document.getElementById('filtro-equipo').addEventListener('change', filtrarYRenderizar);
+      document.getElementById('buscar-jugador').addEventListener('input', filtrarYRenderizar);
+
+      const btnNuevo = document.getElementById('btn-nuevo-jugador');
+      if (btnNuevo) btnNuevo.addEventListener('click', abrirNuevoJugador);
+
+      document.getElementById('btn-cerrar-modal-jug').addEventListener('click', () => cerrarModal('modal-jugador'));
+      document.getElementById('btn-cancelar-jug').addEventListener('click', () => cerrarModal('modal-jugador'));
+
+      document.getElementById('form-jugador').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('jug-id').value;
+        const datos = {
+          equipo_id: document.getElementById('jug-equipo').value,
+          nombre: document.getElementById('jug-nombre').value.trim(),
+          apellido: document.getElementById('jug-apellido').value.trim(),
+          curso: document.getElementById('jug-curso').value.trim(),
+          numero_camiseta: parseInt(document.getElementById('jug-dorsal').value, 10)
+        };
+        if (id) datos.id = id;
+
+        try {
+          await guardarJugador(datos);
+          cerrarModal('modal-jugador');
+          mostrarNotificacion(id ? 'Datos actualizados.' : 'Estudiante inscrito con éxito.', 'exito');
+          cargarJugadores();
+        } catch (err) {
+          mostrarNotificacion(err.message || 'Error al guardar estudiante.', 'error');
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+  </body>
+</html>

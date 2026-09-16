@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil Institucional | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Gestión del perfil del usuario, rol institucional y opciones de cuenta en el Planillero Deportivo." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal" style="max-width: 720px;">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Perfil de Usuario</h1>
+          <p class="subtitulo-seccion">Información institucional de la cuenta activa en la plataforma.</p>
+        </div>
+      </div>
+
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg);">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 16px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--azul-institucional); color: var(--blanco-puro); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: bold;" id="avatar-inicial">
+            U
+          </div>
+          <div>
+            <h2 id="perfil-nombre" style="margin: 0; font-size: 1.3rem; color: var(--azul-oscuro);">Cargando...</h2>
+            <p id="perfil-correo" style="margin: 2px 0 6px; font-size: 0.88rem; color: var(--texto-secundario);"></p>
+            <span id="perfil-rol-badge" class="badge-rol espectador">ESPECTADOR</span>
+          </div>
+        </div>
+
+        <form id="form-perfil">
+          <div class="campo-formulario">
+            <label class="etiqueta-formulario" for="input-perfil-nombre">Nombre Completo y Cargo</label>
+            <input type="text" id="input-perfil-nombre" class="input-formulario" required />
+          </div>
+
+          <div class="campo-formulario">
+            <label class="etiqueta-formulario" for="input-perfil-correo">Correo Electrónico (No modificable)</label>
+            <input type="email" id="input-perfil-correo" class="input-formulario" readonly style="background: var(--azul-superficie);" />
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: var(--espacio-md);">
+            <button type="submit" class="boton boton-primario boton-md">Actualizar Información</button>
+            <button type="button" class="boton boton-peligro boton-md" id="btn-cerrar-sesion-perfil">Cerrar Sesión</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Accesos Rápidos según rol -->
+      <section class="tarjeta" style="background: var(--azul-superficie);">
+        <h3 style="margin-bottom: 8px; font-size: 1.05rem; color: var(--azul-oscuro);">Accesos Rápidos Asignados</h3>
+        <p style="font-size: 0.86rem; color: var(--texto-secundario); margin-bottom: 12px;">
+          De acuerdo con los privilegios de su cuenta, tiene acceso a las siguientes herramientas:
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <a href="/calendario.html" class="boton boton-contorno boton-sm">Consultar Calendario</a>
+          <a href="/posiciones.html" class="boton boton-contorno boton-sm">Ver Posiciones</a>
+          <a href="/planilla.html" class="boton boton-secundario boton-sm" data-requiere-admin style="display: none;">Planilla de Control</a>
+          <a href="/administracion.html" class="boton boton-primario boton-sm" data-requiere-admin style="display: none;">Panel Administrativo</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { clienteSupabase } from '/js/supabase.js';
+      import { cerrarSesion } from '/js/autenticacion.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { mostrarNotificacion } from '/js/interfaz.js';
+
+      const usuario = clienteSupabase.auth.obtenerUsuario();
+
+      if (!usuario) {
+        window.location.href = '/inicio-sesion.html';
+      } else {
+        const esAdmin = esAdministrador();
+        const nombre = usuario.nombre_completo || usuario.email.split('@')[0];
+        const inicial = nombre.charAt(0).toUpperCase();
+
+        document.getElementById('avatar-inicial').textContent = inicial;
+        document.getElementById('perfil-nombre').textContent = nombre;
+        document.getElementById('perfil-correo').textContent = usuario.email;
+        document.getElementById('input-perfil-nombre').value = nombre;
+        document.getElementById('input-perfil-correo').value = usuario.email;
+
+        const badge = document.getElementById('perfil-rol-badge');
+        badge.className = `badge-rol ${esAdmin ? 'admin' : 'espectador'}`;
+        badge.textContent = esAdmin ? 'ADMINISTRADOR' : 'ESPECTADOR';
+
+        document.getElementById('form-perfil').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const nuevoNombre = document.getElementById('input-perfil-nombre').value.trim();
+          usuario.nombre_completo = nuevoNombre;
+          
+          const sesion = clienteSupabase.auth.obtenerSesion();
+          if (sesion) {
+            sesion.user.nombre_completo = nuevoNombre;
+            clienteSupabase.auth.guardarSesion(sesion);
+          }
+
+          document.getElementById('perfil-nombre').textContent = nuevoNombre;
+          mostrarNotificacion('Perfil actualizado correctamente.', 'exito');
+        });
+
+        document.getElementById('btn-cerrar-sesion-perfil').addEventListener('click', () => {
+          cerrarSesion();
+        });
+      }
+    </script>
+  </body>
+</html>

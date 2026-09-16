@@ -1,0 +1,469 @@
+/**
+ * Estilos de Encabezado Institucional y Barra de Navegación
+ * U.E. Luz del Mundo A - Planillero Deportivo
+ */
+
+header.encabezado-institucional {
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  border-bottom: 3px solid var(--amarillo-principal);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--sombra-md);
+}
+
+.barra-superior-institucional {
+  background-color: #041424;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  padding: 4px var(--espacio-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.barra-superior-contenedor {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.encabezado-contenedor {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 10px var(--espacio-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espacio-md);
+}
+
+/* Marca e Identidad */
+.marca-institucional {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--blanco);
+}
+
+.marca-institucional:hover {
+  text-decoration: none;
+}
+
+.escudo-header {
+  width: 44px;
+  height: 52px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+}
+
+.marca-textos {
+  display: flex;
+  flex-direction: column;
+}
+
+.marca-titulo {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--blanco);
+  line-height: 1.15;
+}
+
+.marca-titulo span {
+  color: var(--amarillo-principal);
+}
+
+.marca-subtitulo {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* Menú de Navegación */
+nav.navegacion-principal {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-enlaces-contenedor {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-seccion-titulo-movil {
+  display: none;
+}
+
+.enlace-navegacion {
+  color: #e2e8f0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radio-sm);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.enlace-navegacion:hover {
+  background-color: var(--azul-medio);
+  color: var(--amarillo-claro);
+  text-decoration: none;
+}
+
+.enlace-navegacion.activo {
+  background-color: var(--azul-principal);
+  color: var(--amarillo-principal);
+  border-bottom: 2px solid var(--amarillo-principal);
+}
+
+.enlace-admin {
+  background-color: rgba(244, 180, 26, 0.15);
+  color: var(--amarillo-principal);
+  border: 1px solid rgba(244, 180, 26, 0.35);
+}
+
+.enlace-admin:hover {
+  background-color: var(--amarillo-principal);
+  color: var(--amarillo-texto);
+}
+
+/* Área de Usuario / Sesión */
+.area-sesion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-sm);
+}
+
+.area-sesion-movil {
+  display: none;
+}
+
+.badge-rol {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radio-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+}
+
+.badge-rol.admin {
+  background-color: var(--amarillo-suave);
+  color: var(--amarillo-texto);
+  border-color: var(--amarillo-principal);
+}
+
+.badge-rol.espectador {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.boton-usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: transparent;
+  color: var(--blanco);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: var(--radio-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boton-usuario:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: var(--amarillo-principal);
+  text-decoration: none;
+}
+
+/* Botón Menú Móvil Hamburger */
+.boton-menu-movil {
+  display: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--blanco);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  z-index: 1005;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.boton-menu-movil:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.icono-barra {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Animación de X en el botón móvil cuando el menú está abierto */
+.boton-menu-movil.menu-activo .barra-1 {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.boton-menu-movil.menu-activo .barra-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.boton-menu-movil.menu-activo .barra-3 {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Fondo oscurecido para el menú móvil */
+.fondo-menu-movil {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(4, 20, 36, 0.7);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 1001;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.fondo-menu-movil.activo {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Bloqueo de desplazamiento de pantalla al abrir drawer */
+body.bloquear-scroll-movil {
+  overflow: hidden;
+}
+
+/* Estilos de sesión y usuario en drawer móvil */
+.usuario-tarjeta-movil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radio-md);
+  margin-bottom: 12px;
+}
+
+.usuario-avatar-movil {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--amarillo-principal);
+  color: var(--azul-oscuro);
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.usuario-info-movil {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.usuario-nombre-movil {
+  color: var(--blanco);
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.usuario-acciones-movil {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invitado-bloque-movil {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radio-md);
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.invitado-texto-movil {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* Media Query de Encabezado y Navegación Móvil */
+@media (max-width: 992px) {
+  .barra-superior-institucional {
+    padding: 3px var(--espacio-sm);
+    font-size: 0.72rem;
+  }
+
+  .barra-superior-contenedor {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .barra-texto-gestion {
+    font-weight: 700;
+    color: var(--amarillo-claro);
+  }
+
+  .encabezado-contenedor {
+    padding: 8px var(--espacio-sm);
+  }
+
+  .area-sesion-desktop {
+    display: none !important;
+  }
+
+  .boton-menu-movil {
+    display: flex;
+  }
+
+  .escudo-header {
+    width: 36px;
+    height: 42px;
+  }
+
+  .marca-titulo {
+    font-size: 0.98rem;
+  }
+
+  .marca-subtitulo {
+    font-size: 0.68rem;
+  }
+
+  /* Drawer Desplegable Móvil */
+  nav.navegacion-principal {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: calc(100vh - 56px);
+    background-color: var(--azul-oscuro);
+    flex-direction: column;
+    padding: var(--espacio-md);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1002;
+    border-top: 2px solid var(--amarillo-principal);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+    animation: deslizarMenuAbajo 0.22s ease-out;
+  }
+
+  nav.navegacion-principal.menu-abierto {
+    display: flex;
+  }
+
+  @keyframes deslizarMenuAbajo {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .menu-enlaces-contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .menu-seccion-titulo-movil {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--amarillo-principal);
+    margin-top: 10px;
+    margin-bottom: 4px;
+    padding-left: 8px;
+    border-left: 2px solid var(--amarillo-principal);
+  }
+
+  .enlace-navegacion {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border-radius: var(--radio-md);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .enlace-navegacion:active {
+    background-color: var(--azul-medio);
+  }
+
+  .enlace-navegacion.activo {
+    background-color: var(--azul-principal);
+    border-color: var(--amarillo-principal);
+    border-left: 4px solid var(--amarillo-principal);
+  }
+
+  .enlace-admin {
+    background-color: rgba(244, 180, 26, 0.12);
+    border-color: rgba(244, 180, 26, 0.35);
+  }
+
+  .area-sesion-movil {
+    display: block;
+    width: 100%;
+    margin-top: var(--espacio-lg);
+    padding-top: var(--espacio-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}

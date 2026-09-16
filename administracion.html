@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Centro de control administrativo, configuración de Supabase, auditoría de eventos y gestión de usuarios." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/administracion.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Panel de Control Administrativo</h1>
+          <p class="subtitulo-seccion">Configuración general del sistema, auditoría de operaciones y gestión de credenciales.</p>
+        </div>
+        <div>
+          <a href="/planilla.html" class="boton boton-secundario boton-md">Ir a la Planilla en Vivo</a>
+        </div>
+      </div>
+
+      <!-- Estado de Conexión Permanente de la Base de Datos -->
+      <div id="tarjeta-estado-db" class="tarjeta" style="margin-bottom: var(--espacio-lg); border-left: 4px solid #10b981; background: #f0fdf4;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span id="punto-estado-db" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);"></span>
+            <strong id="titulo-estado-db" style="color: #065f46; font-size: 1rem;">Base de Datos Supabase Conectada</strong>
+            <span id="badge-estado-db" class="insignia" style="background: #d1fae5; color: #065f46; font-weight: 700;">Conexión Activa y Sincronizada</span>
+          </div>
+          <span id="subtitulo-estado-db" style="font-size: 0.82rem; color: #047857; font-weight: 600;">Persistencia directa en PostgreSQL / Supabase</span>
+        </div>
+        <p id="descripcion-estado-db" style="font-size: 0.85rem; color: #065f46; margin: 8px 0 0 0; line-height: 1.5;">
+          El sistema está conectado de forma permanente a la base de datos deportiva. Los 48 equipos de 1ro a 6to de Primaria y Secundaria (Paralelos A, B, C, D), competiciones en formato liga y relámpago, goles, faltas y eventos de planilla se registran en tiempo real.
+        </p>
+        <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.82rem; color: #047857;">
+          ℹ️ <strong>Acceso Público:</strong> Los espectadores no necesitan iniciar sesión ni contar con cuenta para consultar los partidos, resultados y tablas de posiciones. El acceso administrativo está reservado exclusivamente para los árbitros y coordinadores deportivos.
+        </div>
+      </div>
+
+      <!-- Resumen Estadístico Institucional -->
+      <div class="resumen-metrica-grid" style="margin-bottom: var(--espacio-xl);">
+        <div class="tarjeta-metrica">
+          <div class="valor" id="meta-total-competiciones">0</div>
+          <div class="etiqueta">Competiciones</div>
+        </div>
+        <div class="tarjeta-metrica">
+          <div class="valor" id="meta-total-equipos">0</div>
+          <div class="etiqueta">Equipos Escolares</div>
+        </div>
+        <div class="tarjeta-metrica">
+          <div class="valor" id="meta-total-jugadores">0</div>
+          <div class="etiqueta">Estudiantes Registrados</div>
+        </div>
+        <div class="tarjeta-metrica">
+          <div class="valor" id="meta-total-partidos">0</div>
+          <div class="etiqueta">Partidos en Sistema</div>
+        </div>
+        <div class="tarjeta-metrica">
+          <div class="valor" id="meta-total-auditoria">0</div>
+          <div class="etiqueta">Registros Auditoría</div>
+        </div>
+      </div>
+
+      <!-- Pestañas Administrativas -->
+      <div class="pestanas-admin" style="margin-bottom: var(--espacio-lg);">
+        <button type="button" class="pestana-boton activa" data-seccion="seccion-auditoria">Historial de Auditoría</button>
+        <button type="button" class="pestana-boton" data-seccion="seccion-usuarios">Usuarios y Roles (RBAC)</button>
+      </div>
+
+      <!-- Sección 1: Auditoría -->
+      <section id="seccion-auditoria" class="panel-contenido tarjeta active">
+        <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="margin: 0; color: var(--azul-oscuro);">Historial de Auditoría y Acciones Críticas</h3>
+            <p style="font-size: 0.86rem; color: var(--texto-secundario); margin: 4px 0 0;">
+              Trazabilidad inmutable de cambios de marcadores, inicio/fin de partidos, eventos de planilla y altas de sistema.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="boton boton-contorno boton-sm" id="btn-refrescar-auditoria">Actualizar Registros</button>
+          </div>
+        </div>
+
+        <!-- Filtros de auditoría -->
+        <div style="display: flex; gap: 12px; margin-bottom: var(--espacio-md); flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 220px;">
+            <input type="text" id="filtro-auditoria-texto" class="input-formulario" placeholder="Buscar por acción, tabla o detalle..." />
+          </div>
+          <div style="width: 180px;">
+            <select id="filtro-auditoria-tabla" class="input-formulario">
+              <option value="">Todas las tablas</option>
+              <option value="partidos">Partidos</option>
+              <option value="eventos_partido">Eventos de Partido</option>
+              <option value="competiciones">Competiciones</option>
+              <option value="equipos">Equipos</option>
+              <option value="usuarios">Usuarios</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="contenedor-tabla" style="margin-bottom: 0;">
+          <table class="tabla-deportiva tabla-compacta">
+            <thead>
+              <tr>
+                <th>Fecha y Hora</th>
+                <th>Operación</th>
+                <th>Tabla Afectada</th>
+                <th>Identificador</th>
+                <th>Detalle de la Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-auditoria-cuerpo">
+              <tr>
+                <td colspan="5" class="texto-centro" style="padding: 20px;">Cargando registros...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Sección 2: Usuarios y Roles -->
+      <section id="seccion-usuarios" class="panel-contenido tarjeta" style="display: none;">
+        <div class="flex-separado" style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="margin: 0; color: var(--azul-oscuro);">Usuarios y Control de Acceso (RBAC)</h3>
+            <p style="font-size: 0.86rem; color: var(--texto-secundario); margin: 4px 0 0;">
+              Cuentas autorizadas para gestión deportiva. Los espectadores no requieren cuenta ni inicio de sesión.
+            </p>
+          </div>
+          <button type="button" class="boton boton-primario boton-sm" id="btn-nuevo-usuario-admin">Registrar Administrador / Árbitro</button>
+        </div>
+
+        <div class="contenedor-tabla" style="margin-bottom: 0;">
+          <table class="tabla-deportiva">
+            <thead>
+              <tr>
+                <th>Nombre y Apellido</th>
+                <th>Correo Institucional</th>
+                <th>Rol Asignado</th>
+                <th class="col-centro">Estado</th>
+                <th class="col-centro">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-usuarios-cuerpo">
+              <tr>
+                <td colspan="5" class="texto-centro" style="padding: 20px;">Cargando usuarios...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { protegerPaginaAdmin } from '/js/permisos.js';
+      import { clienteSupabase, estaConectadoASupabase, obtenerConfiguracionSupabase } from '/js/supabase.js';
+      import { obtenerAuditoria } from '/js/auditoria.js';
+      import { obtenerCompeticiones } from '/js/competiciones.js';
+      import { obtenerEquipos } from '/js/equipos.js';
+      import { obtenerJugadores } from '/js/jugadores.js';
+      import { obtenerPartidos } from '/js/partidos.js';
+      import { mostrarNotificacion } from '/js/interfaz.js';
+      import { formatearFechaHora, sanitizarHTML } from '/js/utilidades.js';
+
+      if (!protegerPaginaAdmin()) {
+        // Redirigido si no es administrador
+      }
+
+      let todosLosLogs = [];
+
+      function actualizarIndicadorConexion() {
+        const tarjeta = document.getElementById('tarjeta-estado-db');
+        const punto = document.getElementById('punto-estado-db');
+        const titulo = document.getElementById('titulo-estado-db');
+        const badge = document.getElementById('badge-estado-db');
+        const subtitulo = document.getElementById('subtitulo-estado-db');
+        const desc = document.getElementById('descripcion-estado-db');
+
+        if (estaConectadoASupabase()) {
+          const cfg = obtenerConfiguracionSupabase();
+          tarjeta.style.borderLeft = '4px solid #10b981';
+          tarjeta.style.background = '#f0fdf4';
+          punto.style.background = '#10b981';
+          titulo.textContent = 'Base de Datos Supabase Conectada';
+          titulo.style.color = '#065f46';
+          badge.className = 'insignia';
+          badge.style.background = '#d1fae5';
+          badge.style.color = '#065f46';
+          badge.textContent = 'Conexión Activa y Sincronizada';
+          subtitulo.textContent = `Proyecto: ${cfg.url.replace(/^https?:\/\//, '')}`;
+          desc.textContent = 'El sistema está conectado a Supabase. Todos los partidos, eventos de planilla y usuarios se sincronizan directamente con la base de datos PostgreSQL.';
+        } else {
+          tarjeta.style.borderLeft = '4px solid #f59e0b';
+          tarjeta.style.background = '#fffbeb';
+          punto.style.background = '#f59e0b';
+          titulo.textContent = 'Supabase Pendiente de Conexión';
+          titulo.style.color = '#92400e';
+          badge.className = 'insignia';
+          badge.style.background = '#fef3c7';
+          badge.style.color = '#92400e';
+          badge.textContent = 'Esperando Credenciales';
+          subtitulo.textContent = 'VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY';
+          desc.textContent = 'El código está 100% limpio y listo para recibir la URL y Anon Key del proyecto Supabase.';
+        }
+      }
+
+      async function inicializarAdmin() {
+        actualizarIndicadorConexion();
+        window.addEventListener('supabase:config-actualizada', actualizarIndicadorConexion);
+        configurarPestanas();
+        await cargarMetricas();
+        await cargarHistorialAuditoria();
+        await cargarUsuarios();
+        configurarFiltrosAuditoria();
+      }
+
+      function configurarPestanas() {
+        const botones = document.querySelectorAll('.pestana-boton');
+        const paneles = document.querySelectorAll('.panel-contenido');
+
+        botones.forEach(btn => {
+          btn.addEventListener('click', () => {
+            botones.forEach(b => b.classList.remove('activa'));
+            paneles.forEach(p => {
+              p.style.display = 'none';
+              p.classList.remove('active');
+            });
+
+            btn.classList.add('activa');
+            const targetId = btn.dataset.seccion;
+            const targetPanel = document.getElementById(targetId);
+            if (targetPanel) {
+              targetPanel.style.display = 'block';
+              targetPanel.classList.add('active');
+            }
+          });
+        });
+      }
+
+      async function cargarMetricas() {
+        const [comps, eqs, jugs, parts, logs] = await Promise.all([
+          obtenerCompeticiones(),
+          obtenerEquipos(),
+          obtenerJugadores(),
+          obtenerPartidos(),
+          obtenerAuditoria(100)
+        ]);
+
+        document.getElementById('meta-total-competiciones').textContent = comps.length;
+        document.getElementById('meta-total-equipos').textContent = eqs.length;
+        document.getElementById('meta-total-jugadores').textContent = jugs.length;
+        document.getElementById('meta-total-partidos').textContent = parts.length;
+        document.getElementById('meta-total-auditoria').textContent = logs.length;
+      }
+
+      async function cargarHistorialAuditoria() {
+        const tbody = document.getElementById('tabla-auditoria-cuerpo');
+        todosLosLogs = await obtenerAuditoria(100);
+        renderizarTablaAuditoria(todosLosLogs);
+      }
+
+      function renderizarTablaAuditoria(logs) {
+        const tbody = document.getElementById('tabla-auditoria-cuerpo');
+
+        if (!logs.length) {
+          tbody.innerHTML = '<tr><td colspan="5" class="texto-centro" style="padding: 24px;">No se encontraron registros de auditoría con los criterios seleccionados.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = logs.map(l => {
+          let badgeClase = 'insignia-institucional';
+          const accionUpper = (l.accion || '').toUpperCase();
+          if (accionUpper.includes('GOL') || accionUpper.includes('CREAR') || accionUpper.includes('INSERT')) badgeClase = 'insignia-en_curso';
+          else if (accionUpper.includes('TARJETA') || accionUpper.includes('FALTA') || accionUpper.includes('ELIMIN')) badgeClase = 'insignia-finalizado';
+          else if (accionUpper.includes('SESION') || accionUpper.includes('LOGIN')) badgeClase = 'insignia-programado';
+
+          return `
+            <tr>
+              <td style="white-space: nowrap;">${formatearFechaHora(l.creado_en)}</td>
+              <td><span class="insignia ${badgeClase}">${sanitizarHTML(l.accion)}</span></td>
+              <td><strong>${sanitizarHTML(l.tabla_afectada)}</strong></td>
+              <td><code style="font-size: 0.78rem; background: var(--azul-superficie); padding: 2px 6px; border-radius: 4px;">${sanitizarHTML(l.registro_id)}</code></td>
+              <td>${sanitizarHTML(l.descripcion || 'Sin descripción')}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function configurarFiltrosAuditoria() {
+        const inputTexto = document.getElementById('filtro-auditoria-texto');
+        const selectTabla = document.getElementById('filtro-auditoria-tabla');
+
+        function aplicarFiltro() {
+          const texto = (inputTexto.value || '').toLowerCase().trim();
+          const tabla = selectTabla.value;
+
+          const filtrados = todosLosLogs.filter(l => {
+            const coincideTabla = !tabla || l.tabla_afectada === tabla;
+            const coincideTexto = !texto ||
+              (l.accion && l.accion.toLowerCase().includes(texto)) ||
+              (l.tabla_afectada && l.tabla_afectada.toLowerCase().includes(texto)) ||
+              (l.registro_id && l.registro_id.toLowerCase().includes(texto)) ||
+              (l.descripcion && l.descripcion.toLowerCase().includes(texto));
+
+            return coincideTabla && coincideTexto;
+          });
+
+          renderizarTablaAuditoria(filtrados);
+        }
+
+        inputTexto.addEventListener('input', aplicarFiltro);
+        selectTabla.addEventListener('change', aplicarFiltro);
+        document.getElementById('btn-refrescar-auditoria').addEventListener('click', async () => {
+          await cargarHistorialAuditoria();
+          aplicarFiltro();
+          mostrarNotificacion('Historial de auditoría actualizado.', 'exito');
+        });
+      }
+
+      async function cargarUsuarios() {
+        const { data: usuarios } = await clienteSupabase.from('usuarios').select('*').ejecutar();
+        const tbody = document.getElementById('tabla-usuarios-cuerpo');
+
+        if (!usuarios || !usuarios.length) {
+          tbody.innerHTML = '<tr><td colspan="5" class="texto-centro">No hay usuarios registrados.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = usuarios.map(u => `
+          <tr>
+            <td><strong>${sanitizarHTML(u.nombre_completo || 'Usuario')}</strong></td>
+            <td>${sanitizarHTML(u.correo)}</td>
+            <td><span class="badge-rol ${u.rol}">${sanitizarHTML(u.rol.toUpperCase())}</span></td>
+            <td class="col-centro">
+              <span class="insignia ${u.activo ? 'insignia-en_curso' : 'insignia-finalizado'}">
+                ${u.activo ? 'Habilitado' : 'Inactivo'}
+              </span>
+            </td>
+            <td class="col-centro">
+              <button type="button" class="boton boton-contorno boton-sm btn-cambiar-rol" data-id="${u.id}" data-rol="${u.rol}">
+                Alternar Rol
+              </button>
+            </td>
+          </tr>
+        `).join('');
+
+        document.querySelectorAll('.btn-cambiar-rol').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const nuevoRol = btn.dataset.rol === 'administrador' ? 'espectador' : 'administrador';
+            await clienteSupabase.from('usuarios').eq('id', btn.dataset.id).update({ rol: nuevoRol });
+            mostrarNotificacion(`Rol actualizado a ${nuevoRol}.`, 'exito');
+            await cargarUsuarios();
+          });
+        });
+      }
+
+      document.getElementById('btn-nuevo-usuario-admin').addEventListener('click', async () => {
+        const correo = prompt('Ingrese el correo electrónico institucional del nuevo administrador o árbitro:');
+        if (!correo) return;
+        const nombre = prompt('Ingrese el nombre y apellido del encargado:') || correo;
+
+        await clienteSupabase.from('usuarios').insert({
+          correo: correo.trim().toLowerCase(),
+          nombre_completo: nombre.trim(),
+          rol: 'administrador',
+          activo: true
+        });
+
+        mostrarNotificacion('Administrador registrado exitosamente en la base de datos.', 'exito');
+        await cargarUsuarios();
+      });
+
+      document.addEventListener('DOMContentLoaded', inicializarAdmin);
+    </script>
+  </body>
+</html>

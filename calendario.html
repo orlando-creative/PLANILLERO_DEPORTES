@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendario y Fixture | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Calendario oficial, fixture de jornadas y programación de encuentros deportivos de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/partidos.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Calendario Deportivo y Fixture</h1>
+          <p class="subtitulo-seccion">Programación cronológica de encuentros, jornadas escolares y sedes asignadas.</p>
+        </div>
+        <div data-requiere-admin style="display: none;">
+          <button type="button" class="boton boton-primario boton-md" id="btn-programar-partido">
+            Programar Encuentro
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="fila-formulario" style="margin-bottom: 0;">
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-comp">Competición</label>
+            <select id="filtro-comp" class="select-formulario">
+              <option value="">Todas las competiciones</option>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-deporte">Disciplina</label>
+            <select id="filtro-deporte" class="select-formulario">
+              <option value="">Todos los deportes</option>
+              <option value="futbol">Fútbol</option>
+              <option value="futsal">Fútbol Sala</option>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-estado">Estado</label>
+            <select id="filtro-estado" class="select-formulario">
+              <option value="">Todos los estados</option>
+              <option value="programado">Programados</option>
+              <option value="en_juego">En Vivo</option>
+              <option value="finalizado">Finalizados</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lista de Partidos -->
+      <div id="contenedor-calendario" class="lista-partidos">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Cargando partidos programados...</p>
+        </div>
+      </div>
+
+      <!-- Modal Programar / Editar Partido -->
+      <div id="modal-partido" class="modal-fondo" style="display: none;">
+        <div class="modal-dialogo">
+          <div class="modal-encabezado">
+            <h3 id="modal-partido-titulo">Programar Encuentro Deportivo</h3>
+            <button type="button" class="modal-cerrar" id="btn-cerrar-modal-part">×</button>
+          </div>
+          <form id="form-partido">
+            <input type="hidden" id="part-id" />
+            <div class="modal-cuerpo">
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="part-competicion">Competición Oficial</label>
+                <select id="part-competicion" class="select-formulario" required>
+                  <!-- Dinámico -->
+                </select>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="part-deporte">Disciplina</label>
+                  <select id="part-deporte" class="select-formulario" required>
+                    <option value="futbol">Fútbol</option>
+                    <option value="futsal">Fútbol Sala</option>
+                  </select>
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="part-jornada">Fase o Jornada</label>
+                  <input type="text" id="part-jornada" class="input-formulario" placeholder="Ej. Jornada 1, Semifinal..." required />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="part-fecha-hora">Fecha y Hora de Inicio</label>
+                  <input type="datetime-local" id="part-fecha-hora" class="input-formulario" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="part-cancha">Cancha / Instalación</label>
+                  <input type="text" id="part-cancha" class="input-formulario" placeholder="Ej. Cancha Principal 1, Coliseo..." required />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="part-equipo-local">Equipo Local</label>
+                  <select id="part-equipo-local" class="select-formulario" required>
+                    <!-- Dinámico -->
+                  </select>
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="part-equipo-visitante">Equipo Visitante</label>
+                  <select id="part-equipo-visitante" class="select-formulario" required>
+                    <!-- Dinámico -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="part-observaciones">Observaciones Arbitrales Iniciales</label>
+                <textarea id="part-observaciones" class="textarea-formulario" rows="2" placeholder="Indicaciones para jueces o público"></textarea>
+              </div>
+            </div>
+            <div class="modal-pie">
+              <button type="button" class="boton boton-contorno boton-md" id="btn-cancelar-part">Cancelar</button>
+              <button type="submit" class="boton boton-primario boton-md">Guardar Programación</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerPartidos, guardarPartido, eliminarPartido } from '/js/partidos.js';
+      import { obtenerCompeticiones } from '/js/competiciones.js';
+      import { obtenerEquipos } from '/js/equipos.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, sanitizarHTML } from '/js/utilidades.js';
+
+      let listaPartidos = [];
+      let listaCompeticiones = [];
+      let mapaEquipos = {};
+
+      const params = new URLSearchParams(window.location.search);
+      const compUrl = params.get('competicion_id');
+
+      async function inicializar() {
+        listaCompeticiones = await obtenerCompeticiones();
+        const equipos = await obtenerEquipos();
+        equipos.forEach(eq => { mapaEquipos[eq.id] = eq; });
+
+        const selectCompFiltro = document.getElementById('filtro-comp');
+        const selectCompModal = document.getElementById('part-competicion');
+        selectCompFiltro.innerHTML = '<option value="">Todas las competiciones</option>';
+        selectCompModal.innerHTML = '';
+
+        listaCompeticiones.forEach(c => {
+          const opt = `<option value="${c.id}" ${compUrl === c.id ? 'selected' : ''}>${sanitizarHTML(c.nombre)} (${sanitizarHTML(c.deporte.toUpperCase())})</option>`;
+          selectCompFiltro.innerHTML += opt;
+          selectCompModal.innerHTML += opt;
+        });
+
+        const selectLocal = document.getElementById('part-equipo-local');
+        const selectVisitante = document.getElementById('part-equipo-visitante');
+        selectLocal.innerHTML = '';
+        selectVisitante.innerHTML = '';
+
+        equipos.forEach(eq => {
+          const opt = `<option value="${eq.id}">${sanitizarHTML(eq.nombre_personalizado)} (${sanitizarHTML(eq.curso)})</option>`;
+          selectLocal.innerHTML += opt;
+          selectVisitante.innerHTML += opt;
+        });
+
+        await cargarPartidos();
+      }
+
+      async function cargarPartidos() {
+        const competicion_id = document.getElementById('filtro-comp').value;
+        const deporte = document.getElementById('filtro-deporte').value;
+        const estado = document.getElementById('filtro-estado').value;
+
+        const contenedor = document.getElementById('contenedor-calendario');
+        contenedor.innerHTML = '<div class="estado-carga"><div class="spinner"></div><p>Cargando calendario...</p></div>';
+
+        listaPartidos = await obtenerPartidos({ competicion_id, deporte, estado });
+
+        if (!listaPartidos.length) {
+          contenedor.innerHTML = '<div class="estado-vacio"><p>No hay partidos registrados con los filtros seleccionados.</p></div>';
+          return;
+        }
+
+        const esAdmin = esAdministrador();
+
+        contenedor.innerHTML = listaPartidos.map(p => {
+          const local = mapaEquipos[p.equipo_local_id] || { nombre_personalizado: 'Local', curso: '' };
+          const visitante = mapaEquipos[p.equipo_visitante_id] || { nombre_personalizado: 'Visitante', curso: '' };
+          const enVivo = p.estado === 'en_juego';
+
+          return `
+            <div class="tarjeta-partido ${enVivo ? 'en-vivo' : ''}">
+              <div class="tarjeta-partido-cabecera">
+                <span class="partido-competicion-texto">${sanitizarHTML(p.deporte.toUpperCase())} &bull; ${sanitizarHTML(p.jornada)}</span>
+                <div class="partido-detalles-meta">
+                  <span>${sanitizarHTML(p.cancha)}</span>
+                  <span>${formatearFechaHora(p.fecha_hora)}</span>
+                  <span class="insignia ${obtenerClaseEstado(p.estado)}">${obtenerTextoEstado(p.estado)}</span>
+                </div>
+              </div>
+
+              <div class="partido-enfrentamiento">
+                <div class="equipo-bloque local">
+                  <div class="equipo-info-partido">
+                    <span class="equipo-nombre-partido">${sanitizarHTML(local.nombre_personalizado)}</span>
+                    <span class="equipo-curso-partido">${sanitizarHTML(local.curso)}</span>
+                  </div>
+                  <img src="${local.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
+                </div>
+
+                <div class="marcador-central-bloque">
+                  <div class="marcador-numerico">
+                    <span class="marcador-cifra">${p.goles_local}</span>
+                    <span class="marcador-separador">:</span>
+                    <span class="marcador-cifra">${p.goles_visitante}</span>
+                  </div>
+                  ${enVivo ? `<span class="partido-tiempo-reloj">Período ${p.periodo_actual} &bull; ${p.minuto_actual}'</span>` : ''}
+                </div>
+
+                <div class="equipo-bloque visitante">
+                  <img src="${visitante.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
+                  <div class="equipo-info-partido">
+                    <span class="equipo-nombre-partido">${sanitizarHTML(visitante.nombre_personalizado)}</span>
+                    <span class="equipo-curso-partido">${sanitizarHTML(visitante.curso)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tarjeta-partido-acciones">
+                <a href="/partido.html?id=${p.id}" class="boton boton-contorno boton-sm">Ficha Completa</a>
+                ${esAdmin ? `
+                  <a href="/planilla.html?partido_id=${p.id}" class="boton boton-secundario boton-sm">Abrir Planilla</a>
+                  <button type="button" class="boton boton-contorno boton-sm btn-editar-part" data-id="${p.id}">Modificar</button>
+                  <button type="button" class="boton boton-peligro boton-sm btn-eliminar-part" data-id="${p.id}">Eliminar</button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (esAdmin) {
+          document.querySelectorAll('.btn-editar-part').forEach(btn => {
+            btn.addEventListener('click', () => abrirEditarPartido(btn.dataset.id));
+          });
+          document.querySelectorAll('.btn-eliminar-part').forEach(btn => {
+            btn.addEventListener('click', () => confirmarEliminarPartido(btn.dataset.id));
+          });
+        }
+      }
+
+      function abrirNuevoPartido() {
+        document.getElementById('form-partido').reset();
+        document.getElementById('part-id').value = '';
+        document.getElementById('modal-partido-titulo').textContent = 'Programar Encuentro Deportivo';
+        abrirModal('modal-partido');
+      }
+
+      function abrirEditarPartido(id) {
+        const p = listaPartidos.find(item => item.id === id);
+        if (!p) return;
+        document.getElementById('part-id').value = p.id;
+        document.getElementById('part-competicion').value = p.competicion_id;
+        document.getElementById('part-deporte').value = p.deporte;
+        document.getElementById('part-jornada').value = p.jornada;
+        document.getElementById('part-fecha-hora').value = p.fecha_hora ? p.fecha_hora.slice(0, 16) : '';
+        document.getElementById('part-cancha').value = p.cancha;
+        document.getElementById('part-equipo-local').value = p.equipo_local_id;
+        document.getElementById('part-equipo-visitante').value = p.equipo_visitante_id;
+        document.getElementById('part-observaciones').value = p.observaciones || '';
+        document.getElementById('modal-partido-titulo').textContent = 'Modificar Programación de Partido';
+        abrirModal('modal-partido');
+      }
+
+      function confirmarEliminarPartido(id) {
+        mostrarConfirmacion({
+          titulo: 'Eliminar Partido del Calendario',
+          mensaje: '¿Está seguro de que desea eliminar este partido y sus eventos vinculados?',
+          esPeligroso: true,
+          textoConfirmar: 'Eliminar Partido',
+          alConfirmar: async () => {
+            try {
+              await eliminarPartido(id);
+              mostrarNotificacion('Partido eliminado del fixture.', 'exito');
+              cargarPartidos();
+            } catch (err) {
+              mostrarNotificacion(err.message || 'Error al eliminar partido.', 'error');
+            }
+          }
+        });
+      }
+
+      document.getElementById('filtro-comp').addEventListener('change', cargarPartidos);
+      document.getElementById('filtro-deporte').addEventListener('change', cargarPartidos);
+      document.getElementById('filtro-estado').addEventListener('change', cargarPartidos);
+
+      const btnProgramar = document.getElementById('btn-programar-partido');
+      if (btnProgramar) btnProgramar.addEventListener('click', abrirNuevoPartido);
+
+      document.getElementById('btn-cerrar-modal-part').addEventListener('click', () => cerrarModal('modal-partido'));
+      document.getElementById('btn-cancelar-part').addEventListener('click', () => cerrarModal('modal-partido'));
+
+      document.getElementById('form-partido').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('part-id').value;
+        const localId = document.getElementById('part-equipo-local').value;
+        const visitanteId = document.getElementById('part-equipo-visitante').value;
+
+        if (localId === visitanteId) {
+          mostrarNotificacion('El equipo local y el visitante no pueden ser iguales.', 'error');
+          return;
+        }
+
+        const datos = {
+          competicion_id: document.getElementById('part-competicion').value,
+          deporte: document.getElementById('part-deporte').value,
+          jornada: document.getElementById('part-jornada').value.trim(),
+          fecha_hora: new Date(document.getElementById('part-fecha-hora').value).toISOString(),
+          cancha: document.getElementById('part-cancha').value.trim(),
+          equipo_local_id: localId,
+          equipo_visitante_id: visitanteId,
+          observaciones: document.getElementById('part-observaciones').value.trim()
+        };
+        if (id) datos.id = id;
+
+        try {
+          await guardarPartido(datos);
+          cerrarModal('modal-partido');
+          mostrarNotificacion(id ? 'Partido actualizado.' : 'Partido programado exitosamente.', 'exito');
+          cargarPartidos();
+        } catch (err) {
+          mostrarNotificacion(err.message || 'Error al programar partido.', 'error');
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+  </body>
+</html>

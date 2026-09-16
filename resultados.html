@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resultados Oficiales | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Historial de marcadores y resultados definitivos de los encuentros deportivos de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/partidos.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Resultados Oficiales</h1>
+          <p class="subtitulo-seccion">Marcadores convalidados, planillas cerradas e historial deportivo.</p>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="fila-formulario" style="margin-bottom: 0;">
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-comp">Competición</label>
+            <select id="filtro-comp" class="select-formulario">
+              <option value="">Todas las competiciones</option>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-deporte">Disciplina</label>
+            <select id="filtro-deporte" class="select-formulario">
+              <option value="">Todos los deportes</option>
+              <option value="futbol">Fútbol</option>
+              <option value="futsal">Fútbol Sala</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lista de Resultados -->
+      <div id="contenedor-resultados" class="lista-partidos">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Cargando resultados deportivos...</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerPartidos } from '/js/partidos.js';
+      import { obtenerCompeticiones } from '/js/competiciones.js';
+      import { obtenerEquipos } from '/js/equipos.js';
+      import { obtenerEventosPartido } from '/js/eventos-partido.js';
+      import { formatearFechaHora, sanitizarHTML } from '/js/utilidades.js';
+
+      let mapaEquipos = {};
+
+      async function inicializar() {
+        const competiciones = await obtenerCompeticiones();
+        const equipos = await obtenerEquipos();
+        equipos.forEach(eq => { mapaEquipos[eq.id] = eq; });
+
+        const selectComp = document.getElementById('filtro-comp');
+        competiciones.forEach(c => {
+          selectComp.innerHTML += `<option value="${c.id}">${sanitizarHTML(c.nombre)}</option>`;
+        });
+
+        await cargarResultados();
+      }
+
+      async function cargarResultados() {
+        const competicion_id = document.getElementById('filtro-comp').value;
+        const deporte = document.getElementById('filtro-deporte').value;
+        const contenedor = document.getElementById('contenedor-resultados');
+
+        contenedor.innerHTML = '<div class="estado-carga"><div class="spinner"></div><p>Cargando resultados...</p></div>';
+
+        const partidos = await obtenerPartidos({
+          competicion_id: competicion_id || undefined,
+          deporte: deporte || undefined,
+          estado: 'finalizado'
+        });
+
+        if (!partidos.length) {
+          contenedor.innerHTML = '<div class="estado-vacio"><p>No hay partidos finalizados con los filtros indicados.</p></div>';
+          return;
+        }
+
+        const tarjetas = await Promise.all(partidos.map(async (p) => {
+          const local = mapaEquipos[p.equipo_local_id] || { nombre_personalizado: 'Local', curso: '' };
+          const visitante = mapaEquipos[p.equipo_visitante_id] || { nombre_personalizado: 'Visitante', curso: '' };
+          const eventos = await obtenerEventosPartido(p.id);
+          const goles = eventos.filter(e => e.tipo_evento === 'gol' && !e.revertido);
+
+          return `
+            <div class="tarjeta-partido">
+              <div class="tarjeta-partido-cabecera">
+                <span class="partido-competicion-texto">${sanitizarHTML(p.deporte.toUpperCase())} &bull; ${sanitizarHTML(p.jornada)}</span>
+                <div class="partido-detalles-meta">
+                  <span>${sanitizarHTML(p.cancha)}</span>
+                  <span>${formatearFechaHora(p.fecha_hora)}</span>
+                  <span class="insignia insignia-finalizado">Finalizado</span>
+                </div>
+              </div>
+
+              <div class="partido-enfrentamiento">
+                <div class="equipo-bloque local">
+                  <div class="equipo-info-partido">
+                    <span class="equipo-nombre-partido">${sanitizarHTML(local.nombre_personalizado)}</span>
+                    <span class="equipo-curso-partido">${sanitizarHTML(local.curso)}</span>
+                  </div>
+                  <img src="${local.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
+                </div>
+
+                <div class="marcador-central-bloque">
+                  <div class="marcador-numerico">
+                    <span class="marcador-cifra ${p.goles_local > p.goles_visitante ? 'marcador-ganador' : ''}">${p.goles_local}</span>
+                    <span class="marcador-separador">:</span>
+                    <span class="marcador-cifra ${p.goles_visitante > p.goles_local ? 'marcador-ganador' : ''}">${p.goles_visitante}</span>
+                  </div>
+                  ${(p.penales_local > 0 || p.penales_visitante > 0) ? `
+                    <span style="font-size: 0.8rem; color: var(--amarillo-oscuro); font-weight: 600;">
+                      Penales: ${p.penales_local} - ${p.penales_visitante}
+                    </span>
+                  ` : ''}
+                </div>
+
+                <div class="equipo-bloque visitante">
+                  <img src="${visitante.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" />
+                  <div class="equipo-info-partido">
+                    <span class="equipo-nombre-partido">${sanitizarHTML(visitante.nombre_personalizado)}</span>
+                    <span class="equipo-curso-partido">${sanitizarHTML(visitante.curso)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--texto-secundario); padding: 8px 12px; background: var(--blanco-puro); border-radius: var(--radio-sm); margin-bottom: 12px;">
+                <strong>Goles registrados:</strong> ${goles.length > 0 ? `${goles.length} goles convertidos` : 'Sin anotaciones'}.
+                ${p.observaciones ? `<br /><em>Obs: ${sanitizarHTML(p.observaciones)}</em>` : ''}
+              </div>
+
+              <div class="tarjeta-partido-acciones">
+                <a href="/partido.html?id=${p.id}" class="boton boton-primario boton-sm">Ver Acta Oficial Completa</a>
+              </div>
+            </div>
+          `;
+        }));
+
+        contenedor.innerHTML = tarjetas.join('');
+      }
+
+      document.getElementById('filtro-comp').addEventListener('change', cargarResultados);
+      document.getElementById('filtro-deporte').addEventListener('change', cargarResultados);
+      document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+  </body>
+</html>

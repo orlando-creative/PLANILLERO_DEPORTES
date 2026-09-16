@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Equipos Deportivos | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Listado de equipos y representativos de cursos de la U.E. Luz del Mundo A para fútbol y futsal." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Equipos Deportivos</h1>
+          <p class="subtitulo-seccion">Representativos por cursos, paralelos y categorías institucionales.</p>
+        </div>
+        <div data-requiere-admin style="display: none;">
+          <button type="button" class="boton boton-primario boton-md" id="btn-nuevo-equipo">
+            Registrar Equipo
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtro y Búsqueda -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="fila-formulario" style="margin-bottom: 8px;">
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-categoria">Categoría / Nivel Escolar</label>
+            <select id="filtro-categoria" class="select-formulario">
+              <option value="">Todas las categorías (48 equipos)</option>
+              <optgroup label="Primaria">
+                <option value="primaria_1_3">1ro a 3ro de Primaria (A, B, C, D)</option>
+                <option value="primaria_4_6">4to a 6to de Primaria (A, B, C, D)</option>
+                <option value="primaria_todas">Todos los cursos de Primaria</option>
+              </optgroup>
+              <optgroup label="Secundaria">
+                <option value="secundaria_1_3">1ro a 3ro de Secundaria (A, B, C, D)</option>
+                <option value="secundaria_4_6">4to a 6to de Secundaria (A, B, C, D)</option>
+                <option value="secundaria_todas">Todos los cursos de Secundaria</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-paralelo">Paralelo</label>
+            <select id="filtro-paralelo" class="select-formulario">
+              <option value="">Todos los paralelos</option>
+              <option value="A">Paralelo A</option>
+              <option value="B">Paralelo B</option>
+              <option value="C">Paralelo C</option>
+              <option value="D">Paralelo D</option>
+            </select>
+          </div>
+        </div>
+        <div class="campo-formulario" style="margin-bottom: 0;">
+          <label class="etiqueta-formulario" for="buscar-equipo">Búsqueda rápida</label>
+          <input type="text" id="buscar-equipo" class="input-formulario" placeholder="Ej. Águilas, 6to Secundaria, 1ro Primaria..." />
+        </div>
+        <div style="margin-top: 10px; font-size: 0.82rem; color: var(--texto-secundario);" id="contador-equipos">
+          Cargando recuento...
+        </div>
+      </section>
+
+      <!-- Cuadrícula de Equipos -->
+      <div id="contenedor-equipos" class="grid-3">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Cargando equipos...</p>
+        </div>
+      </div>
+
+      <!-- Modal Crear / Editar Equipo -->
+      <div id="modal-equipo" class="modal-fondo" style="display: none;">
+        <div class="modal-dialogo">
+          <div class="modal-encabezado">
+            <h3 id="modal-equipo-titulo">Registrar Nuevo Equipo</h3>
+            <button type="button" class="modal-cerrar" id="btn-cerrar-modal-eq">×</button>
+          </div>
+          <form id="form-equipo">
+            <input type="hidden" id="eq-id" />
+            <div class="modal-cuerpo">
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="eq-nombre">Nombre Personalizado del Equipo</label>
+                <input type="text" id="eq-nombre" class="input-formulario" placeholder="Ej. Los Leones" required />
+              </div>
+
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="eq-curso">Curso o Representación Institucional</label>
+                <input type="text" id="eq-curso" class="input-formulario" placeholder="Ej. 6to Secundaria A" required />
+                <span class="ayuda-formulario">Debe coincidir con la nómina académica o estamento escolar.</span>
+              </div>
+
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="eq-activo">Estado Operativo</label>
+                <select id="eq-activo" class="select-formulario">
+                  <option value="true">Activo</option>
+                  <option value="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-pie">
+              <button type="button" class="boton boton-contorno boton-md" id="btn-cancelar-eq">Cancelar</button>
+              <button type="submit" class="boton boton-primario boton-md">Guardar Equipo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerEquipos, guardarEquipo, eliminarEquipo } from '/js/equipos.js';
+      import { obtenerJugadores } from '/js/jugadores.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
+      import { sanitizarHTML } from '/js/utilidades.js';
+
+      let todosEquipos = [];
+
+      async function cargarEquipos() {
+        todosEquipos = await obtenerEquipos();
+        filtrarYRenderizar();
+      }
+
+      async function filtrarYRenderizar() {
+        const query = document.getElementById('buscar-equipo').value.toLowerCase().trim();
+        const cat = document.getElementById('filtro-categoria')?.value || '';
+        const par = document.getElementById('filtro-paralelo')?.value || '';
+        const contenedor = document.getElementById('contenedor-equipos');
+        const contador = document.getElementById('contador-equipos');
+
+        const filtrados = todosEquipos.filter(eq => {
+          const curso = eq.curso || '';
+          const nombre = eq.nombre_personalizado || '';
+
+          // Filtro por texto
+          if (query && !nombre.toLowerCase().includes(query) && !curso.toLowerCase().includes(query)) {
+            return false;
+          }
+
+          // Filtro por paralelo (termina en A, B, C o D o contiene " A", etc.)
+          if (par) {
+            const regexPar = new RegExp(`\\b${par}\\b|\\s${par}$`, 'i');
+            if (!regexPar.test(curso)) return false;
+          }
+
+          // Filtro por categoría institucional
+          if (cat === 'primaria_1_3') {
+            if (!curso.includes('Primaria')) return false;
+            const tiene1a3 = /^(1ro|2do|3ro)\b/i.test(curso);
+            if (!tiene1a3) return false;
+          } else if (cat === 'primaria_4_6') {
+            if (!curso.includes('Primaria')) return false;
+            const tiene4a6 = /^(4to|5to|6to)\b/i.test(curso);
+            if (!tiene4a6) return false;
+          } else if (cat === 'primaria_todas') {
+            if (!curso.includes('Primaria')) return false;
+          } else if (cat === 'secundaria_1_3') {
+            if (!curso.includes('Secundaria')) return false;
+            const tiene1a3 = /^(1ro|2do|3ro)\b/i.test(curso);
+            if (!tiene1a3) return false;
+          } else if (cat === 'secundaria_4_6') {
+            if (!curso.includes('Secundaria')) return false;
+            const tiene4a6 = /^(4to|5to|6to)\b/i.test(curso);
+            if (!tiene4a6) return false;
+          } else if (cat === 'secundaria_todas') {
+            if (!curso.includes('Secundaria')) return false;
+          }
+
+          return true;
+        });
+
+        if (contador) {
+          contador.textContent = `Mostrando ${filtrados.length} de ${todosEquipos.length} equipos registrados.`;
+        }
+
+        if (!filtrados.length) {
+          contenedor.innerHTML = '<div class="estado-vacio"><p>No se encontraron equipos registrados con los criterios seleccionados.</p></div>';
+          return;
+        }
+
+        const esAdmin = esAdministrador();
+
+        // Obtener cantidad de jugadores por equipo
+        const tarjetas = await Promise.all(filtrados.map(async (eq) => {
+          const jugadores = await obtenerJugadores(eq.id);
+          const esPrimaria = eq.curso.includes('Primaria');
+          const esSecundaria = eq.curso.includes('Secundaria');
+          const esGrupo1a3 = /^(1ro|2do|3ro)\b/i.test(eq.curso);
+          const etiquetaGrupo = esGrupo1a3 ? '1ro - 3ro' : '4to - 6to';
+
+          return `
+            <div class="tarjeta" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                  <img src="${eq.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="Escudo" style="width: 52px; height: 52px; object-fit: contain;" />
+                  <div>
+                    <h3 style="font-size: 1.1rem; color: var(--azul-oscuro); margin-bottom: 2px;">${sanitizarHTML(eq.nombre_personalizado)}</h3>
+                    <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">
+                      <span class="insignia insignia-institucional">${sanitizarHTML(eq.curso)}</span>
+                      <span class="insignia" style="background-color: var(--azul-superficie); color: var(--azul-principal); font-size: 0.72rem;">${etiquetaGrupo}</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-size: 0.84rem; color: var(--texto-secundario); margin-bottom: 14px;">
+                  <p style="margin: 0;">Plantilla: <strong>${jugadores.length} jugadores inscritos</strong></p>
+                  <p style="margin: 4px 0 0;">Estado: <strong>${eq.activo ? 'Habilitado' : 'Inactivo'}</strong></p>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--borde-suave); padding-top: 12px;">
+                <a href="/jugadores.html?equipo_id=${eq.id}" class="boton boton-contorno boton-sm">Ver Plantilla</a>
+                ${esAdmin ? `
+                  <button type="button" class="boton boton-secundario boton-sm btn-editar-eq" data-id="${eq.id}">Editar</button>
+                  <button type="button" class="boton boton-peligro boton-sm btn-eliminar-eq" data-id="${eq.id}" data-nombre="${sanitizarHTML(eq.nombre_personalizado)}">Eliminar</button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }));
+
+        contenedor.innerHTML = tarjetas.join('');
+
+        if (esAdmin) {
+          document.querySelectorAll('.btn-editar-eq').forEach(btn => {
+            btn.addEventListener('click', () => abrirEditarEquipo(btn.dataset.id));
+          });
+          document.querySelectorAll('.btn-eliminar-eq').forEach(btn => {
+            btn.addEventListener('click', () => confirmarEliminarEquipo(btn.dataset.id, btn.dataset.nombre));
+          });
+        }
+      }
+
+      function abrirNuevoEquipo() {
+        document.getElementById('form-equipo').reset();
+        document.getElementById('eq-id').value = '';
+        document.getElementById('modal-equipo-titulo').textContent = 'Registrar Nuevo Equipo';
+        abrirModal('modal-equipo');
+      }
+
+      function abrirEditarEquipo(id) {
+        const eq = todosEquipos.find(item => item.id === id);
+        if (!eq) return;
+        document.getElementById('eq-id').value = eq.id;
+        document.getElementById('eq-nombre').value = eq.nombre_personalizado;
+        document.getElementById('eq-curso').value = eq.curso;
+        document.getElementById('eq-activo').value = String(eq.activo);
+        document.getElementById('modal-equipo-titulo').textContent = 'Editar Equipo';
+        abrirModal('modal-equipo');
+      }
+
+      function confirmarEliminarEquipo(id, nombre) {
+        mostrarConfirmacion({
+          titulo: 'Eliminar Equipo',
+          mensaje: `¿Está seguro de que desea eliminar al equipo "${nombre}"? Solo podrá eliminarse si no posee partidos registrados ni jugadores inscritos.`,
+          esPeligroso: true,
+          textoConfirmar: 'Eliminar Equipo',
+          alConfirmar: async () => {
+            try {
+              await eliminarEquipo(id);
+              mostrarNotificacion('Equipo eliminado correctamente.', 'exito');
+              cargarEquipos();
+            } catch (err) {
+              mostrarNotificacion(err.message || 'Error al eliminar el equipo.', 'error');
+            }
+          }
+        });
+      }
+
+      document.getElementById('buscar-equipo').addEventListener('input', filtrarYRenderizar);
+      document.getElementById('filtro-categoria')?.addEventListener('change', filtrarYRenderizar);
+      document.getElementById('filtro-paralelo')?.addEventListener('change', filtrarYRenderizar);
+
+      const btnNuevo = document.getElementById('btn-nuevo-equipo');
+      if (btnNuevo) btnNuevo.addEventListener('click', abrirNuevoEquipo);
+
+      document.getElementById('btn-cerrar-modal-eq').addEventListener('click', () => cerrarModal('modal-equipo'));
+      document.getElementById('btn-cancelar-eq').addEventListener('click', () => cerrarModal('modal-equipo'));
+
+      document.getElementById('form-equipo').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('eq-id').value;
+        const datos = {
+          nombre_personalizado: document.getElementById('eq-nombre').value.trim(),
+          curso: document.getElementById('eq-curso').value.trim(),
+          activo: document.getElementById('eq-activo').value === 'true'
+        };
+        if (id) datos.id = id;
+
+        try {
+          await guardarEquipo(datos);
+          cerrarModal('modal-equipo');
+          mostrarNotificacion(id ? 'Equipo actualizado.' : 'Equipo registrado con éxito.', 'exito');
+          cargarEquipos();
+        } catch (err) {
+          mostrarNotificacion(err.message || 'Error al guardar el equipo.', 'error');
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', cargarEquipos);
+    </script>
+  </body>
+</html>

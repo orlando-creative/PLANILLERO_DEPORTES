@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planilla Digital en Vivo | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Mesa de control arbitral, cronómetro deportivo, registro de eventos minuto a minuto y actas de partido." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/partidos.css" />
+    <link rel="stylesheet" href="/css/planilla.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Planilla Digital de Control Arbitral</h1>
+          <p class="subtitulo-seccion">Mesa de control para registro de eventos en vivo, cronómetro y acta digital.</p>
+        </div>
+        <div id="selector-partido-contenedor" style="display: flex; gap: 8px; align-items: center;">
+          <label for="select-partido-activo" style="font-size: 0.85rem; font-weight: 600; color: var(--azul-oscuro);">Seleccionar Partido:</label>
+          <select id="select-partido-activo" class="select-formulario" style="max-width: 320px;">
+            <!-- Dinámico -->
+          </select>
+        </div>
+      </div>
+
+      <div id="contenedor-interfaz-planilla">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Inicializando mesa de control...</p>
+        </div>
+      </div>
+
+      <!-- Modal Registrar Evento Rápido -->
+      <div id="modal-evento" class="modal-fondo" style="display: none;">
+        <div class="modal-dialogo">
+          <div class="modal-encabezado">
+            <h3 id="modal-evento-titulo">Registrar Incidencia Deportiva</h3>
+            <button type="button" class="modal-cerrar" id="btn-cerrar-modal-ev">×</button>
+          </div>
+          <form id="form-evento">
+            <input type="hidden" id="ev-tipo" />
+            <input type="hidden" id="ev-equipo-id" />
+            <div class="modal-cuerpo">
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" id="label-ev-jugador" for="ev-jugador">Estudiante / Jugador Involucrado</label>
+                <select id="ev-jugador" class="select-formulario">
+                  <!-- Dinámico según equipo -->
+                </select>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="ev-periodo">Período</label>
+                  <input type="number" id="ev-periodo" class="input-formulario" min="1" max="4" value="1" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="ev-minuto">Minuto</label>
+                  <input type="number" id="ev-minuto" class="input-formulario" min="0" max="150" value="0" required />
+                </div>
+              </div>
+
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="ev-detalle">Detalle o Motivo Reglamentario</label>
+                <input type="text" id="ev-detalle" class="input-formulario" placeholder="Ej. Jugada colectiva, falta táctica, sustitución..." />
+              </div>
+            </div>
+            <div class="modal-pie">
+              <button type="button" class="boton boton-contorno boton-md" id="btn-cancelar-ev">Cancelar</button>
+              <button type="submit" class="boton boton-primario boton-md" id="btn-guardar-ev">Registrar en Acta</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { protegerPaginaAdmin } from '/js/permisos.js';
+      import { obtenerPartidos, obtenerPartidoPorId, cambiarEstadoPartido } from '/js/partidos.js';
+      import { obtenerEquipoPorId } from '/js/equipos.js';
+      import { obtenerJugadores } from '/js/jugadores.js';
+      import { obtenerReglamentoPorId } from '/js/reglamentos.js';
+      import { obtenerCompeticionPorId } from '/js/competiciones.js';
+      import { obtenerEventosPartido, registrarEvento, revertirEvento, restaurarEvento, eliminarEvento } from '/js/eventos-partido.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
+      import { formatearTiempoReloj, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from '/js/utilidades.js';
+
+      // Verificar protección RBAC
+      if (!protegerPaginaAdmin()) {
+        // Redirección ejecutada en protegerPaginaAdmin()
+      }
+
+      let partidoActual = null;
+      let competicionActual = null;
+      let reglamentoActual = null;
+      let equipoLocal = null;
+      let equipoVisitante = null;
+      let jugadoresLocal = [];
+      let jugadoresVisitante = [];
+      let eventosActuales = [];
+
+      // Control del cronómetro
+      let intervaloCronometro = null;
+      let relojSegundos = 0;
+      let relojCorriendo = false;
+
+      const params = new URLSearchParams(window.location.search);
+      let partidoIdSeleccionado = params.get('partido_id');
+
+      async function inicializarPlanilla() {
+        const partidos = await obtenerPartidos();
+        const selector = document.getElementById('select-partido-activo');
+
+        if (!partidos.length) {
+          document.getElementById('contenedor-interfaz-planilla').innerHTML = `
+            <div class="estado-vacio">
+              <h3>No hay partidos en el fixture</h3>
+              <p>Primero debe programar un partido en el calendario para habilitar la planilla.</p>
+              <a href="/calendario.html" class="boton boton-primario boton-md" style="margin-top: 10px;">Ir al Calendario</a>
+            </div>
+          `;
+          return;
+        }
+
+        selector.innerHTML = partidos.map(p => `
+          <option value="${p.id}" ${p.id === partidoIdSeleccionado ? 'selected' : ''}>
+            ${p.deporte.toUpperCase()} &bull; ${p.jornada} &bull; ${p.estado.toUpperCase()}
+          </option>
+        `).join('');
+
+        if (!partidoIdSeleccionado) {
+          // Buscar primero si hay uno 'en_juego' o 'pausado', o tomar el primero
+          const enVivo = partidos.find(p => p.estado === 'en_juego' || p.estado === 'pausado');
+          partidoIdSeleccionado = enVivo ? enVivo.id : partidos[0].id;
+          selector.value = partidoIdSeleccionado;
+        }
+
+        selector.addEventListener('change', (e) => {
+          partidoIdSeleccionado = e.target.value;
+          cargarPartidoActivo(partidoIdSeleccionado);
+        });
+
+        await cargarPartidoActivo(partidoIdSeleccionado);
+      }
+
+      async function cargarPartidoActivo(id) {
+        detenerCronometro();
+        partidoActual = await obtenerPartidoPorId(id);
+        if (!partidoActual) return;
+
+        competicionActual = await obtenerCompeticionPorId(partidoActual.competicion_id);
+        if (competicionActual?.reglamento_id) {
+          reglamentoActual = await obtenerReglamentoPorId(competicionActual.reglamento_id);
+        }
+
+        equipoLocal = await obtenerEquipoPorId(partidoActual.equipo_local_id);
+        equipoVisitante = await obtenerEquipoPorId(partidoActual.equipo_visitante_id);
+        jugadoresLocal = await obtenerJugadores(partidoActual.equipo_local_id);
+        jugadoresVisitante = await obtenerJugadores(partidoActual.equipo_visitante_id);
+        eventosActuales = await obtenerEventosPartido(partidoActual.id);
+
+        relojSegundos = (partidoActual.minuto_actual || 0) * 60;
+        relojCorriendo = partidoActual.estado === 'en_juego';
+
+        renderizarInterfazPlanilla();
+
+        if (relojCorriendo) {
+          iniciarIntervalo();
+        }
+      }
+
+      function renderizarInterfazPlanilla() {
+        const c = document.getElementById('contenedor-interfaz-planilla');
+        const esFutsal = partidoActual.deporte === 'futsal';
+
+        // Calcular faltas acumuladas por equipo en el período actual
+        const faltasLocal = eventosActuales.filter(e => 
+          e.tipo_evento === 'falta' && 
+          e.equipo_id === equipoLocal.id && 
+          e.periodo === partidoActual.periodo_actual && 
+          !e.revertido
+        ).length;
+
+        const faltasVisitante = eventosActuales.filter(e => 
+          e.tipo_evento === 'falta' && 
+          e.equipo_id === equipoVisitante.id && 
+          e.periodo === partidoActual.periodo_actual && 
+          !e.revertido
+        ).length;
+
+        const maxFaltas = reglamentoActual?.limite_faltas_tiro_libre || 5;
+
+        c.innerHTML = `
+          <!-- Cabecera de Marcador y Cronómetro -->
+          <div class="tarjeta-marcador-vivo">
+            <div class="marcador-deporte-etiqueta">
+              <span>${sanitizarHTML(partidoActual.deporte.toUpperCase())} &bull; ${sanitizarHTML(partidoActual.jornada)} &bull; ${sanitizarHTML(partidoActual.cancha)}</span>
+              <span class="insignia ${obtenerClaseEstado(partidoActual.estado)}">${obtenerTextoEstado(partidoActual.estado)}</span>
+            </div>
+
+            <div class="marcador-vivo-equipos">
+              <!-- Equipo Local -->
+              <div class="marcador-equipo-lado">
+                <img src="${equipoLocal?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="marcador-escudo-lado" />
+                <div class="marcador-nombre-lado">${sanitizarHTML(equipoLocal?.nombre_personalizado || 'Local')}</div>
+                <div class="marcador-curso-lado">${sanitizarHTML(equipoLocal?.curso || '')}</div>
+                <div class="marcador-goles-lado" id="marcador-goles-local">${partidoActual.goles_local}</div>
+                ${esFutsal ? `
+                  <div style="margin-top: 8px; font-size: 0.82rem; ${faltasLocal >= maxFaltas ? 'color: var(--rojo-alerta); font-weight: bold;' : ''}">
+                    Faltas Período: ${faltasLocal} / ${maxFaltas} ${faltasLocal >= maxFaltas ? '(Tiro de 10m)' : ''}
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- Centro: Cronómetro y Período -->
+              <div class="cronometro-contenedor">
+                <div class="periodo-indicador" id="periodo-texto">Período ${partidoActual.periodo_actual}</div>
+                <div class="reloj-display" id="reloj-tiempo">${formatearTiempoReloj(Math.floor(relojSegundos / 60), relojSegundos % 60)}</div>
+                <div class="cronometro-controles">
+                  <button type="button" class="boton-control-reloj btn-play" id="btn-reloj-toggle">
+                    ${relojCorriendo ? 'Pausar Reloj' : 'Iniciar Reloj'}
+                  </button>
+                  <button type="button" class="boton-control-reloj btn-reset" id="btn-reloj-siguiente-periodo">
+                    Avanzar Período
+                  </button>
+                </div>
+
+                <!-- Botones de Estado de Partido -->
+                <div style="margin-top: 14px; display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
+                  ${partidoActual.estado !== 'en_juego' ? `
+                    <button type="button" class="boton boton-secundario boton-sm" id="btn-estado-iniciar">Iniciar Encuentro</button>
+                  ` : `
+                    <button type="button" class="boton boton-contorno boton-sm" id="btn-estado-pausar">Pausar</button>
+                  `}
+                  <button type="button" class="boton boton-primario boton-sm" id="btn-estado-finalizar">Finalizar Partido</button>
+                </div>
+              </div>
+
+              <!-- Equipo Visitante -->
+              <div class="marcador-equipo-lado">
+                <img src="${equipoVisitante?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="marcador-escudo-lado" />
+                <div class="marcador-nombre-lado">${sanitizarHTML(equipoVisitante?.nombre_personalizado || 'Visitante')}</div>
+                <div class="marcador-curso-lado">${sanitizarHTML(equipoVisitante?.curso || '')}</div>
+                <div class="marcador-goles-lado" id="marcador-goles-visitante">${partidoActual.goles_visitante}</div>
+                ${esFutsal ? `
+                  <div style="margin-top: 8px; font-size: 0.82rem; ${faltasVisitante >= maxFaltas ? 'color: var(--rojo-alerta); font-weight: bold;' : ''}">
+                    Faltas Período: ${faltasVisitante} / ${maxFaltas} ${faltasVisitante >= maxFaltas ? '(Tiro de 10m)' : ''}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+
+          <!-- Botoneras de Registro de Eventos -->
+          <div class="grid-2" style="margin-bottom: var(--espacio-lg);">
+            <!-- Acciones Local -->
+            <div class="panel-acciones-equipo">
+              <div class="panel-acciones-titulo">Acciones: ${sanitizarHTML(equipoLocal?.nombre_personalizado)}</div>
+              <div class="cuadricula-botones-eventos">
+                <button type="button" class="boton-evento-rapido btn-gol" data-equipo="${equipoLocal.id}" data-tipo="gol">+ Gol</button>
+                <button type="button" class="boton-evento-rapido btn-falta" data-equipo="${equipoLocal.id}" data-tipo="falta">+ Falta</button>
+                <button type="button" class="boton-evento-rapido btn-tarjeta-amarilla" data-equipo="${equipoLocal.id}" data-tipo="tarjeta_amarilla">Amarilla</button>
+                <button type="button" class="boton-evento-rapido btn-tarjeta-roja" data-equipo="${equipoLocal.id}" data-tipo="tarjeta_roja">Roja</button>
+                ${esFutsal ? `
+                  <button type="button" class="boton-evento-rapido btn-tarjeta-azul" data-equipo="${equipoLocal.id}" data-tipo="tarjeta_azul">Azul (2 min)</button>
+                  <button type="button" class="boton-evento-rapido btn-tiempo-muerto" data-equipo="${equipoLocal.id}" data-tipo="tiempo_muerto">Tiempo Muerto</button>
+                ` : ''}
+                <button type="button" class="boton-evento-rapido btn-sustitucion" data-equipo="${equipoLocal.id}" data-tipo="sustitucion">Sustitución</button>
+                <button type="button" class="boton-evento-rapido btn-penal" data-equipo="${equipoLocal.id}" data-tipo="penal">Penal</button>
+              </div>
+            </div>
+
+            <!-- Acciones Visitante -->
+            <div class="panel-acciones-equipo">
+              <div class="panel-acciones-titulo">Acciones: ${sanitizarHTML(equipoVisitante?.nombre_personalizado)}</div>
+              <div class="cuadricula-botones-eventos">
+                <button type="button" class="boton-evento-rapido btn-gol" data-equipo="${equipoVisitante.id}" data-tipo="gol">+ Gol</button>
+                <button type="button" class="boton-evento-rapido btn-falta" data-equipo="${equipoVisitante.id}" data-tipo="falta">+ Falta</button>
+                <button type="button" class="boton-evento-rapido btn-tarjeta-amarilla" data-equipo="${equipoVisitante.id}" data-tipo="tarjeta_amarilla">Amarilla</button>
+                <button type="button" class="boton-evento-rapido btn-tarjeta-roja" data-equipo="${equipoVisitante.id}" data-tipo="tarjeta_roja">Roja</button>
+                ${esFutsal ? `
+                  <button type="button" class="boton-evento-rapido btn-tarjeta-azul" data-equipo="${equipoVisitante.id}" data-tipo="tarjeta_azul">Azul (2 min)</button>
+                  <button type="button" class="boton-evento-rapido btn-tiempo-muerto" data-equipo="${equipoVisitante.id}" data-tipo="tiempo_muerto">Tiempo Muerto</button>
+                ` : ''}
+                <button type="button" class="boton-evento-rapido btn-sustitucion" data-equipo="${equipoVisitante.id}" data-tipo="sustitucion">Sustitución</button>
+                <button type="button" class="boton-evento-rapido btn-penal" data-equipo="${equipoVisitante.id}" data-tipo="penal">Penal</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Historial de Eventos del Acta -->
+          <div class="panel-eventos-partido">
+            <div class="flex-separado" style="margin-bottom: var(--espacio-md);">
+              <h3 style="margin: 0; color: var(--azul-oscuro);">Acta Arbitral de Eventos Registrados</h3>
+              <span style="font-size: 0.84rem; color: var(--texto-secundario);">${eventosActuales.length} registros en acta</span>
+            </div>
+
+            <div class="lista-eventos-acta">
+              ${!eventosActuales.length ? '<p class="texto-centro" style="padding: 20px; color: var(--texto-secundario);">No se han registrado incidencias en la planilla aún.</p>' : ''}
+              ${eventosActuales.map(ev => {
+                const esLocal = ev.equipo_id === equipoLocal.id;
+                const plantilla = esLocal ? jugadoresLocal : jugadoresVisitante;
+                const jug = plantilla.find(j => j.id === ev.jugador_id);
+                const nombreJug = jug ? `${jug.nombre} ${jug.apellido} (#${jug.numero_camiseta})` : 'Jugador no especificado';
+                const eqNombre = esLocal ? equipoLocal.nombre_personalizado : equipoVisitante.nombre_personalizado;
+                const revertido = ev.revertido;
+
+                return `
+                  <div class="fila-evento-acta ${revertido ? 'revertido' : ''}">
+                    <div style="font-weight: bold; width: 65px; color: var(--azul-institucional);">
+                      P${ev.periodo} &bull; ${ev.minuto}'
+                    </div>
+                    <div style="flex: 1;">
+                      <span class="tipo-evento-insignia ${ev.tipo_evento}">
+                        ${obtenerNombreEvento(ev.tipo_evento)}
+                      </span>
+                      <strong style="margin-left: 6px;">${sanitizarHTML(nombreJug)}</strong>
+                      <span style="color: var(--texto-secundario); font-size: 0.82rem;"> &bull; ${sanitizarHTML(eqNombre)}</span>
+                      ${ev.detalle ? `<div style="font-size: 0.78rem; color: var(--texto-secundario);">${sanitizarHTML(ev.detalle)}</div>` : ''}
+                      ${revertido ? '<span style="color: var(--rojo-alerta); font-size: 0.75rem; font-weight: bold;">(ANULADO EN ACTA)</span>' : ''}
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                      ${!revertido ? `
+                        <button type="button" class="boton boton-contorno boton-sm btn-revertir-ev" data-id="${ev.id}">Anular</button>
+                      ` : `
+                        <button type="button" class="boton boton-secundario boton-sm btn-restaurar-ev" data-id="${ev.id}">Restaurar</button>
+                      `}
+                      <button type="button" class="boton boton-peligro boton-sm btn-eliminar-ev" data-id="${ev.id}">Borrar</button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+
+        asignarEventosPlanilla();
+      }
+
+      function asignarEventosPlanilla() {
+        // Control Cronómetro
+        document.getElementById('btn-reloj-toggle').addEventListener('click', toggleCronometro);
+        document.getElementById('btn-reloj-siguiente-periodo').addEventListener('click', avanzarPeriodo);
+
+        // Estados
+        const btnIniciar = document.getElementById('btn-estado-iniciar');
+        if (btnIniciar) btnIniciar.addEventListener('click', () => cambiarEstado('en_juego'));
+
+        const btnPausar = document.getElementById('btn-estado-pausar');
+        if (btnPausar) btnPausar.addEventListener('click', () => cambiarEstado('pausado'));
+
+        document.getElementById('btn-estado-finalizar').addEventListener('click', confirmarFinalizar);
+
+        // Botones de Eventos
+        document.querySelectorAll('.boton-evento-rapido').forEach(btn => {
+          btn.addEventListener('click', () => {
+            abrirModalEvento(btn.dataset.equipo, btn.dataset.tipo);
+          });
+        });
+
+        // Modificar / Revertir Eventos
+        document.querySelectorAll('.btn-revertir-ev').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            await revertirEvento(btn.dataset.id, partidoActual.id);
+            mostrarNotificacion('Incidencia anulada en la planilla.', 'aviso');
+            await cargarPartidoActivo(partidoActual.id);
+          });
+        });
+
+        document.querySelectorAll('.btn-restaurar-ev').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            await restaurarEvento(btn.dataset.id, partidoActual.id);
+            mostrarNotificacion('Incidencia reincorporada al acta.', 'exito');
+            await cargarPartidoActivo(partidoActual.id);
+          });
+        });
+
+        document.querySelectorAll('.btn-eliminar-ev').forEach(btn => {
+          btn.addEventListener('click', () => {
+            mostrarConfirmacion({
+              titulo: 'Eliminar Registro de Acta',
+              mensaje: '¿Desea suprimir permanentemente este evento de la planilla?',
+              esPeligroso: true,
+              textoConfirmar: 'Eliminar Registro',
+              alConfirmar: async () => {
+                await eliminarEvento(btn.dataset.id, partidoActual.id);
+                mostrarNotificacion('Evento eliminado.', 'exito');
+                await cargarPartidoActivo(partidoActual.id);
+              }
+            });
+          });
+        });
+      }
+
+      function toggleCronometro() {
+        if (relojCorriendo) {
+          detenerCronometro();
+          cambiarEstadoPartido(partidoActual.id, 'pausado', { minuto_actual: Math.floor(relojSegundos / 60) });
+          partidoActual.estado = 'pausado';
+        } else {
+          iniciarIntervalo();
+          cambiarEstadoPartido(partidoActual.id, 'en_juego', { minuto_actual: Math.floor(relojSegundos / 60) });
+          partidoActual.estado = 'en_juego';
+        }
+        relojCorriendo = !relojCorriendo;
+        const btn = document.getElementById('btn-reloj-toggle');
+        if (btn) btn.textContent = relojCorriendo ? 'Pausar Reloj' : 'Iniciar Reloj';
+      }
+
+      function iniciarIntervalo() {
+        if (intervaloCronometro) clearInterval(intervaloCronometro);
+        intervaloCronometro = setInterval(() => {
+          relojSegundos++;
+          const display = document.getElementById('reloj-tiempo');
+          if (display) {
+            display.textContent = formatearTiempoReloj(Math.floor(relojSegundos / 60), relojSegundos % 60);
+          }
+        }, 1000);
+      }
+
+      function detenerCronometro() {
+        if (intervaloCronometro) {
+          clearInterval(intervaloCronometro);
+          intervaloCronometro = null;
+        }
+      }
+
+      async function avanzarPeriodo() {
+        const nuevoPeriodo = (partidoActual.periodo_actual || 1) + 1;
+        mostrarConfirmacion({
+          titulo: 'Avanzar Período de Juego',
+          mensaje: `¿Desea cambiar la planilla al Período ${nuevoPeriodo}?`,
+          textoConfirmar: 'Confirmar Período',
+          alConfirmar: async () => {
+            await cambiarEstadoPartido(partidoActual.id, partidoActual.estado, {
+              periodo_actual: nuevoPeriodo
+            });
+            partidoActual.periodo_actual = nuevoPeriodo;
+            document.getElementById('periodo-texto').textContent = `Período ${nuevoPeriodo}`;
+            mostrarNotificacion(`Planilla posicionada en Período ${nuevoPeriodo}.`, 'info');
+            renderizarInterfazPlanilla();
+          }
+        });
+      }
+
+      async function cambiarEstado(nuevo) {
+        detenerCronometro();
+        relojCorriendo = (nuevo === 'en_juego');
+        await cambiarEstadoPartido(partidoActual.id, nuevo, {
+          minuto_actual: Math.floor(relojSegundos / 60)
+        });
+        partidoActual.estado = nuevo;
+        mostrarNotificacion(`Estado de partido actualizado a: ${obtenerTextoEstado(nuevo)}`, 'info');
+        renderizarInterfazPlanilla();
+        if (relojCorriendo) iniciarIntervalo();
+      }
+
+      function confirmarFinalizar() {
+        mostrarConfirmacion({
+          titulo: 'Finalizar y Convalidar Encuentro',
+          mensaje: `¿Confirma el cierre definitivo de la planilla con el marcador ${partidoActual.goles_local} - ${partidoActual.goles_visitante}? El resultado impactará inmediatamente en la tabla de posiciones.`,
+          esPeligroso: false,
+          textoConfirmar: 'Convalidar y Finalizar',
+          alConfirmar: async () => {
+            detenerCronometro();
+            await cambiarEstadoPartido(partidoActual.id, 'finalizado', {
+              minuto_actual: Math.floor(relojSegundos / 60)
+            });
+            mostrarNotificacion('Partido finalizado y convalidado con éxito.', 'exito');
+            setTimeout(() => {
+              window.location.href = `/partido.html?id=${partidoActual.id}`;
+            }, 600);
+          }
+        });
+      }
+
+      function abrirModalEvento(equipoId, tipoEvento) {
+        document.getElementById('form-evento').reset();
+        document.getElementById('ev-tipo').value = tipoEvento;
+        document.getElementById('ev-equipo-id').value = equipoId;
+        document.getElementById('ev-periodo').value = partidoActual.periodo_actual || 1;
+        document.getElementById('ev-minuto').value = Math.floor(relojSegundos / 60);
+
+        const esLocal = equipoId === equipoLocal.id;
+        const plantilla = esLocal ? jugadoresLocal : jugadoresVisitante;
+        const selectJug = document.getElementById('ev-jugador');
+        const eqNombre = esLocal ? equipoLocal.nombre_personalizado : equipoVisitante.nombre_personalizado;
+
+        document.getElementById('modal-evento-titulo').textContent = `Registrar ${obtenerNombreEvento(tipoEvento)} - ${eqNombre}`;
+
+        selectJug.innerHTML = plantilla.map(j => `
+          <option value="${j.id}">#${j.numero_camiseta} - ${sanitizarHTML(j.nombre)} ${sanitizarHTML(j.apellido)}</option>
+        `).join('');
+
+        abrirModal('modal-evento');
+      }
+
+      document.getElementById('btn-cerrar-modal-ev').addEventListener('click', () => cerrarModal('modal-evento'));
+      document.getElementById('btn-cancelar-ev').addEventListener('click', () => cerrarModal('modal-evento'));
+
+      document.getElementById('form-evento').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const tipoEvento = document.getElementById('ev-tipo').value;
+        const equipoId = document.getElementById('ev-equipo-id').value;
+        const jugadorId = document.getElementById('ev-jugador').value;
+        const periodo = parseInt(document.getElementById('ev-periodo').value, 10);
+        const minuto = parseInt(document.getElementById('ev-minuto').value, 10);
+        const detalle = document.getElementById('ev-detalle').value.trim();
+
+        try {
+          await registrarEvento({
+            partido_id: partidoActual.id,
+            equipo_id: equipoId,
+            jugador_id: jugadorId || null,
+            tipo_evento: tipoEvento,
+            periodo,
+            minuto,
+            segundo: relojSegundos % 60,
+            detalle: detalle || null
+          });
+
+          cerrarModal('modal-evento');
+          mostrarNotificacion(`${obtenerNombreEvento(tipoEvento)} anotado en la planilla.`, 'exito');
+          await cargarPartidoActivo(partidoActual.id);
+        } catch (err) {
+          mostrarNotificacion(err.message || 'Error al asentar incidencia.', 'error');
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', inicializarPlanilla);
+    </script>
+  </body>
+</html>

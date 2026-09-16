@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla de Posiciones y Clasificación | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Tabla oficial de posiciones, clasificación de liga y llaves eliminatorias de torneos relámpago de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1 id="titulo-pagina-posiciones">Tabla de Posiciones y Clasificación</h1>
+          <p class="subtitulo-seccion" id="subtitulo-pagina-posiciones">
+            Clasificaciones oficiales actualizadas con las planillas convalidadas.
+          </p>
+        </div>
+      </div>
+
+      <!-- Selector de Competición y Filtros -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="fila-formulario" style="margin-bottom: 0;">
+          <div class="campo-formulario" style="margin-bottom: 0; flex: 2;">
+            <label class="etiqueta-formulario" for="select-competicion-pos">Seleccionar Competición</label>
+            <select id="select-competicion-pos" class="select-formulario">
+              <!-- Dinámico -->
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0; flex: 1;">
+            <label class="etiqueta-formulario">Modalidad Oficial</label>
+            <div id="indicador-modalidad-badge" style="padding: 10px 0;">
+              <span class="insignia insignia-institucional">Cargando...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 1: MODALIDAD RELÁMPAGO (ELIMINACIÓN DIRECTA - SIN PUNTOS) -->
+      <div id="vista-relampago" style="display: none;">
+        <!-- Banner Explicativo de Modalidad -->
+        <div class="alerta-relampago">
+          <div class="alerta-relampago-titulo">
+            <span>⚡</span>
+            <span>MODALIDAD TORNEO RELÁMPAGO (ELIMINACIÓN DIRECTA)</span>
+          </div>
+          <p class="alerta-relampago-texto">
+            En esta modalidad <strong>no se asignan puntos de tabla</strong>. Cada partido es a eliminación directa: el representativo que gana avanza a la siguiente ronda y el representativo que pierde <strong>queda automáticamente fuera de la competición</strong>. En caso de empate al final del tiempo reglamentario, el clasificado se define por serie de tiros penales.
+          </p>
+        </div>
+
+        <!-- Banner de Gran Campeón si ya finalizó -->
+        <div id="banner-campeon-relampago" style="display: none; margin-bottom: var(--espacio-lg);">
+          <!-- Dinámico -->
+        </div>
+
+        <!-- Visualizador de Llaves y Fases del Relámpago -->
+        <section class="tarjeta" style="margin-bottom: var(--espacio-lg);">
+          <h3 style="font-size: 1.05rem; color: var(--azul-oscuro); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <span>Cuadro de Llaves y Fases Eliminatorias</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--texto-secundario);">Deslice horizontalmente para ver las fases</span>
+          </h3>
+          <div id="contenedor-llaves-fases" class="contenedor-llaves-relampago">
+            <!-- Dinámico -->
+          </div>
+        </section>
+
+        <!-- Tabla de Estado y Mérito Deportivo del Relámpago (Sin columna PTS) -->
+        <section class="tarjeta" style="margin-bottom: var(--espacio-lg);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="font-size: 1.05rem; color: var(--azul-oscuro); margin: 0;">
+              Estado Oficial de los Representativos en el Relámpago
+            </h3>
+            <span class="insignia insignia-eliminado" style="background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;">
+              El que pierde queda fuera
+            </span>
+          </div>
+          <div class="contenedor-tabla" style="margin-bottom: 0;">
+            <table class="tabla-deportiva">
+              <thead>
+                <tr>
+                  <th class="col-centro" style="width: 50px;">N°</th>
+                  <th>Equipo / Curso</th>
+                  <th class="col-centro">Estado en el Torneo</th>
+                  <th>Fase Alcanzada</th>
+                  <th class="col-numero" title="Partidos Jugados">PJ</th>
+                  <th class="col-numero" title="Victorias">PG</th>
+                  <th class="col-numero" title="Derrotas">PP</th>
+                  <th class="col-numero" title="Goles a Favor">GF</th>
+                  <th class="col-numero" title="Goles en Contra">GC</th>
+                  <th class="col-numero" title="Diferencia de Goles">DG</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-relampago-cuerpo">
+                <!-- Dinámico -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Criterios Oficiales de Torneo Relámpago -->
+        <section class="tarjeta" style="background: var(--azul-superficie); border-left: 4px solid #ef4444;">
+          <h3 style="font-size: 1.05rem; color: #991b1b; margin-bottom: 8px;">
+            Criterios Reglamentarios de Eliminación Directa
+          </h3>
+          <ol style="margin: 0; padding-left: 20px; font-size: 0.86rem; color: var(--texto-secundario); line-height: 1.6;">
+            <li><strong>Clasificación Directa:</strong> El equipo vencedor en el tiempo oficial avanza inmediatamente a la siguiente llave eliminatoria.</li>
+            <li><strong>Eliminación Inmediata:</strong> El equipo derrotado en cualquier fase queda automáticamente eliminado (fuera del certamen relámpago).</li>
+            <li><strong>Sin Tabla de Puntos:</strong> No se contabilizan puntos por partido (PJ / PG / PP son registros informativos del rendimiento).</li>
+            <li><strong>Desempate por Penales:</strong> Todo encuentro que culmine empatado en el tiempo reglamentario debe definirse por lanzamientos penales reglamentarios.</li>
+          </ol>
+        </section>
+      </div>
+
+      <!-- VISTA 2: MODALIDAD LIGA REGULAR (TODOS CONTRA TODOS CON PUNTOS) -->
+      <div id="vista-liga" style="display: none;">
+        <!-- Tabla Deportiva de Puntos -->
+        <section class="tarjeta" style="margin-bottom: var(--espacio-lg);">
+          <div class="contenedor-tabla" style="margin-bottom: 0;">
+            <table class="tabla-deportiva">
+              <thead>
+                <tr>
+                  <th class="col-centro" style="width: 50px;">POS</th>
+                  <th>Equipo / Curso</th>
+                  <th class="col-numero" title="Partidos Jugados">PJ</th>
+                  <th class="col-numero" title="Partidos Ganados">PG</th>
+                  <th class="col-numero" title="Partidos Empatados">PE</th>
+                  <th class="col-numero" title="Partidos Perdidos">PP</th>
+                  <th class="col-numero" title="Goles a Favor">GF</th>
+                  <th class="col-numero" title="Goles en Contra">GC</th>
+                  <th class="col-numero" title="Diferencia de Goles">DG</th>
+                  <th class="col-numero th-amarillo" title="Puntos Acumulados" style="width: 80px;">PTS</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-posiciones-cuerpo">
+                <tr>
+                  <td colspan="10" class="texto-centro" style="padding: 24px;">Cargando clasificación deportiva...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Criterios Reglamentarios de Desempate de Liga -->
+        <section class="tarjeta" style="background: var(--azul-superficie); border-left: 4px solid var(--amarillo-institucional);">
+          <h3 style="font-size: 1.05rem; color: var(--azul-oscuro); margin-bottom: 8px;">
+            Criterios Oficiales de Ordenamiento y Puntuación de Liga
+          </h3>
+          <p style="font-size: 0.86rem; color: var(--texto-secundario); margin-bottom: 8px;">
+            En concordancia con el reglamento de la U.E. Luz del Mundo A, el orden de mérito de la liga se rige por:
+          </p>
+          <ol style="margin: 0; padding-left: 20px; font-size: 0.86rem; color: var(--texto-secundario); line-height: 1.6;">
+            <li><strong>Mayor cantidad de puntos obtenidos:</strong> 3 puntos por victoria, 1 punto por empate, 0 por derrota.</li>
+            <li><strong>Mayor diferencia de goles (DG):</strong> Resta aritmética de goles a favor menos goles en contra.</li>
+            <li><strong>Mayor cantidad de goles a favor (GF):</strong> Número total de tantos convertidos en la competición.</li>
+            <li><strong>Menor cantidad de goles en contra (GC):</strong> Solidez defensiva del representativo.</li>
+            <li><strong>Resultado particular o desempate:</strong> Partido extraordinario o penales según dictamen arbitral.</li>
+          </ol>
+        </section>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerCompeticiones } from '/js/competiciones.js';
+      import { obtenerClasificacionCompeticion } from '/js/posiciones.js';
+      import { sanitizarHTML, formatearFechaHora } from '/js/utilidades.js';
+
+      const params = new URLSearchParams(window.location.search);
+      const compUrlId = params.get('competicion_id');
+
+      let competicionesDisponibles = [];
+
+      async function inicializar() {
+        competicionesDisponibles = await obtenerCompeticiones();
+        const selector = document.getElementById('select-competicion-pos');
+
+        if (!competicionesDisponibles.length) {
+          selector.innerHTML = '<option value="">No hay competiciones registradas</option>';
+          document.getElementById('vista-liga').style.display = 'block';
+          document.getElementById('tabla-posiciones-cuerpo').innerHTML = '<tr><td colspan="10" class="texto-centro">No hay datos disponibles.</td></tr>';
+          return;
+        }
+
+        selector.innerHTML = competicionesDisponibles.map(c => `
+          <option value="${c.id}" ${(c.id === compUrlId) ? 'selected' : ''}>
+            ${sanitizarHTML(c.nombre)} [${c.categoria || 'General'}] &bull; ${sanitizarHTML(c.deporte.toUpperCase())}
+          </option>
+        `).join('');
+
+        selector.addEventListener('change', () => {
+          cargarClasificacion(selector.value);
+        });
+
+        const idInicial = compUrlId && competicionesDisponibles.some(c => c.id === compUrlId) 
+          ? compUrlId 
+          : competicionesDisponibles[0].id;
+
+        await cargarClasificacion(idInicial);
+      }
+
+      async function cargarClasificacion(competicionId) {
+        const comp = competicionesDisponibles.find(c => c.id === competicionId);
+        const badgeModalidad = document.getElementById('indicador-modalidad-badge');
+        const vistaRelampago = document.getElementById('vista-relampago');
+        const vistaLiga = document.getElementById('vista-liga');
+
+        if (!comp) return;
+
+        const esRelampago = comp.tipo_competicion === 'torneo_eliminatorio';
+
+        if (esRelampago) {
+          badgeModalidad.innerHTML = `
+            <span class="insignia" style="background-color: #fee2e2; color: #991b1b; font-weight: 700; border: 1px solid #fca5a5;">
+              ⚡ Relámpago (Eliminatoria Directa)
+            </span>
+          `;
+          vistaRelampago.style.display = 'block';
+          vistaLiga.style.display = 'none';
+        } else {
+          badgeModalidad.innerHTML = `
+            <span class="insignia insignia-en_curso" style="font-weight: 700;">
+              🏆 Liga Regular (Por Puntos)
+            </span>
+          `;
+          vistaRelampago.style.display = 'none';
+          vistaLiga.style.display = 'block';
+        }
+
+        const dataClasificacion = await obtenerClasificacionCompeticion(competicionId);
+
+        if (!dataClasificacion) {
+          return;
+        }
+
+        if (dataClasificacion.es_eliminatoria) {
+          renderizarRelampago(dataClasificacion);
+        } else {
+          renderizarLiga(dataClasificacion.tabla);
+        }
+      }
+
+      function renderizarRelampago(datos) {
+        const { campeon, subcampeon, rondas, tablaMerito } = datos;
+
+        // 1. Banner de Campeón
+        const bannerCampeon = document.getElementById('banner-campeon-relampago');
+        if (campeon) {
+          bannerCampeon.style.display = 'block';
+          bannerCampeon.innerHTML = `
+            <div class="tarjeta" style="background: linear-gradient(135deg, #fef08a 0%, #ffffff 100%); border: 2px solid #eab308; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px;">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <span style="font-size: 2.2rem;">🏆</span>
+                <div>
+                  <span style="font-size: 0.78rem; text-transform: uppercase; font-weight: 800; color: #854d0e; letter-spacing: 0.05em;">Gran Campeón Oficial del Torneo Relámpago</span>
+                  <h2 style="font-size: 1.4rem; color: var(--azul-oscuro); margin: 2px 0;">${sanitizarHTML(campeon.nombre_personalizado)}</h2>
+                  <span class="insignia insignia-institucional">${sanitizarHTML(campeon.curso)}</span>
+                </div>
+              </div>
+              ${subcampeon ? `
+                <div style="text-align: right; border-left: 1px solid #e2e8f0; padding-left: 16px;">
+                  <span style="font-size: 0.75rem; color: var(--texto-secundario);">Subcampeón:</span>
+                  <div style="font-weight: 700; color: var(--azul-oscuro); font-size: 0.95rem;">${sanitizarHTML(subcampeon.nombre_personalizado)}</div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        } else {
+          bannerCampeon.style.display = 'none';
+        }
+
+        // 2. Visualizador de Llaves
+        const contenedorLlaves = document.getElementById('contenedor-llaves-fases');
+        if (!rondas || !rondas.length) {
+          contenedorLlaves.innerHTML = '<div class="estado-vacio" style="width: 100%;"><p>No se han registrado partidos o llaves para este torneo relámpago.</p></div>';
+        } else {
+          contenedorLlaves.innerHTML = rondas.map(ronda => `
+            <div class="columna-fase-llave">
+              <div class="columna-fase-titulo">${sanitizarHTML(ronda.nombre)}</div>
+              ${ronda.partidos.map(p => {
+                const esFinalizado = p.estado === 'finalizado';
+                const esEnVivo = p.estado === 'en_juego';
+
+                const localGano = esFinalizado && p.ganador_id === p.equipo_local_id;
+                const localPerdio = esFinalizado && p.perdedor_id === p.equipo_local_id;
+                const visitanteGano = esFinalizado && p.ganador_id === p.equipo_visitante_id;
+                const visitantePerdio = esFinalizado && p.perdedor_id === p.equipo_visitante_id;
+
+                return `
+                  <div class="tarjeta-partido-llave ${esEnVivo ? 'en-vivo' : ''}">
+                    <div class="llave-meta-info">
+                      <span>${sanitizarHTML(p.cancha || 'Cancha')}</span>
+                      <span>${esEnVivo ? '🔴 EN VIVO' : (esFinalizado ? 'Finalizado' : 'Programado')}</span>
+                    </div>
+
+                    <!-- Fila Equipo Local -->
+                    <div class="llave-equipo-fila ${localGano ? 'ganador' : (localPerdio ? 'perdedor' : '')}">
+                      <div class="llave-equipo-info">
+                        <img src="${p.equipo_local?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" />
+                        <span class="llave-equipo-nombre" title="${sanitizarHTML(p.equipo_local?.nombre_personalizado || 'Local')}">
+                          ${sanitizarHTML(p.equipo_local?.nombre_personalizado || 'Local')}
+                        </span>
+                      </div>
+                      <div style="display: flex; align-items: center;">
+                        <span class="llave-goles-cifra">${esFinalizado || esEnVivo ? p.goles_local : '-'}</span>
+                        ${p.metodo_ganador === 'penales' && p.penales_local !== undefined ? `
+                          <span class="llave-penales-etiqueta">(${p.penales_local}p)</span>
+                        ` : ''}
+                        ${localGano ? '<span style="margin-left: 6px; font-size: 0.75rem;">✓</span>' : ''}
+                        ${localPerdio ? '<span style="margin-left: 6px; font-size: 0.72rem; color: #ef4444; font-weight: bold;">✕</span>' : ''}
+                      </div>
+                    </div>
+
+                    <!-- Fila Equipo Visitante -->
+                    <div class="llave-equipo-fila ${visitanteGano ? 'ganador' : (visitantePerdio ? 'perdedor' : '')}">
+                      <div class="llave-equipo-info">
+                        <img src="${p.equipo_visitante?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" />
+                        <span class="llave-equipo-nombre" title="${sanitizarHTML(p.equipo_visitante?.nombre_personalizado || 'Visitante')}">
+                          ${sanitizarHTML(p.equipo_visitante?.nombre_personalizado || 'Visitante')}
+                        </span>
+                      </div>
+                      <div style="display: flex; align-items: center;">
+                        <span class="llave-goles-cifra">${esFinalizado || esEnVivo ? p.goles_visitante : '-'}</span>
+                        ${p.metodo_ganador === 'penales' && p.penales_visitante !== undefined ? `
+                          <span class="llave-penales-etiqueta">(${p.penales_visitante}p)</span>
+                        ` : ''}
+                        ${visitanteGano ? '<span style="margin-left: 6px; font-size: 0.75rem;">✓</span>' : ''}
+                        ${visitantePerdio ? '<span style="margin-left: 6px; font-size: 0.72rem; color: #ef4444; font-weight: bold;">✕</span>' : ''}
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `).join('');
+        }
+
+        // 3. Tabla de Mérito Eliminatorio (Sin columna PTS)
+        const tbodyRel = document.getElementById('tabla-relampago-cuerpo');
+        if (!tablaMerito.length) {
+          tbodyRel.innerHTML = '<tr><td colspan="10" class="texto-centro" style="padding: 24px;">No hay equipos inscritos en este torneo relámpago.</td></tr>';
+          return;
+        }
+
+        tbodyRel.innerHTML = tablaMerito.map((fila, idx) => {
+          let badgeEstado = '';
+          if (fila.estado === 'campeon') {
+            badgeEstado = '<span class="badge-estado-relampago campeon">🏆 Campeón</span>';
+          } else if (fila.estado === 'subcampeon') {
+            badgeEstado = '<span class="badge-estado-relampago subcampeon">🥈 Subcampeón</span>';
+          } else if (fila.estado === 'eliminado') {
+            badgeEstado = '<span class="badge-estado-relampago eliminado">🔴 Eliminado (Fuera)</span>';
+          } else {
+            badgeEstado = '<span class="badge-estado-relampago clasificado">🟢 Clasificado</span>';
+          }
+
+          return `
+            <tr class="${fila.estado === 'campeon' ? 'zona-clasificacion' : ''}">
+              <td class="col-centro">
+                <span class="posicion-numero posicion-${idx + 1}">${idx + 1}</span>
+              </td>
+              <td>
+                <div class="equipo-celda">
+                  <img src="${fila.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-mini" />
+                  <div>
+                    <span class="equipo-nombre-texto">${sanitizarHTML(fila.nombre_personalizado)}</span>
+                    <span class="equipo-curso-etiqueta">${sanitizarHTML(fila.curso)}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="col-centro">${badgeEstado}</td>
+              <td><strong>${sanitizarHTML(fila.fase_alcanzada)}</strong> <span style="font-size: 0.78rem; color: var(--texto-secundario);">(${sanitizarHTML(fila.detalle_eliminacion)})</span></td>
+              <td class="col-numero">${fila.pj}</td>
+              <td class="col-numero">${fila.pg}</td>
+              <td class="col-numero">${fila.pp}</td>
+              <td class="col-numero">${fila.gf}</td>
+              <td class="col-numero">${fila.gc}</td>
+              <td class="col-numero ${fila.dg > 0 ? 'texto-verde' : (fila.dg < 0 ? 'texto-rojo' : '')}">
+                ${fila.dg > 0 ? '+' + fila.dg : fila.dg}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function renderizarLiga(tabla) {
+        const tbody = document.getElementById('tabla-posiciones-cuerpo');
+        if (!tabla || !tabla.length) {
+          tbody.innerHTML = '<tr><td colspan="10" class="texto-centro" style="padding: 24px;">No hay equipos inscritos ni partidos jugados en esta competición.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = tabla.map(fila => `
+          <tr class="${fila.posicion === 1 ? 'zona-clasificacion' : ''}">
+            <td class="col-centro">
+              <span class="posicion-numero posicion-${fila.posicion}">${fila.posicion}</span>
+            </td>
+            <td>
+              <div class="equipo-celda">
+                <img src="${fila.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-mini" />
+                <div>
+                  <span class="equipo-nombre-texto">${sanitizarHTML(fila.nombre_personalizado)}</span>
+                  <span class="equipo-curso-etiqueta">${sanitizarHTML(fila.curso)}</span>
+                </div>
+              </div>
+            </td>
+            <td class="col-numero">${fila.pj}</td>
+            <td class="col-numero">${fila.pg}</td>
+            <td class="col-numero">${fila.pe}</td>
+            <td class="col-numero">${fila.pp}</td>
+            <td class="col-numero">${fila.gf}</td>
+            <td class="col-numero">${fila.gc}</td>
+            <td class="col-numero ${fila.dg > 0 ? 'texto-verde' : (fila.dg < 0 ? 'texto-rojo' : '')}">
+              ${fila.dg > 0 ? '+' + fila.dg : fila.dg}
+            </td>
+            <td class="col-numero col-pts">${fila.pts}</td>
+          </tr>
+        `).join('');
+      }
+
+      document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+  </body>
+</html>

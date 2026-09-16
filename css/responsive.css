@@ -1,0 +1,248 @@
+/**
+ * Estilos Responsive y Adaptabilidad Móvil Premium
+ * U.E. Luz del Mundo A - Planillero Deportivo
+ */
+
+/* Prevención global de desbordamiento horizontal */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Barra de Navegación Móvil Inferior (Bottom Nav Bar) */
+.barra-movil-inferior {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .grid-3, .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-paneles-equipos {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --espacio-sm: 8px;
+    --espacio-md: 12px;
+    --espacio-lg: 16px;
+    --espacio-xl: 20px;
+  }
+
+  body {
+    font-size: 14px;
+    padding-bottom: calc(65px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .contenedor-principal {
+    padding: var(--espacio-md) 12px;
+    max-width: 100%;
+  }
+
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .flex-separado {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .seccion-encabezado {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: var(--espacio-md);
+  }
+
+  .seccion-titulos h1 {
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .subtitulo-seccion {
+    font-size: 0.84rem;
+  }
+
+  .barra-filtros {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .barra-filtros-item,
+  .barra-filtros-busqueda {
+    width: 100%;
+  }
+
+  /* Prevenir zoom automático en iOS en inputs y selects (min 16px) */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  input[type="datetime-local"],
+  select,
+  textarea {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+
+  /* Asegurar tamaño táctil mínimo de 44px en controles principales */
+  .boton {
+    min-height: 44px;
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .boton-sm {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+
+  .boton-evento {
+    min-height: 48px;
+  }
+
+  /* Botones de acción en tarjetas móviles */
+  .tarjeta-partido-acciones,
+  .tarjeta-competicion-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .tarjeta-partido-acciones .boton,
+  .tarjeta-competicion-acciones .boton {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 120px;
+  }
+
+  /* Barra de Navegación Inferior Móvil Fija */
+  .barra-movil-inferior {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--azul-oscuro);
+    border-top: 2px solid var(--amarillo-principal);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
+    z-index: 999;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .item-nav-movil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.68rem;
+    font-weight: 700;
+    gap: 3px;
+    flex: 1;
+    height: 100%;
+    transition: color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .item-nav-movil svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .item-nav-movil.activo {
+    color: var(--amarillo-principal);
+  }
+
+  .item-nav-movil.activo svg {
+    stroke: var(--amarillo-principal);
+  }
+
+  .item-nav-movil:active {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .pie-contenido {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--espacio-sm);
+    padding-bottom: 20px;
+  }
+
+  .pie-enlaces {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-dialogo {
+    width: calc(100vw - 20px);
+    margin: 10px auto;
+    max-height: 92vh;
+    border-radius: var(--radio-md);
+  }
+
+  .modal-cuerpo {
+    max-height: calc(92vh - 120px);
+    overflow-y: auto;
+    padding: 14px;
+  }
+
+  .modal-pie {
+    padding: 10px 14px;
+    flex-direction: column-reverse;
+  }
+
+  .modal-pie .boton {
+    width: 100%;
+  }
+
+  .tarjeta {
+    padding: 12px;
+    border-radius: var(--radio-md);
+  }
+
+  /* Optimización visual de encabezados de partido en pantalla pequeña */
+  .partido-enfrentamiento {
+    gap: 4px;
+  }
+
+  .equipo-nombre-partido {
+    font-size: 0.84rem;
+  }
+
+  .marcador-numerico {
+    font-size: 1.35rem;
+  }
+
+  .marcador-cifra {
+    padding: 2px 6px;
+    min-width: 26px;
+  }
+
+  .indicadores-reglamento {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+

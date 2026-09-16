@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acta Oficial del Encuentro | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Ficha técnica detallada, acta arbitral y cronología de eventos del partido deportivo." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/partidos.css" />
+    <link rel="stylesheet" href="/css/planilla.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <a href="/calendario.html" class="boton boton-contorno boton-sm" style="margin-bottom: 8px; display: inline-flex;">&larr; Volver al Calendario</a>
+          <h1 id="titulo-acta">Acta Oficial del Encuentro</h1>
+          <p id="subtitulo-acta" class="subtitulo-seccion">Ficha técnica institucional avalada por la mesa de control.</p>
+        </div>
+        <div id="accion-admin-planilla" data-requiere-admin style="display: none;">
+          <!-- Dinámico -->
+        </div>
+      </div>
+
+      <div id="contenedor-ficha-partido">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Cargando datos del partido...</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerPartidoPorId } from '/js/partidos.js';
+      import { obtenerCompeticionPorId } from '/js/competiciones.js';
+      import { obtenerEquipoPorId } from '/js/equipos.js';
+      import { obtenerJugadores } from '/js/jugadores.js';
+      import { obtenerEventosPartido } from '/js/eventos-partido.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { formatearFechaHora, obtenerTextoEstado, obtenerClaseEstado, obtenerNombreEvento, sanitizarHTML } from '/js/utilidades.js';
+
+      const params = new URLSearchParams(window.location.search);
+      const partidoId = params.get('id');
+
+      async function cargarFicha() {
+        const contenedor = document.getElementById('contenedor-ficha-partido');
+        if (!partidoId) {
+          contenedor.innerHTML = '<div class="alerta-error">Identificador de partido no especificado en la dirección web.</div>';
+          return;
+        }
+
+        const partido = await obtenerPartidoPorId(partidoId);
+        if (!partido) {
+          contenedor.innerHTML = '<div class="alerta-error">El partido solicitado no existe o ha sido retirado del sistema.</div>';
+          return;
+        }
+
+        const [competicion, local, visitante, eventos, jugadoresLocal, jugadoresVisitante] = await Promise.all([
+          obtenerCompeticionPorId(partido.competicion_id),
+          obtenerEquipoPorId(partido.equipo_local_id),
+          obtenerEquipoPorId(partido.equipo_visitante_id),
+          obtenerEventosPartido(partido.id),
+          obtenerJugadores(partido.equipo_local_id),
+          obtenerJugadores(partido.equipo_visitante_id)
+        ]);
+
+        const mapaJugadores = {};
+        [...jugadoresLocal, ...jugadoresVisitante].forEach(j => { mapaJugadores[j.id] = j; });
+
+        // Botón admin para planilla
+        if (esAdministrador()) {
+          const areaAdmin = document.getElementById('accion-admin-planilla');
+          areaAdmin.innerHTML = `
+            <a href="/planilla.html?partido_id=${partido.id}" class="boton boton-secundario boton-md">
+              Abrir Planilla de Control en Vivo
+            </a>
+          `;
+          areaAdmin.style.display = 'block';
+        }
+
+        const enVivo = partido.estado === 'en_juego';
+
+        contenedor.innerHTML = `
+          <!-- Marcador Principal -->
+          <div class="tarjeta tarjeta-destacada" style="margin-bottom: var(--espacio-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--espacio-md); flex-wrap: wrap; gap: 8px;">
+              <span class="insignia insignia-institucional">${sanitizarHTML(competicion?.nombre || 'Competición')} &bull; ${sanitizarHTML(partido.jornada)}</span>
+              <span class="insignia ${obtenerClaseEstado(partido.estado)}">${obtenerTextoEstado(partido.estado)}</span>
+            </div>
+
+            <div class="partido-enfrentamiento" style="padding: var(--espacio-md) 0;">
+              <div class="equipo-bloque local">
+                <div class="equipo-info-partido">
+                  <h2 style="margin: 0; font-size: 1.4rem; color: var(--azul-oscuro);">${sanitizarHTML(local?.nombre_personalizado || 'Local')}</h2>
+                  <span class="equipo-curso-partido">${sanitizarHTML(local?.curso || '')}</span>
+                </div>
+                <img src="${local?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" style="width: 70px; height: 70px;" />
+              </div>
+
+              <div class="marcador-central-bloque">
+                <div class="marcador-numerico" style="font-size: 3rem;">
+                  <span class="marcador-cifra">${partido.goles_local}</span>
+                  <span class="marcador-separador">:</span>
+                  <span class="marcador-cifra">${partido.goles_visitante}</span>
+                </div>
+                ${(partido.penales_local > 0 || partido.penales_visitante > 0) ? `
+                  <div style="font-size: 0.9rem; color: var(--amarillo-oscuro); font-weight: bold; margin-top: 4px;">
+                    Penales: ${partido.penales_local} - ${partido.penales_visitante}
+                  </div>
+                ` : ''}
+                ${enVivo ? `
+                  <div class="partido-tiempo-reloj" style="margin-top: 6px;">
+                    Período ${partido.periodo_actual} &bull; Minuto ${partido.minuto_actual}'
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="equipo-bloque visitante">
+                <img src="${visitante?.escudo_url || '/assets/escudo-luz-del-mundo.svg'}" alt="" class="equipo-escudo-partido" style="width: 70px; height: 70px;" />
+                <div class="equipo-info-partido">
+                  <h2 style="margin: 0; font-size: 1.4rem; color: var(--azul-oscuro);">${sanitizarHTML(visitante?.nombre_personalizado || 'Visitante')}</h2>
+                  <span class="equipo-curso-partido">${sanitizarHTML(visitante?.curso || '')}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metadatos del Encuentro -->
+            <div style="border-top: 1px solid var(--borde-suave); padding-top: var(--espacio-md); margin-top: var(--espacio-md); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 0.88rem;">
+              <div><strong>Disciplina:</strong> ${sanitizarHTML(partido.deporte.toUpperCase())}</div>
+              <div><strong>Fecha y Hora:</strong> ${formatearFechaHora(partido.fecha_hora)}</div>
+              <div><strong>Instalación:</strong> ${sanitizarHTML(partido.cancha)}</div>
+              <div><strong>Observaciones:</strong> ${sanitizarHTML(partido.observaciones || 'Sin incidencias especiales')}</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom: var(--espacio-xl);">
+            <!-- Cronología de Eventos -->
+            <section class="tarjeta">
+              <h3 style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
+                Cronología y Sucesos del Partido
+              </h3>
+
+              <div class="linea-tiempo">
+                ${!eventos.length ? '<p class="texto-centro" style="padding: 20px; color: var(--texto-secundario);">No hay incidencias registradas en el acta.</p>' : ''}
+                ${eventos.map(ev => {
+                  const jug = mapaJugadores[ev.jugador_id];
+                  const esLocal = ev.equipo_id === partido.equipo_local_id;
+                  const nombreJugador = jug ? `${jug.nombre} ${jug.apellido}` : 'Jugador';
+                  const dorsalJugador = jug ? `#${jug.numero_camiseta}` : '';
+                  const revertido = ev.revertido;
+
+                  return `
+                    <div class="item-linea-tiempo ${revertido ? 'revertido' : ''}">
+                      <div class="marcador-tiempo">P${ev.periodo} &bull; ${ev.minuto}'</div>
+                      <div class="contenido-linea-tiempo">
+                        <span class="tipo-evento-insignia ${ev.tipo_evento}">
+                          ${obtenerNombreEvento(ev.tipo_evento)}
+                        </span>
+                        <div style="margin: 4px 0;">
+                          <strong>${sanitizarHTML(nombreJugador)}</strong> 
+                          <span style="font-size: 0.8rem; color: var(--texto-secundario);">${dorsalJugador}</span>
+                          <span style="font-size: 0.78rem; color: var(--azul-institucional); margin-left: 6px;">
+                            (${esLocal ? sanitizarHTML(local?.nombre_personalizado) : sanitizarHTML(visitante?.nombre_personalizado)})
+                          </span>
+                        </div>
+                        ${ev.detalle ? `<p style="font-size: 0.82rem; color: var(--texto-secundario); margin: 0;">${sanitizarHTML(ev.detalle)}</p>` : ''}
+                        ${revertido ? '<span style="color: var(--rojo-alerta); font-size: 0.75rem; font-weight: bold;">(Acción Anulada / Revertida)</span>' : ''}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+
+            <!-- Plantillas de Ambos Equipos -->
+            <section class="tarjeta">
+              <h3 style="margin-bottom: var(--espacio-md); border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">
+                Plantillas Habilitadas para el Encuentro
+              </h3>
+
+              <div style="margin-bottom: var(--espacio-md);">
+                <h4 style="color: var(--azul-oscuro); margin-bottom: 6px;">${sanitizarHTML(local?.nombre_personalizado)} (${sanitizarHTML(local?.curso)})</h4>
+                <div class="contenedor-tabla" style="margin-bottom: 14px;">
+                  <table class="tabla-deportiva tabla-compacta">
+                    <thead>
+                      <tr>
+                        <th style="width: 50px;" class="col-centro">Dorsal</th>
+                        <th>Estudiante</th>
+                        <th class="col-centro">Curso</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${!jugadoresLocal.length ? '<tr><td colspan="3" class="texto-centro">Sin jugadores asignados</td></tr>' : ''}
+                      ${jugadoresLocal.map(j => `
+                        <tr>
+                          <td class="col-centro"><span class="dorsal-badge">#${j.numero_camiseta}</span></td>
+                          <td>${sanitizarHTML(j.nombre)} ${sanitizarHTML(j.apellido)}</td>
+                          <td class="col-centro">${sanitizarHTML(j.curso)}</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div>
+                <h4 style="color: var(--azul-oscuro); margin-bottom: 6px;">${sanitizarHTML(visitante?.nombre_personalizado)} (${sanitizarHTML(visitante?.curso)})</h4>
+                <div class="contenedor-tabla" style="margin-bottom: 0;">
+                  <table class="tabla-deportiva tabla-compacta">
+                    <thead>
+                      <tr>
+                        <th style="width: 50px;" class="col-centro">Dorsal</th>
+                        <th>Estudiante</th>
+                        <th class="col-centro">Curso</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${!jugadoresVisitante.length ? '<tr><td colspan="3" class="texto-centro">Sin jugadores asignados</td></tr>' : ''}
+                      ${jugadoresVisitante.map(j => `
+                        <tr>
+                          <td class="col-centro"><span class="dorsal-badge">#${j.numero_camiseta}</span></td>
+                          <td>${sanitizarHTML(j.nombre)} ${sanitizarHTML(j.apellido)}</td>
+                          <td class="col-centro">${sanitizarHTML(j.curso)}</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+        `;
+      }
+
+      document.addEventListener('DOMContentLoaded', cargarFicha);
+    </script>
+  </body>
+</html>

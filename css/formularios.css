@@ -1,0 +1,262 @@
+/**
+ * Estilos de Formularios y Controles de Interfaz
+ * U.E. Luz del Mundo A - Planillero Deportivo
+ */
+
+/* Grupos y Estructura */
+.formulario-grupo,
+.campo-formulario {
+  margin-bottom: var(--espacio-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.formulario-fila,
+.fila-formulario {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--espacio-md);
+  margin-bottom: var(--espacio-md);
+  width: 100%;
+}
+
+.formulario-fila > .formulario-grupo,
+.formulario-fila > .campo-formulario,
+.fila-formulario > .formulario-grupo,
+.fila-formulario > .campo-formulario {
+  margin-bottom: 0;
+}
+
+/* Etiquetas */
+label.formulario-etiqueta,
+label.etiqueta-formulario,
+.etiqueta-formulario {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto-principal);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+label.formulario-etiqueta .requerido,
+label.etiqueta-formulario .requerido,
+.etiqueta-formulario .requerido {
+  color: var(--color-en-vivo);
+  font-weight: 700;
+  margin-left: 3px;
+}
+
+.formulario-pista,
+.ayuda-formulario {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+  margin-top: 3px;
+  line-height: 1.35;
+}
+
+/* Campos de Entrada */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+select,
+textarea,
+.input-formulario,
+.select-formulario,
+.textarea-formulario {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 16px; /* 16px previene el zoom involuntario en iOS Safari */
+  font-family: inherit;
+  color: var(--texto-principal);
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--radio-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--azul-principal);
+  box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.15);
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background-color: var(--fondo-general);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* Checkboxes y Radios */
+.formulario-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.formulario-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--azul-principal);
+  cursor: pointer;
+}
+
+/* Botones (Padding horizontal = 2x vertical) */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: var(--radio-sm);
+  border: 1px solid transparent;
+  transition: all 0.18s ease-in-out;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1.2;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--amarillo-principal);
+  outline-offset: 2px;
+}
+
+/* Tamaños de Botón */
+.boton-sm {
+  padding: 6px 12px;
+  font-size: 0.82rem;
+}
+
+.boton-md {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+.boton-lg {
+  padding: 13px 26px;
+  font-size: 1rem;
+}
+
+/* Variantes de Color */
+.boton-primario {
+  background-color: var(--azul-principal);
+  color: var(--blanco);
+  border-color: var(--azul-oscuro);
+}
+
+.boton-primario:hover {
+  background-color: var(--azul-medio);
+  color: var(--blanco);
+  text-decoration: none;
+  box-shadow: var(--sombra-sm);
+}
+
+.boton-secundario {
+  background-color: var(--amarillo-principal);
+  color: var(--amarillo-texto);
+  border-color: var(--amarillo-dorado);
+  font-weight: 700;
+}
+
+.boton-secundario:hover {
+  background-color: var(--amarillo-dorado);
+  color: #1a1200;
+  text-decoration: none;
+  box-shadow: var(--sombra-sm);
+}
+
+.boton-contorno {
+  background-color: transparent;
+  color: var(--azul-principal);
+  border-color: var(--azul-principal);
+}
+
+.boton-contorno:hover {
+  background-color: var(--azul-superficie);
+  text-decoration: none;
+}
+
+.boton-peligro {
+  background-color: #dc2626;
+  color: var(--blanco);
+  border-color: #b91c1c;
+}
+
+.boton-peligro:hover {
+  background-color: #b91c1c;
+  text-decoration: none;
+}
+
+.boton-peligro-contorno {
+  background-color: transparent;
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.boton-peligro-contorno:hover {
+  background-color: #fef2f2;
+}
+
+.boton-bloque {
+  width: 100%;
+}
+
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Filtros y Barras de Búsqueda */
+.barra-filtros {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-sm);
+  flex-wrap: wrap;
+  padding: var(--espacio-md);
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-md);
+  margin-bottom: var(--espacio-md);
+}
+
+.barra-filtros-item {
+  flex: 1;
+  min-width: 160px;
+}
+
+.barra-filtros-busqueda {
+  flex: 2;
+  min-width: 220px;
+}

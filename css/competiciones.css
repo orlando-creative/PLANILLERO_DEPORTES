@@ -1,0 +1,133 @@
+/**
+ * Estilos de Competiciones
+ * U.E. Luz del Mundo A - Planillero Deportivo
+ */
+
+.cuadricula-competiciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--espacio-lg);
+  margin-bottom: var(--espacio-xl);
+}
+
+.tarjeta-competicion {
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.tarjeta-competicion:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+
+.tarjeta-competicion-encabezado {
+  background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-principal) 100%);
+  color: var(--blanco);
+  padding: var(--espacio-md);
+  border-bottom: 3px solid var(--amarillo-principal);
+}
+
+.tarjeta-competicion-deporte {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--espacio-xs);
+}
+
+.tarjeta-competicion-titulo {
+  color: var(--blanco);
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.tarjeta-competicion-tipo {
+  font-size: 0.8rem;
+  color: var(--amarillo-claro);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.tarjeta-competicion-cuerpo {
+  padding: var(--espacio-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-sm);
+}
+
+.dato-competicion {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.86rem;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--borde-suave);
+}
+
+.dato-competicion-clave {
+  color: var(--texto-secundario);
+}
+
+.dato-competicion-valor {
+  font-weight: 600;
+  color: var(--texto-principal);
+}
+
+.tarjeta-competicion-pie {
+  padding: var(--espacio-sm) var(--espacio-md);
+  background-color: var(--fondo-general);
+  border-top: 1px solid var(--borde-suave);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espacio-xs);
+}
+
+/* Selector de Pestañas / Deporte */
+.selector-deportes {
+  display: flex;
+  gap: var(--espacio-sm);
+  margin-bottom: var(--espacio-md);
+}
+
+.boton-deporte-filtro {
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-fuerte);
+  color: var(--texto-secundario);
+  padding: 8px 16px;
+  border-radius: var(--radio-sm);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.boton-deporte-filtro.activo {
+  background-color: var(--azul-principal);
+  border-color: var(--azul-oscuro);
+  color: var(--blanco);
+}
+
+.boton-deporte-filtro.activo .contador-badge {
+  background-color: var(--amarillo-principal);
+  color: var(--amarillo-texto);
+}
+
+.contador-badge {
+  display: inline-flex;
+  padding: 2px 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: var(--radio-pill);
+  background-color: var(--azul-superficie);
+  color: var(--azul-principal);
+}

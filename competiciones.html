@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Competiciones Deportivas | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Listado oficial de torneos, campeonatos de fútbol campo y fútbol sala de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/competiciones.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Competiciones Deportivas</h1>
+          <p class="subtitulo-seccion">Campeonatos intercursos, copas y torneos relámpago de Fútbol y Futsal.</p>
+        </div>
+        <div data-requiere-admin style="display: none;">
+          <button type="button" class="boton boton-primario boton-md" id="btn-nueva-competicion">
+            Nueva Competición
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="fila-formulario" style="margin-bottom: 8px;">
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-categoria">Categoría Institucional</label>
+            <select id="filtro-categoria" class="select-formulario">
+              <option value="">Todas las categorías</option>
+              <optgroup label="Secundaria">
+                <option value="1ro a 3ro de Secundaria">1ro a 3ro de Secundaria</option>
+                <option value="4to a 6to de Secundaria">4to a 6to de Secundaria</option>
+              </optgroup>
+              <optgroup label="Primaria">
+                <option value="1ro a 3ro de Primaria">1ro a 3ro de Primaria</option>
+                <option value="4to a 6to de Primaria">4to a 6to de Primaria</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-formato">Modalidad</label>
+            <select id="filtro-formato" class="select-formulario">
+              <option value="">Todos los formatos</option>
+              <option value="torneo_eliminatorio">Relámpago (Eliminatoria directa)</option>
+              <option value="liga">Liga (Todos contra todos)</option>
+            </select>
+          </div>
+        </div>
+        <div class="fila-formulario" style="margin-bottom: 0;">
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-deporte">Filtrar por Deporte</label>
+            <select id="filtro-deporte" class="select-formulario">
+              <option value="">Todos los deportes</option>
+              <option value="futbol">Fútbol</option>
+              <option value="futsal">Fútbol Sala</option>
+            </select>
+          </div>
+          <div class="campo-formulario" style="margin-bottom: 0;">
+            <label class="etiqueta-formulario" for="filtro-estado">Filtrar por Estado</label>
+            <select id="filtro-estado" class="select-formulario">
+              <option value="">Todos los estados</option>
+              <option value="en_curso">En curso</option>
+              <option value="programada">Programada</option>
+              <option value="finalizada">Finalizada</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lista de Competiciones -->
+      <div id="contenedor-competiciones" class="cuadricula-competiciones">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Cargando competiciones...</p>
+        </div>
+      </div>
+
+      <!-- Modal Crear / Editar Competición (Solo Admin) -->
+      <div id="modal-competicion" class="modal-fondo" style="display: none;">
+        <div class="modal-dialogo">
+          <div class="modal-encabezado">
+            <h3 id="modal-competicion-titulo">Registrar Competición</h3>
+            <button type="button" class="modal-cerrar" id="btn-cerrar-modal-comp">×</button>
+          </div>
+          <form id="form-competicion">
+            <input type="hidden" id="comp-id" />
+            <div class="modal-cuerpo">
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="comp-nombre">Nombre Oficial del Torneo</label>
+                <input type="text" id="comp-nombre" class="input-formulario" placeholder="Ej. Torneo Intercursos de Fútbol 2026" required />
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="comp-deporte">Disciplina</label>
+                  <select id="comp-deporte" class="select-formulario" required>
+                    <option value="futbol">Fútbol</option>
+                    <option value="futsal">Fútbol Sala</option>
+                  </select>
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="comp-tipo">Formato de Competición</label>
+                  <select id="comp-tipo" class="select-formulario" required>
+                    <option value="liga">Liga (Todos contra todos)</option>
+                    <option value="torneo_eliminatorio">Torneo Eliminatorio Relámpago</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="comp-fecha-inicio">Fecha de Inicio</label>
+                  <input type="date" id="comp-fecha-inicio" class="input-formulario" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="comp-fecha-fin">Fecha de Finalización</label>
+                  <input type="date" id="comp-fecha-fin" class="input-formulario" />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="comp-estado">Estado</label>
+                  <select id="comp-estado" class="select-formulario" required>
+                    <option value="programada">Programada</option>
+                    <option value="en_curso" selected>En curso</option>
+                    <option value="finalizada">Finalizada</option>
+                  </select>
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="comp-reglamento">Reglamento Aplicable</label>
+                  <select id="comp-reglamento" class="select-formulario" required>
+                    <!-- Dinámico -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="comp-descripcion">Descripción Institucional</label>
+                <textarea id="comp-descripcion" class="textarea-formulario" rows="3" placeholder="Detalles de la copa, categorías participantes, etc."></textarea>
+              </div>
+            </div>
+            <div class="modal-pie">
+              <button type="button" class="boton boton-contorno boton-md" id="btn-cancelar-comp">Cancelar</button>
+              <button type="submit" class="boton boton-primario boton-md" id="btn-guardar-comp">Guardar Competición</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerCompeticiones, guardarCompeticion, eliminarCompeticion, obtenerEquiposDeCompeticion } from '/js/competiciones.js';
+      import { obtenerReglamentos } from '/js/reglamentos.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { mostrarNotificacion, mostrarConfirmacion, abrirModal, cerrarModal } from '/js/interfaz.js';
+      import { formatearFecha, sanitizarHTML } from '/js/utilidades.js';
+
+      let listaCompeticiones = [];
+      let reglamentosDisponibles = [];
+
+      async function cargarDatos() {
+        reglamentosDisponibles = await obtenerReglamentos();
+        const selectReg = document.getElementById('comp-reglamento');
+        selectReg.innerHTML = reglamentosDisponibles.map(r => `
+          <option value="${r.id}">${sanitizarHTML(r.nombre)} (${sanitizarHTML(r.deporte.toUpperCase())})</option>
+        `).join('');
+
+        aplicarFiltros();
+      }
+
+      async function aplicarFiltros() {
+        const deporte = document.getElementById('filtro-deporte').value;
+        const estado = document.getElementById('filtro-estado').value;
+        const formato = document.getElementById('filtro-formato')?.value || '';
+        const categoria = document.getElementById('filtro-categoria')?.value || '';
+        const contenedor = document.getElementById('contenedor-competiciones');
+
+        contenedor.innerHTML = '<div class="estado-carga"><div class="spinner"></div><p>Filtrando competiciones...</p></div>';
+
+        let competicionesCargadas = await obtenerCompeticiones({ deporte, estado });
+
+        // Filtrado por formato
+        if (formato) {
+          competicionesCargadas = competicionesCargadas.filter(c => c.tipo_competicion === formato);
+        }
+
+        // Filtrado por categoría institucional
+        if (categoria) {
+          competicionesCargadas = competicionesCargadas.filter(c => {
+            const txt = (c.nombre + ' ' + (c.descripcion || '') + ' ' + (c.categoria || '')).toLowerCase();
+            return txt.includes(categoria.toLowerCase());
+          });
+        }
+
+        listaCompeticiones = competicionesCargadas;
+
+        if (!listaCompeticiones.length) {
+          contenedor.innerHTML = '<div class="estado-vacio"><p>No se encontraron competiciones con los criterios seleccionados.</p></div>';
+          return;
+        }
+
+        const esAdmin = esAdministrador();
+
+        // Renderizar tarjetas
+        const fragmentos = await Promise.all(listaCompeticiones.map(async (c) => {
+          const equipos = await obtenerEquiposDeCompeticion(c.id);
+          const reg = reglamentosDisponibles.find(r => r.id === c.reglamento_id);
+          const esRelampago = c.tipo_competicion === 'torneo_eliminatorio';
+
+          // Detectar categoría institucional
+          let categoriaDetectada = c.categoria || '';
+          if (!categoriaDetectada) {
+            if (c.nombre.includes('1ro a 3ro de Secundaria')) categoriaDetectada = '1ro a 3ro de Secundaria';
+            else if (c.nombre.includes('4to a 6to de Secundaria')) categoriaDetectada = '4to a 6to de Secundaria';
+            else if (c.nombre.includes('1ro a 3ro de Primaria')) categoriaDetectada = '1ro a 3ro de Primaria';
+            else if (c.nombre.includes('4to a 6to de Primaria')) categoriaDetectada = '4to a 6to de Primaria';
+            else if (c.nombre.includes('Secundaria')) categoriaDetectada = 'Nivel Secundaria';
+            else if (c.nombre.includes('Primaria')) categoriaDetectada = 'Nivel Primaria';
+          }
+
+          return `
+            <article class="tarjeta tarjeta-competicion">
+              <div class="tarjeta-competicion-encabezado">
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <span class="insignia insignia-deporte ${c.deporte}">
+                    ${c.deporte === 'futbol' ? 'Fútbol' : 'Fútbol Sala'}
+                  </span>
+                  ${categoriaDetectada ? `<span class="insignia" style="background-color: var(--amarillo-principal); color: var(--amarillo-texto); font-weight: 700;">${sanitizarHTML(categoriaDetectada)}</span>` : ''}
+                </div>
+                <span class="insignia insignia-${c.estado}">
+                  ${c.estado.replace('_', ' ').toUpperCase()}
+                </span>
+              </div>
+              <h3 class="tarjeta-competicion-titulo">${sanitizarHTML(c.nombre)}</h3>
+              <p style="font-size: 0.86rem; color: var(--texto-secundario); margin-bottom: 10px;">
+                ${sanitizarHTML(c.descripcion || 'Sin descripción.')}
+              </p>
+
+              ${esRelampago ? `
+                <div style="background-color: #fef2f2; border-left: 3px solid #ef4444; padding: 6px 10px; border-radius: 4px; font-size: 0.78rem; color: #991b1b; margin-bottom: 12px; line-height: 1.35;">
+                  <strong>⚡ Modalidad Relámpago:</strong> Eliminatoria directa (el perdedor queda fuera, no se computan puntos en tabla).
+                </div>
+              ` : ''}
+              
+              <div class="tarjeta-competicion-meta">
+                <div class="meta-item">
+                  <span class="meta-etiqueta">Formato</span>
+                  <span class="meta-valor">${esRelampago ? '⚡ Eliminatoria Relámpago' : 'Liga (Puntos)'}</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-etiqueta">Equipos</span>
+                  <span class="meta-valor">${equipos.length} inscritos</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-etiqueta">Período</span>
+                  <span class="meta-valor">${formatearFecha(c.fecha_inicio)}</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-etiqueta">Reglamento</span>
+                  <span class="meta-valor">${sanitizarHTML(reg?.nombre || 'Estándar')}</span>
+                </div>
+              </div>
+
+              <div class="tarjeta-competicion-acciones">
+                <a href="/posiciones.html?competicion_id=${c.id}" class="boton boton-primario boton-sm">${esRelampago ? 'Ver Cuadro / Llaves' : 'Posiciones'}</a>
+                <a href="/calendario.html?competicion_id=${c.id}" class="boton boton-secundario boton-sm">Fixture</a>
+                ${esAdmin ? `
+                  <button type="button" class="boton boton-contorno boton-sm btn-editar-comp" data-id="${c.id}">Editar</button>
+                  <button type="button" class="boton boton-peligro boton-sm btn-eliminar-comp" data-id="${c.id}" data-nombre="${sanitizarHTML(c.nombre)}">Eliminar</button>
+                ` : ''}
+              </div>
+            </article>
+          `;
+        }));
+
+        contenedor.innerHTML = fragmentos.join('');
+
+        // Listeners administrativos
+        if (esAdmin) {
+          document.querySelectorAll('.btn-editar-comp').forEach(btn => {
+            btn.addEventListener('click', () => abrirEditarCompeticion(btn.dataset.id));
+          });
+          document.querySelectorAll('.btn-eliminar-comp').forEach(btn => {
+            btn.addEventListener('click', () => confirmarEliminarCompeticion(btn.dataset.id, btn.dataset.nombre));
+          });
+        }
+      }
+
+      function abrirNuevaCompeticion() {
+        document.getElementById('form-competicion').reset();
+        document.getElementById('comp-id').value = '';
+        document.getElementById('modal-competicion-titulo').textContent = 'Registrar Nueva Competición';
+        abrirModal('modal-competicion');
+      }
+
+      function abrirEditarCompeticion(id) {
+        const c = listaCompeticiones.find(item => item.id === id);
+        if (!c) return;
+        document.getElementById('comp-id').value = c.id;
+        document.getElementById('comp-nombre').value = c.nombre;
+        document.getElementById('comp-deporte').value = c.deporte;
+        document.getElementById('comp-tipo').value = c.tipo_competicion;
+        document.getElementById('comp-fecha-inicio').value = c.fecha_inicio || '';
+        document.getElementById('comp-fecha-fin').value = c.fecha_finalizacion || '';
+        document.getElementById('comp-estado').value = c.estado;
+        document.getElementById('comp-reglamento').value = c.reglamento_id || '';
+        document.getElementById('comp-descripcion').value = c.descripcion || '';
+        document.getElementById('modal-competicion-titulo').textContent = 'Editar Competición';
+        abrirModal('modal-competicion');
+      }
+
+      function confirmarEliminarCompeticion(id, nombre) {
+        mostrarConfirmacion({
+          titulo: 'Eliminar Competición',
+          mensaje: `¿Está seguro de que desea eliminar la competición "${nombre}"? Esta acción solo es posible si no tiene partidos registrados.`,
+          esPeligroso: true,
+          textoConfirmar: 'Eliminar Competición',
+          alConfirmar: async () => {
+            try {
+              await eliminarCompeticion(id);
+              mostrarNotificacion('Competición eliminada con éxito.', 'exito');
+              aplicarFiltros();
+            } catch (err) {
+              mostrarNotificacion(err.message || 'Error al eliminar competición.', 'error');
+            }
+          }
+        });
+      }
+
+      // Event Listeners
+      document.getElementById('filtro-deporte').addEventListener('change', aplicarFiltros);
+      document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
+      document.getElementById('filtro-formato')?.addEventListener('change', aplicarFiltros);
+      document.getElementById('filtro-categoria')?.addEventListener('change', aplicarFiltros);
+
+      const btnNuevo = document.getElementById('btn-nueva-competicion');
+      if (btnNuevo) btnNuevo.addEventListener('click', abrirNuevaCompeticion);
+
+      document.getElementById('btn-cerrar-modal-comp').addEventListener('click', () => cerrarModal('modal-competicion'));
+      document.getElementById('btn-cancelar-comp').addEventListener('click', () => cerrarModal('modal-competicion'));
+
+      document.getElementById('form-competicion').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('comp-id').value;
+        const datos = {
+          nombre: document.getElementById('comp-nombre').value.trim(),
+          deporte: document.getElementById('comp-deporte').value,
+          tipo_competicion: document.getElementById('comp-tipo').value,
+          fecha_inicio: document.getElementById('comp-fecha-inicio').value,
+          fecha_finalizacion: document.getElementById('comp-fecha-fin').value || null,
+          estado: document.getElementById('comp-estado').value,
+          reglamento_id: document.getElementById('comp-reglamento').value,
+          descripcion: document.getElementById('comp-descripcion').value.trim()
+        };
+        if (id) datos.id = id;
+
+        try {
+          await guardarCompeticion(datos);
+          cerrarModal('modal-competicion');
+          mostrarNotificacion(id ? 'Competición actualizada.' : 'Competición registrada con éxito.', 'exito');
+          aplicarFiltros();
+        } catch (err) {
+          mostrarNotificacion(err.message || 'Error al guardar la competición.', 'error');
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', cargarDatos);
+    </script>
+  </body>
+</html>

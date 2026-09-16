@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceso Institucional | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Portal de acceso y autenticación para jueces de mesa, árbitros, directores técnicos y comunidad educativa de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+      <div class="tarjeta" style="max-width: 460px; width: 100%; padding: var(--espacio-xl);">
+        <div style="text-align: center; margin-bottom: var(--espacio-md);">
+          <img src="/assets/escudo-luz-del-mundo.svg" alt="Escudo Institucional" style="width: 80px; height: 95px; margin: 0 auto 12px; display: block;" />
+          <h1 style="font-size: 1.45rem; color: var(--azul-oscuro); margin-bottom: 4px;">Acceso para Administradores y Árbitros</h1>
+          <p style="font-size: 0.88rem; color: var(--texto-secundario); margin: 0;">
+            Control de Planilla Oficial &bull; U.E. Luz del Mundo A
+          </p>
+        </div>
+
+        <!-- Aviso para Espectadores -->
+        <div style="background-color: var(--azul-superficie); border-left: 4px solid var(--azul-institucional); padding: 12px 14px; border-radius: var(--radio-sm); margin-bottom: var(--espacio-md); text-align: left; font-size: 0.84rem; color: var(--azul-oscuro); line-height: 1.45;">
+          <strong>ℹ️ ¿Eres estudiante, padre de familia o espectador?</strong>
+          <p style="margin: 4px 0 8px 0; color: var(--texto-secundario);">
+            No necesitas registrarte ni iniciar sesión. Toda la información de competiciones, posiciones, fixture y resultados en vivo es de acceso público y abierto.
+          </p>
+          <a href="/index.html" class="boton boton-secundario boton-sm" style="display: inline-block;">
+            Ver Partidos y Posiciones (Sin Iniciar Sesión)
+          </a>
+        </div>
+
+        <div id="mensaje-alerta-login" class="alerta-error" style="display: none; margin-bottom: var(--espacio-md);"></div>
+
+        <form id="formulario-login">
+          <div class="campo-formulario">
+            <label class="etiqueta-formulario" for="correo-login">Correo Electrónico de Administrador</label>
+            <input type="email" id="correo-login" class="input-formulario" placeholder="admin@luzdelmundo.edu" required autocomplete="email" />
+          </div>
+
+          <div class="campo-formulario">
+            <label class="etiqueta-formulario" for="password-login">Contraseña</label>
+            <input type="password" id="password-login" class="input-formulario" placeholder="••••••••" required autocomplete="current-password" />
+          </div>
+
+          <button type="submit" id="btn-submit-login" class="boton boton-primario boton-bloque boton-md" style="margin-top: 8px;">
+            Ingresar como Administrador
+          </button>
+        </form>
+
+        <div style="margin-top: var(--espacio-lg); padding-top: var(--espacio-md); border-top: 1px solid var(--borde-suave); font-size: 0.82rem; color: var(--texto-secundario);">
+          <div style="margin-bottom: 8px;">
+            <a href="#" id="btn-olvido-password" style="color: var(--azul-institucional); font-weight: 600;">¿Olvidó su contraseña?</a>
+          </div>
+          <p style="margin: 0; background: var(--azul-superficie); padding: 8px; border-radius: var(--radio-sm);">
+            <strong>Acceso Administrativo:</strong><br />
+            Ingrese con las credenciales registradas en el panel de Supabase Auth para árbitros y administradores.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { iniciarSesion, solicitarRestablecerContrasena } from '/js/autenticacion.js';
+      import { mostrarNotificacion } from '/js/interfaz.js';
+
+      const form = document.getElementById('formulario-login');
+      const alerta = document.getElementById('mensaje-alerta-login');
+      const btnSubmit = document.getElementById('btn-submit-login');
+      const btnOlvido = document.getElementById('btn-olvido-password');
+
+      const params = new URLSearchParams(window.location.search);
+      const urlDestino = params.get('redirigir') || '/administracion.html';
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        alerta.style.display = 'none';
+        btnSubmit.disabled = true;
+        btnSubmit.textContent = 'Verificando credenciales...';
+
+        const correo = document.getElementById('correo-login').value;
+        const password = document.getElementById('password-login').value;
+
+        try {
+          const res = await iniciarSesion(correo, password);
+          if (res.error) {
+            alerta.textContent = res.error.message || 'Credenciales incorrectas.';
+            alerta.style.display = 'block';
+            btnSubmit.disabled = false;
+            btnSubmit.textContent = 'Ingresar al Sistema';
+          } else {
+            mostrarNotificacion('Inicio de sesión exitoso. Redirigiendo...', 'exito');
+            setTimeout(() => {
+              window.location.href = urlDestino;
+            }, 500);
+          }
+        } catch (err) {
+          alerta.textContent = err.message || 'Error durante la autenticación.';
+          alerta.style.display = 'block';
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Ingresar al Sistema';
+        }
+      });
+
+      btnOlvido.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const correo = prompt('Ingrese su correo electrónico institucional para restablecer la contraseña:');
+        if (correo) {
+          await solicitarRestablecerContrasena(correo);
+          mostrarNotificacion('Se han enviado las instrucciones de restablecimiento a su correo institucional.', 'info');
+        }
+      });
+    </script>
+  </body>
+</html>

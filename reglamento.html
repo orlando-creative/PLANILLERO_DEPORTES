@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reglamentos Deportivos | U.E. Luz del Mundo A</title>
+    <meta name="description" content="Normativa oficial, bases técnicas y disciplinarias de Fútbol y Fútbol Sala de la U.E. Luz del Mundo A." />
+
+    <!-- Estilos Modulares -->
+    <link rel="stylesheet" href="/css/principal.css" />
+    <link rel="stylesheet" href="/css/encabezado.css" />
+    <link rel="stylesheet" href="/css/formularios.css" />
+    <link rel="stylesheet" href="/css/tablas.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <header class="encabezado-institucional"></header>
+
+    <main class="contenedor-principal">
+      <div class="seccion-encabezado">
+        <div class="seccion-titulos">
+          <h1>Reglamentos y Bases Técnicas Oficiales</h1>
+          <p class="subtitulo-seccion">Estatutos disciplinarios y especificaciones técnicas aprobadas por la coordinación deportiva.</p>
+        </div>
+        <div data-requiere-admin style="display: none;">
+          <button type="button" class="boton boton-primario boton-md" id="btn-editar-reglamento-activo">
+            Modificar Parámetros de Reglamento
+          </button>
+        </div>
+      </div>
+
+      <!-- Selector de Reglamento / Deporte -->
+      <section class="tarjeta" style="margin-bottom: var(--espacio-lg); padding: var(--espacio-md);">
+        <div class="campo-formulario" style="margin-bottom: 0;">
+          <label class="etiqueta-formulario" for="select-reglamento">Seleccionar Disciplina</label>
+          <select id="select-reglamento" class="select-formulario">
+            <!-- Dinámico -->
+          </select>
+        </div>
+      </section>
+
+      <!-- Ficha de Reglamento -->
+      <div id="contenedor-detalle-reglamento">
+        <div class="estado-carga">
+          <div class="spinner"></div>
+          <p>Cargando bases reglamentarias...</p>
+        </div>
+      </div>
+
+      <!-- Modal Editar Reglamento (Admin) -->
+      <div id="modal-reglamento" class="modal-fondo" style="display: none;">
+        <div class="modal-dialogo">
+          <div class="modal-encabezado">
+            <h3 id="modal-reglamento-titulo">Modificar Parámetros Técnicos</h3>
+            <button type="button" class="modal-cerrar" id="btn-cerrar-modal-reg">×</button>
+          </div>
+          <form id="form-reglamento">
+            <input type="hidden" id="reg-id" />
+            <div class="modal-cuerpo">
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="reg-nombre">Nombre del Reglamento</label>
+                <input type="text" id="reg-nombre" class="input-formulario" required />
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-duracion">Minutos por Período</label>
+                  <input type="number" id="reg-duracion" class="input-formulario" min="5" max="90" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-periodos">Cantidad de Períodos</label>
+                  <input type="number" id="reg-periodos" class="input-formulario" min="1" max="4" required />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-jugadores">Jugadores en Cancha</label>
+                  <input type="number" id="reg-jugadores" class="input-formulario" min="3" max="11" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-sustituciones">Sustituciones Máximas</label>
+                  <input type="number" id="reg-sustituciones" class="input-formulario" min="1" max="20" required />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-rotativas">Sustituciones Rotativas / Volantes</label>
+                  <select id="reg-rotativas" class="select-formulario">
+                    <option value="true">Sí (Rotativas / Futsal)</option>
+                    <option value="false">No (Estándar / Fútbol)</option>
+                  </select>
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-tiempos-muertos">Tiempos Muertos por Período</label>
+                  <input type="number" id="reg-tiempos-muertos" class="input-formulario" min="0" max="3" required />
+                </div>
+              </div>
+
+              <div class="fila-formulario">
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-pts-victoria">Puntos por Victoria</label>
+                  <input type="number" id="reg-pts-victoria" class="input-formulario" min="1" max="10" required />
+                </div>
+                <div class="campo-formulario">
+                  <label class="etiqueta-formulario" for="reg-pts-empate">Puntos por Empate</label>
+                  <input type="number" id="reg-pts-empate" class="input-formulario" min="0" max="5" required />
+                </div>
+              </div>
+
+              <div class="campo-formulario">
+                <label class="etiqueta-formulario" for="reg-desempate">Texto Criterios de Desempate</label>
+                <textarea id="reg-desempate" class="textarea-formulario" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="modal-pie">
+              <button type="button" class="boton boton-contorno boton-md" id="btn-cancelar-reg">Cancelar</button>
+              <button type="submit" class="boton boton-primario boton-md">Guardar Parámetros</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="pie-institucional"></footer>
+
+    <!-- Scripts de Módulos ES -->
+    <script type="module" src="/js/navegacion.js"></script>
+    <script type="module">
+      import { obtenerReglamentos, guardarReglamento } from '/js/reglamentos.js';
+      import { esAdministrador } from '/js/permisos.js';
+      import { mostrarNotificacion, abrirModal, cerrarModal } from '/js/interfaz.js';
+      import { sanitizarHTML } from '/js/utilidades.js';
+
+      let todosReglamentos = [];
+      let reglamentoActivo = null;
+
+      async function inicializar() {
+        todosReglamentos = await obtenerReglamentos();
+        const selector = document.getElementById('select-reglamento');
+
+        selector.innerHTML = todosReglamentos.map(r => `
+          <option value="${r.id}">${sanitizarHTML(r.nombre)}</option>
+        `).join('');
+
+        selector.addEventListener('change', () => {
+          seleccionarReglamento(selector.value);
+        });
+
+        if (todosReglamentos.length > 0) {
+          seleccionarReglamento(todosReglamentos[0].id);
+        }
+      }
+
+      function seleccionarReglamento(id) {
+        reglamentoActivo = todosReglamentos.find(r => r.id === id);
+        if (!reglamentoActivo) return;
+
+        const contenedor = document.getElementById('contenedor-detalle-reglamento');
+        const esFutsal = reglamentoActivo.deporte === 'futsal';
+
+        contenedor.innerHTML = `
+          <div class="tarjeta tarjeta-destacada" style="margin-bottom: var(--espacio-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <span class="insignia insignia-deporte ${reglamentoActivo.deporte}">${esFutsal ? 'Fútbol Sala (Futsal)' : 'Fútbol 11'}</span>
+              <span class="insignia insignia-institucional">Vigencia Escolar 2026</span>
+            </div>
+            <h2 style="color: var(--azul-oscuro); margin-bottom: 8px;">${sanitizarHTML(reglamentoActivo.nombre)}</h2>
+            <p style="color: var(--texto-secundario); margin: 0;">${sanitizarHTML(reglamentoActivo.descripcion || 'Normativa técnico-deportiva para los juegos de la institución.')}</p>
+          </div>
+
+          <div class="grid-3" style="margin-bottom: var(--espacio-lg);">
+            <div class="tarjeta">
+              <h3 style="font-size: 1rem; color: var(--azul-oscuro); margin-bottom: 12px;">Tiempo de Juego</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.88rem; color: var(--texto-secundario); line-height: 1.6;">
+                <li><strong>Períodos:</strong> ${reglamentoActivo.cantidad_periodos} tiempos reglamentarios.</li>
+                <li><strong>Duración:</strong> ${reglamentoActivo.duracion_periodo_minutos} minutos por período.</li>
+                <li><strong>Descanso:</strong> 10 minutos entre tiempos.</li>
+              </ul>
+            </div>
+
+            <div class="tarjeta">
+              <h3 style="font-size: 1rem; color: var(--azul-oscuro); margin-bottom: 12px;">Jugadores y Sustituciones</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.88rem; color: var(--texto-secundario); line-height: 1.6;">
+                <li><strong>En cancha:</strong> ${reglamentoActivo.cantidad_jugadores_cancha} jugadores por equipo.</li>
+                <li><strong>Cambios máximos:</strong> ${reglamentoActivo.sustituciones_maximas} por encuentro.</li>
+                <li><strong>Modalidad:</strong> ${reglamentoActivo.sustituciones_rotativas ? 'Sustituciones rotativas y volantes por la zona técnica.' : 'Sustituciones con autorización del árbitro.'}</li>
+              </ul>
+            </div>
+
+            <div class="tarjeta">
+              <h3 style="font-size: 1rem; color: var(--azul-oscuro); margin-bottom: 12px;">Puntajes Oficiales</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.88rem; color: var(--texto-secundario); line-height: 1.6;">
+                <li><strong>Victoria:</strong> ${reglamentoActivo.puntos_victoria} puntos.</li>
+                <li><strong>Empate:</strong> ${reglamentoActivo.puntos_empate} punto.</li>
+                <li><strong>Derrota:</strong> ${reglamentoActivo.puntos_derrota} puntos.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tarjeta" style="margin-bottom: var(--espacio-lg);">
+            <h3 style="color: var(--azul-oscuro); margin-bottom: 12px; border-bottom: 2px solid var(--azul-superficie); padding-bottom: 8px;">Régimen Disciplinario y Faltas Especiales</h3>
+            <div class="grid-2">
+              <div>
+                <h4 style="font-size: 0.95rem; color: var(--azul-institucional); margin-bottom: 6px;">Sanciones con Tarjetas</h4>
+                <p style="font-size: 0.86rem; color: var(--texto-secundario); line-height: 1.5;">
+                  &bull; <strong>Tarjeta Amarilla:</strong> Amonestación preventiva.<br />
+                  &bull; <strong>Tarjeta Roja:</strong> Expulsión directa del terreno de juego.<br />
+                  ${reglamentoActivo.penaliza_tarjeta_azul ? `
+                    &bull; <strong>Tarjeta Azul (Futsal):</strong> Exclusión temporal de ${reglamentoActivo.minutos_sancion_tarjeta} minutos con inferioridad numérica para el equipo infractor.
+                  ` : 'Tarjeta azul no aplicable a esta disciplina.'}
+                </p>
+              </div>
+              <div>
+                <h4 style="font-size: 0.95rem; color: var(--azul-institucional); margin-bottom: 6px;">Faltas Colectivas y Tiempos Muertos</h4>
+                <p style="font-size: 0.86rem; color: var(--texto-secundario); line-height: 1.5;">
+                  ${reglamentoActivo.faltas_acumulativas ? `
+                    &bull; <strong>Faltas acumulativas:</strong> Se contabilizan por período. A partir de la 6ta falta (${reglamentoActivo.limite_faltas_tiro_libre} faltas límite), cada infracción se sanciona con tiro libre directo desde los 10 metros sin barrera.<br />
+                  ` : '&bull; No rige límite de faltas acumulativas colectivas.<br />'}
+                  &bull; <strong>Tiempos muertos:</strong> ${reglamentoActivo.permite_tiempos_muertos ? `${reglamentoActivo.max_tiempos_muertos_periodo} tiempo muerto de 1 minuto por equipo en cada período.` : 'No se conceden tiempos muertos reglamentarios.'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tarjeta" style="background: var(--azul-superficie); border-left: 4px solid var(--amarillo-institucional);">
+            <h4 style="font-size: 0.95rem; color: var(--azul-oscuro); margin-bottom: 4px;">Criterio de Desempate Documentado</h4>
+            <p style="font-size: 0.86rem; color: var(--texto-secundario); margin: 0;">${sanitizarHTML(reglamentoActivo.regla_desempate_texto)}</p>
+          </div>
+        `;
+      }
+
+      function abrirModalEditar() {
+        if (!reglamentoActivo) return;
+        document.getElementById('reg-id').value = reglamentoActivo.id;
+        document.getElementById('reg-nombre').value = reglamentoActivo.nombre;
+        document.getElementById('reg-duracion').value = reglamentoActivo.duracion_periodo_minutos;
+        document.getElementById('reg-periodos').value = reglamentoActivo.cantidad_periodos;
+        document.getElementById('reg-jugadores').value = reglamentoActivo.cantidad_jugadores_cancha;
+        document.getElementById('reg-sustituciones').value = reglamentoActivo.sustituciones_maximas;
+        document.getElementById('reg-rotativas').value = String(reglamentoActivo.sustituciones_rotativas);
+        document.getElementById('reg-tiempos-muertos').value = reglamentoActivo.max_tiempos_muertos_periodo;
+        document.getElementById('reg-pts-victoria').value = reglamentoActivo.puntos_victoria;
+        document.getElementById('reg-pts-empate').value = reglamentoActivo.puntos_empate;
+        document.getElementById('reg-desempate').value = reglamentoActivo.regla_desempate_texto;
+        abrirModal('modal-reglamento');
+      }
+
+      const btnEditar = document.getElementById('btn-editar-reglamento-activo');
+      if (btnEditar) btnEditar.addEventListener('click', abrirModalEditar);
+
+      document.getElementById('btn-cerrar-modal-reg').addEventListener('click', () => cerrarModal('modal-reglamento'));
+      document.getElementById('btn-cancelar-reg').addEventListener('click', () => cerrarModal('modal-reglamento'));
+
+      document.getElementById('form-reglamento').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('reg-id').value;
+        const datos = {
+          id,
+          nombre: document.getElementById('reg-nombre').value.trim(),
+          duracion_periodo_minutos: parseInt(document.getElementById('reg-duracion').value, 10),
+          cantidad_periodos: parseInt(document.getElementById('reg-periodos').value, 10),
+          cantidad_jugadores_cancha: parseInt(document.getElementById('reg-jugadores').value, 10),
+          sustituciones_maximas: parseInt(document.getElementById('reg-sustituciones').value, 10),
+          sustituciones_rotativas: document.getElementById('reg-rotativas').value === 'true',
+          max_tiempos_muertos_periodo: parseInt(document.getElementById('reg-tiempos-muertos').value, 10),
+          permite_tiempos_muertos: parseInt(document.getElementById('reg-tiempos-muertos').value, 10) > 0,
+          puntos_victoria: parseInt(document.getElementById('reg-pts-victoria').value, 10),
+          puntos_empate: parseInt(document.getElementById('reg-pts-empate').value, 10),
+          regla_desempate_texto: document.getElementById('reg-desempate').value.trim()
+        };
+
+        try {
+          await guardarReglamento(datos);
+          cerrarModal('modal-reglamento');
+          mostrarNotificacion('Parámetros de reglamento actualizados.', 'exito');
+          await inicializar();
+        } catch (err) {
+          mostrarNotificacion(err.message || 'Error al guardar reglamento.', 'error');
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+  </body>
+</html>

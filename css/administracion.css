@@ -1,0 +1,173 @@
+/**
+ * Estilos del Panel de Administración e Historial de Auditoría
+ * U.E. Luz del Mundo A - Planillero Deportivo
+ */
+
+.cuadricula-metricas,
+.resumen-metrica-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--espacio-md);
+  margin-bottom: var(--espacio-lg);
+}
+
+.tarjeta-metrica {
+  background-color: var(--blanco);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-md);
+  padding: var(--espacio-md) var(--espacio-lg);
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tarjeta-metrica.destacada {
+  border-left: 4px solid var(--amarillo-principal);
+}
+
+.tarjeta-metrica-titulo,
+.tarjeta-metrica .etiqueta {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tarjeta-metrica-valor,
+.tarjeta-metrica .valor {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--azul-oscuro);
+  line-height: 1.2;
+}
+
+.tarjeta-metrica-detalle {
+  font-size: 0.76rem;
+  color: var(--texto-atenuado);
+}
+
+/* Pestañas de Navegación Administrativa */
+.pestanas-admin {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.pestanas-admin::-webkit-scrollbar {
+  display: none;
+}
+
+.pestana-boton {
+  white-space: nowrap;
+  padding: 10px 18px;
+  border-radius: var(--radio-pill);
+  border: 1px solid var(--borde-fuerte);
+  background-color: var(--blanco);
+  color: var(--azul-oscuro);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pestana-boton:hover {
+  background-color: var(--azul-superficie);
+  border-color: var(--azul-borde);
+}
+
+.pestana-boton.activa {
+  background-color: var(--azul-principal);
+  color: var(--amarillo-principal);
+  border-color: var(--azul-oscuro);
+  box-shadow: var(--sombra-sm);
+}
+
+.pestana-boton:active {
+  transform: scale(0.97);
+}
+
+/* Panel de Conexión Supabase */
+.tarjeta-configuracion-supabase {
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid var(--azul-principal);
+  border-radius: var(--radio-md);
+  padding: var(--espacio-md);
+  margin-bottom: var(--espacio-lg);
+}
+
+.estado-conexion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.estado-conexion.conectado {
+  color: #059669;
+}
+
+.estado-conexion.conectado::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.estado-conexion.desconectado {
+  color: #d97706;
+}
+
+.estado-conexion.desconectado::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+}
+
+/* Historial de Auditoría */
+.badge-accion-auditoria {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radio-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: var(--fuente-mono);
+}
+
+.badge-accion-insert { background-color: #d1fae5; color: #065f46; }
+.badge-accion-update { background-color: #dbeafe; color: #1e40af; }
+.badge-accion-delete { background-color: #fee2e2; color: #991b1b; }
+.badge-accion-revertir { background-color: #fef3c7; color: #92400e; }
+.badge-accion-estado { background-color: var(--azul-superficie); color: var(--azul-oscuro); }
+
+.bloque-json-auditoria {
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem;
+  background-color: #0f172a;
+  color: #e2e8f0;
+  padding: 8px;
+  border-radius: var(--radio-sm);
+  max-width: 320px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
