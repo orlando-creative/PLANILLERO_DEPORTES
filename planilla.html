@@ -128,7 +128,7 @@
             <div class="estado-vacio">
               <h3>No hay partidos en el fixture</h3>
               <p>Primero debe programar un partido en el calendario para habilitar la planilla.</p>
-              <a href="calendario.html" class="boton boton-primario boton-md" style="margin-top: 10px;">Ir al Calendario</a>
+              <a href="/calendario.html" class="boton boton-primario boton-md" style="margin-top: 10px;">Ir al Calendario</a>
             </div>
           `;
           return;
@@ -480,7 +480,7 @@
             });
             mostrarNotificacion('Partido finalizado y convalidado con éxito.', 'exito');
             setTimeout(() => {
-              window.location.href = `partido.html?id=${partidoActual.id}`;
+              window.location.href = `/partido.html?id=${partidoActual.id}`;
             }, 600);
           }
         });

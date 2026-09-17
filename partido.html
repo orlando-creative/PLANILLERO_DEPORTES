@@ -21,7 +21,7 @@
     <main class="contenedor-principal">
       <div class="seccion-encabezado">
         <div class="seccion-titulos">
-          <a href="calendario.html" class="boton boton-contorno boton-sm" style="margin-bottom: 8px; display: inline-flex;">&larr; Volver al Calendario</a>
+          <a href="/calendario.html" class="boton boton-contorno boton-sm" style="margin-bottom: 8px; display: inline-flex;">&larr; Volver al Calendario</a>
           <h1 id="titulo-acta">Acta Oficial del Encuentro</h1>
           <p id="subtitulo-acta" class="subtitulo-seccion">Ficha técnica institucional avalada por la mesa de control.</p>
         </div>
@@ -83,7 +83,7 @@
         if (esAdministrador()) {
           const areaAdmin = document.getElementById('accion-admin-planilla');
           areaAdmin.innerHTML = `
-            <a href="planilla.html?partido_id=${partido.id}" class="boton boton-secundario boton-md">
+            <a href="/planilla.html?partido_id=${partido.id}" class="boton boton-secundario boton-md">
               Abrir Planilla de Control en Vivo
             </a>
           `;

@@ -60,10 +60,10 @@
           De acuerdo con los privilegios de su cuenta, tiene acceso a las siguientes herramientas:
         </p>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <a href="calendario.html" class="boton boton-contorno boton-sm">Consultar Calendario</a>
-          <a href="posiciones.html" class="boton boton-contorno boton-sm">Ver Posiciones</a>
-          <a href="planilla.html" class="boton boton-secundario boton-sm" data-requiere-admin style="display: none;">Planilla de Control</a>
-          <a href="administracion.html" class="boton boton-primario boton-sm" data-requiere-admin style="display: none;">Panel Administrativo</a>
+          <a href="/calendario.html" class="boton boton-contorno boton-sm">Consultar Calendario</a>
+          <a href="/posiciones.html" class="boton boton-contorno boton-sm">Ver Posiciones</a>
+          <a href="/planilla.html" class="boton boton-secundario boton-sm" data-requiere-admin style="display: none;">Planilla de Control</a>
+          <a href="/administracion.html" class="boton boton-primario boton-sm" data-requiere-admin style="display: none;">Panel Administrativo</a>
         </div>
       </section>
     </main>
@@ -81,7 +81,7 @@
       const usuario = clienteSupabase.auth.obtenerUsuario();
 
       if (!usuario) {
-        window.location.href = 'inicio-sesion.html';
+        window.location.href = '/inicio-sesion.html';
       } else {
         const esAdmin = esAdministrador();
         const nombre = usuario.nombre_completo || usuario.email.split('@')[0];

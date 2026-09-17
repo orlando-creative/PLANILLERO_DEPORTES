@@ -9,11 +9,6 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Barra de Navegación Móvil Inferior (Bottom Nav Bar) */
-.barra-movil-inferior {
-  display: none;
-}
-
 @media (max-width: 992px) {
   .grid-3, .grid-4 {
     grid-template-columns: repeat(2, 1fr);
@@ -34,7 +29,6 @@ html, body {
 
   body {
     font-size: 14px;
-    padding-bottom: calc(65px + env(safe-area-inset-bottom, 0px));
   }
 
   .contenedor-principal {
@@ -125,59 +119,6 @@ html, body {
   .tarjeta-competicion-acciones .boton {
     flex: 1 1 calc(50% - 8px);
     min-width: 120px;
-  }
-
-  /* Barra de Navegación Inferior Móvil Fija */
-  .barra-movil-inferior {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background-color: var(--azul-oscuro);
-    border-top: 2px solid var(--amarillo-principal);
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
-    z-index: 999;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  .item-nav-movil {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 0.68rem;
-    font-weight: 700;
-    gap: 3px;
-    flex: 1;
-    height: 100%;
-    transition: color 0.15s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .item-nav-movil svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-    stroke-width: 2;
-    fill: none;
-  }
-
-  .item-nav-movil.activo {
-    color: var(--amarillo-principal);
-  }
-
-  .item-nav-movil.activo svg {
-    stroke: var(--amarillo-principal);
-  }
-
-  .item-nav-movil:active {
-    background-color: rgba(255, 255, 255, 0.08);
   }
 
   .pie-contenido {
